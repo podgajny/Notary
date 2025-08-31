@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>CSS Basics Lab — Live Session</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Link to the external stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>CSS Basics Lab — Selectors · Specificity · Box Model · Units · Flex · Grid · Position · Variables · Media · Transitions</h1>
+  </header>
+
+  <main class="container">
+
+    <!-- ======================================================
+         BARTEK LAB
+    ======================================================= -->
+    <section id="bartek" class="lab">
+      <div class="who">Bartek — your playground</div>
+      <div class="stage">
+        <h2>Selectors & Specificity</h2>
+        <p class="muted">Target things precisely without breaking others.</p>
+
+        <div class="card vis">
+          <h3>Bartek’s subtitle</h3>
+          <ul class="spec-play" id="bartek-list">
+            <li>Item #1</li>
+            <li>Item #2 (make me blue)</li>
+            <li id="bartek-target">Item #3 (make me white text on accent bg)</li>
+            <li>Item #4</li>
+            <li>Item #5 (last item italic)</li>
+          </ul>
+
+          <div class="todo">
+            <div class="expect"><strong>Goal:</strong> #2 blue, #5 italic; #3 white text on Bartek accent background.</div>
+            <details><summary>Hint</summary><div class="hint">
+              Use <code>:nth-child(2)</code>, <code>:last-child</code>. For specificity, <code>#bartek-target</code> beats classes/elements.
+            </div></details>
+          </div>
+        </div>
+
+        <h2>Box Model & Units</h2>
+        <div class="row">
+          <div class="card vis">
+            <div class="row">
+              <span class="bm">Tag A</span>
+              <span class="bm">Tag B</span>
+              <span class="bm">Tag C</span>
+            </div>
+            <div class="todo">
+              <div class="expect"><strong>Goal:</strong> Make tags look like rounded pills; ensure <code>box-sizing: border-box</code> on them.</div>
+            </div>
+          </div>
+          <div class="card vis">
+            <p>Resize the window: your h3 above should scale with <code>clamp()</code>.</p>
+            <div class="todo passive"><strong>What to edit:</strong> Bartek area CSS (TODO-B4)</div>
+          </div>
+        </div>
+
+        <h2>Flex & Grid</h2>
+        <div class="card vis bartek-flex">
+          <strong>Toolbar</strong>
+          <div>
+            <a class="btn" href="#">Action</a>
+            <a class="btn" href="#">Secondary</a>
+          </div>
+        </div>
+
+        <div class="card vis">
+          <div class="grid bartek-grid">
+            <div class="box">Box 1</div>
+            <div class="box">Box 2</div>
+            <div class="box">Box 3</div>
+            <div class="box">Box 4</div>
+            <div class="box">Box 5</div>
+            <div class="box">Box 6</div>
+          </div>
+          <div class="todo">
+            <div class="expect"><strong>Goal:</strong> Two columns by default, three at ≥800px.</div>
+            <details><summary>Hint</summary><div class="hint">
+              Media query: <code>@media (min-width: 800px) { ... }</code>
+            </div></details>
+          </div>
+        </div>
+
+        <h2>Positioning</h2>
+        <div class="row">
+          <div class="card vis pos-card">
+            <span class="badge">NEW</span>
+            <p>This card should have a badge pinned in the top-right.</p>
+            <div class="todo passive"><strong>What to edit:</strong> TODO-B7 (make parent relative; badge absolute top/right)</div>
+          </div>
+          <div class="card vis">
+            <h4>Interactive button</h4>
+            <a class="btn" href="#">Hover, Focus, Active</a>
+            <div class="todo">
+              <div class="expect"><strong>Goal:</strong> Add :hover/:active/:focus-visible; add h4::before with a diamond.</div>
+            </div>
+          </div>
+        </div>
+
+        <h2>Variables, Media, Transitions</h2>
+        <div class="card vis">
+          <p>We’ll simulate a theme: tweak CSS variables under a class to flip colors.</p>
+          <div class="todo">
+            <div class="expect"><strong>Goal:</strong> Create a <code>.bartek-dark</code> theme that changes <code>--accent-bartek</code>, background and text. Add small transitions.</div>
+            <details><summary>Hint</summary><div class="hint">
+              Use <code>:root</code> vars, then override inside <code>#bartek.bartek-dark { --accent-bartek: ...; }</code>. Apply variables to <code>.btn</code>, <code>.stage</code>.
+            </div></details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         ŁUKASZ LAB
+    ======================================================= -->
+    <section id="lukasz" class="lab">
+      <div class="who">Łukasz — your playground</div>
+      <div class="stage">
+        <h2>Selectors & Specificity</h2>
+        <p class="muted">Practice attribute selectors and combinators.</p>
+
+        <div class="card vis">
+          <ul class="spec-play nest" id="lukasz-list">
+            <li data-type="normal">List A</li>
+            <li data-type="hot">List B (should be orange)</li>
+            <li id="lukasz-target" data-type="normal">List C (white text on accent bg)</li>
+            <li data-type="hot">List D (should be orange)</li>
+            <li>
+              Nested
+              <ul>
+                <li>Child One</li>
+                <li>Child Two</li>
+              </ul>
+            </li>
+          </ul>
+          <div class="todo">
+            <div class="expect"><strong>Goal:</strong> Only data-type="hot" items orange; direct children of <code>.nest</code> bold; target item gets accent background.</div>
+            <details><summary>Hint</summary><div class="hint">
+              Attribute selector: <code>[data-type="hot"]</code>. Direct child combinator: <code>.nest > li</code>.
+            </div></details>
+          </div>
+        </div>
+
+        <h2>Box Model & Units</h2>
+        <div class="row">
+          <div class="card vis">
+            <div class="row">
+              <span class="bm">Chip 1</span>
+              <span class="bm">Chip 2</span>
+              <span class="bm">Chip 3</span>
+            </div>
+            <div class="todo"><div class="expect"><strong>Goal:</strong> Rounded pill chips with even spacing.</div></div>
+          </div>
+          <div class="card vis">
+            <h3>Łukasz’s subtitle</h3>
+            <p>Use rem for text; clamp for h3 size; captions smaller with .8rem.</p>
+          </div>
+        </div>
+
+        <h2>Flex & Grid</h2>
+        <div class="card vis lukasz-flex">
+          <strong>Toolbar</strong>
+          <div>
+            <a class="btn" href="#">Primary</a>
+            <a class="btn" href="#">Ghost</a>
+          </div>
+        </div>
+
+        <div class="card vis">
+          <div class="grid lukasz-grid">
+            <div class="box">A</div>
+            <div class="box">B</div>
+            <div class="box">C</div>
+            <div class="box">D</div>
+            <div class="box">E</div>
+            <div class="box">F</div>
+          </div>
+          <div class="todo">
+            <div class="expect"><strong>Goal:</strong> 2 cols → 3 cols at ≥800px.</div>
+          </div>
+        </div>
+
+        <h2>Positioning</h2>
+        <div class="row">
+          <div class="card vis pos-card">
+            <span class="badge">HOT</span>
+            <p>Badge should pin to the top-right corner (absolute).</p>
+          </div>
+          <div class="card vis">
+            <h4>Button states</h4>
+            <a class="btn" href="#">Try me</a>
+            <div class="todo"><div class="expect"><strong>Goal:</strong> Hover/active/focus-visible + h4::before "● " bullet.</div></div>
+          </div>
+        </div>
+
+        <h2>Variables, Media, Transitions</h2>
+        <div class="card vis">
+          <p>Create a <code>.lukasz-dark</code> theme by overriding custom properties (accent, surface, text). Add transitions for polish.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab">
+      <div class="who">Cheat Sheet (fast recap)</div>
+      <div class="stage">
+        <div class="row">
+          <div class="card">
+            <h4>Specificity</h4>
+            <ul>
+              <li>Inline &gt; #id &gt; .class / [attr] / :pseudo &gt; element</li>
+              <li>Later rules win if specificity ties</li>
+              <li>Avoid <code>!important</code> in normal code</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Box Model</h4>
+            <ul>
+              <li><code>box-sizing: border-box;</code> keeps width predictable</li>
+              <li>Margin collapses vertically between blocks</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Layout</h4>
+            <ul>
+              <li>Flex: one-dimensional, main/cross axis</li>
+              <li>Grid: two-dimensional, rows × columns</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Units</h4>
+            <ul>
+              <li><code>rem</code> = root font size, <code>em</code> = parent</li>
+              <li><code>vw/vh</code> = viewport, <code>clamp(min, pref, max)</code></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="muted">Tip: To “toggle dark mode” for testing, temporarily add <code>bartek-dark</code> to the <code>#bartek</code> element (via DevTools) or <code>lukasz-dark</code> to <code>#lukasz</code>.</p>
+  </main>
+</body>
+</html>

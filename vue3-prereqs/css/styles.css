@@ -1,0 +1,222 @@
+/* =========================================================
+   CSS BASICS LAB — READ ME FIRST
+   You’ll learn to understand CSS you’ll see in AI-written code:
+   1) Cascade & Specificity
+   2) Selectors (element, .class, #id, attribute, combinators, pseudo*)
+   3) Box model (margin, padding, border, box-sizing)
+   4) Units (px, rem, em, %, vw/vh, clamp)
+   5) Colors & Typography (font stacks, line-height)
+   6) Layout (display, flex, grid)
+   7) Position (relative/absolute/sticky)
+   8) Variables (custom properties)
+   9) Media queries (basic responsiveness)
+  10) Transitions & transforms
+
+   RULES:
+   - Do not touch the HTML unless a task explicitly says so (most don’t).
+   - Avoid !important unless a task explicitly asks (it won’t).
+   - Each person edits ONLY inside their own section below.
+   - Use DevTools (right-click → Inspect) to see computed styles & box model.
+========================================================= */
+
+/* ---------- Base / Reset & Helpers ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.5;
+  color: #1d1d1f;
+  background: #f7f7f8;
+}
+
+.container { max-width: 1000px; margin: 0 auto; padding: 24px; }
+
+header {
+  position: sticky; top: 0;
+  backdrop-filter: blur(6px);
+  background: rgba(247,247,248,0.8);
+  border-bottom: 1px solid #e9e9ec;
+}
+h1 { font-size: clamp(1.4rem, 1rem + 2vw, 2rem); margin: 0; padding: 16px 24px; }
+h2 { font-size: 1.25rem; margin: 24px 0 8px; }
+p  { margin: 0 0 12px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 0.95rem; }
+
+.lab {
+  border: 1px solid #e6e6ea; background: white; border-radius: 14px; padding: 18px; margin: 20px 0 36px;
+  box-shadow: 0 1px 0 #eaeaf0, 0 12px 24px rgba(0,0,0,0.04);
+}
+.who { font-weight: 700; font-size: 0.95rem; letter-spacing: .02em; text-transform: uppercase; opacity: .75; margin-bottom: 10px; }
+.stage { border: 1px dashed #d3d3da; border-radius: 12px; padding: 14px; background: var(--surface); color: var(--text); }
+
+.row { display: flex; gap: 12px; flex-wrap: wrap; }
+.card { background: #fafafa; border: 1px solid #ececf1; border-radius: 12px; padding: 14px; min-width: 200px; flex: 1 1 240px; }
+.btn { display: inline-block; border: 1px solid #d7d7de; padding: 8px 12px; border-radius: 10px; background: #fff; text-decoration: none; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.box { background: #f2f2f6; border: 1px solid #e2e2ea; border-radius: 10px; padding: 10px; min-height: 54px; }
+.badge { display: inline-block; font-size: 0.75rem; padding: 4px 8px; border: 1px solid #ddd; border-radius: 999px; background: #fff; }
+.muted { color: #6b7280; }
+details { margin: 6px 0 2px; }
+.hint { font-size: 0.9rem; color: #4b5563; }
+.todo { margin: 8px 0 12px; padding: 8px 10px; background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; }
+.expect { font-size: .95rem; color: #111827; }
+.passive { opacity: .8; }
+.spec-play li { padding: 6px 8px; border-radius: 8px; }
+.vis { outline: 1px dashed rgba(0,0,0,.08); }
+
+/* ---------- Theme variables (used in tasks) ---------- */
+:root {
+  --accent-bartek: #4f46e5;    /* Bartek can change via variables task */
+  --accent-lukasz: #16a34a;    /* Łukasz can change via variables task */
+  --surface: #ffffff;
+  --text: #1d1d1f;
+}
+
+/* =========================================================
+   === BARTEK AREA — write ONLY below this line ============
+========================================================= */
+
+/* TODO-B1: SELECTORS
+   Goal: Color only the 2nd item blue, the last item italic.
+   What to edit: #bartek .spec-play list via :nth-child and :last-child.
+   Expected: Item #2 becomes blue, last item italic. */
+/* Write here... */
+
+/* TODO-B2: SPECIFICITY (no !important)
+   Goal: Make the item with id="bartek-target" have white text on Bartek accent background.
+   What to edit: Competing rules: element vs class vs id. Add a class selector that loses to #id, then target #id.
+   Expected: The #bartek-target is white text on var(--accent-bartek), others unchanged. */
+/* Write here... */
+
+/* TODO-B3: BOX MODEL
+   Goal: The three .bm boxes should look like pill tags: padding 8/12, border 1px solid, rounded 9999px, margin-right 8.
+   Also set box-sizing: border-box on .bm.
+   Expected: Three pill-like tags in a row. */
+/* Write here... */
+
+/* TODO-B4: UNITS
+   Goal: Make #bartek h3 scale nicely:
+   - font-size: clamp(1rem, 1rem + 2vw, 1.6rem)
+   - line-height: 1.2
+   Expected: The subtitle grows a bit on wider screens. */
+/* Write here... */
+
+/* TODO-B5: FLEX LAYOUT
+   Goal: Make .bartek-flex a horizontal row with space-between, center alignment, wrapping on small widths, 12px gap.
+   Expected: Title left, buttons right; on narrow screens they wrap. */
+/* Write here... */
+
+/* TODO-B6: GRID LAYOUT + RESPONSIVE
+   Goal: Make .bartek-grid a grid:
+   - default: 2 columns
+   - >= 800px: 3 columns
+   Gap: 12px
+   Expected: Boxes reflow 2→3 columns when wide. */
+/* Write here... */
+
+/* TODO-B7: POSITIONING
+   Goal: In the .pos-card, place the .badge at the top-right corner of the card using absolute positioning.
+   Make the parent positioning context relative.
+   Expected: Small badge sits at the card’s top-right. */
+/* Write here... */
+
+/* TODO-B8: COLORS & TYPOGRAPHY
+   Goal: Set paragraph text inside #bartek to a readable size (1rem), line-height 1.6, color #2B2B2F.
+   Links (.btn) should use var(--accent-bartek) as border & text; hover slightly darkens.
+   Expected: Comfortable reading; accent-colored buttons. */
+/* Write here... */
+
+/* TODO-B9: PSEUDO-CLASSES & PSEUDO-ELEMENTS
+   Goal: Buttons inside #bartek:
+   - :hover lift with transform: translateY(-1px)
+   - :active press with translateY(0)
+   - :focus-visible outline using var(--accent-bartek)
+   - h4::before small decorative "◆ " with accent color
+   Expected: Noticeable interactive states and a diamond before h4s. */
+/* Write here... */
+
+/* TODO-B10: MEDIA QUERY
+   Goal: On screens <= 600px:
+   - Reduce .card padding to 10px
+   - Make .bartek-flex buttons full-width stacked (tip: make container column)
+   Expected: Mobile adapts spacing and layout. */
+/* Write here... */
+
+/* TODO-B11: CSS VARIABLES (Custom Properties)
+   Goal: Change the theme by tweaking variables:
+   - Define a .bartek-dark class on #bartek container (already present on a toggle box).
+   - Inside .bartek-dark, override --accent-bartek and maybe --surface/--text to a dark theme.
+   - Use the variables for background/text on #bartek .stage, .btn, etc.
+   Expected: Toggling the class in DevTools flips theme (light/dark). */
+/* Write here... */
+
+/* TODO-B12: TRANSITIONS
+   Goal: Smooth the hover/press effects with transition: 150ms ease on color, background, border-color, transform.
+   Expected: Polished, smooth interactions. */
+/* Write here... */
+
+
+/* =========================================================
+   === ŁUKASZ AREA — write ONLY below this line ============
+========================================================= */
+
+/* TODO-Ł1: SELECTORS
+   Goal: In #lukasz .spec-play, make items with attribute [data-type="hot"] orange; direct children of .nest > li bold.
+   Expected: Only items marked data-type="hot" turn orange; nested selectors don’t leak. */
+/* Write here... */
+
+/* TODO-Ł2: SPECIFICITY (no !important)
+   Goal: Make #lukasz-target have white text on Łukasz accent background (var(--accent-lukasz)).
+   Expected: Only that one item changes; others keep default. */
+/* Write here... */
+
+/* TODO-Ł3: BOX MODEL
+   Goal: Style .bm tags like pills (same as Bartek): padding, border, round, spacing; ensure box-sizing: border-box.
+   Expected: Three pill tags in a row. */
+/* Write here... */
+
+/* TODO-Ł4: UNITS
+   Goal: Use rem units for #lukasz body copy (1rem) and make small captions .8rem; set h3 with clamp as in Bartek’s.
+   Expected: Clear visual hierarchy and scaling. */
+/* Write here... */
+
+/* TODO-Ł5: FLEX LAYOUT
+   Goal: .lukasz-flex becomes a row, gap 12, align center, justify space-between, wrap when narrow.
+   Expected: Layout behaves nicely across widths. */
+/* Write here... */
+
+/* TODO-Ł6: GRID LAYOUT + RESPONSIVE
+   Goal: .lukasz-grid → 2 cols by default, 3 cols at >= 800px. Gap 12px.
+   Expected: Reflow to 3 cols when wide. */
+/* Write here... */
+
+/* TODO-Ł7: POSITIONING
+   Goal: .pos-card with .badge top-right via absolute; parent relative.
+   Expected: Badge pinned in corner. */
+/* Write here... */
+
+/* TODO-Ł8: COLORS & TYPOGRAPHY
+   Goal: Paragraphs readable (1rem, 1.6 line-height, #2B2B2F); .btn uses var(--accent-lukasz) for border & text with hover darken.
+   Expected: Clean readable copy and accented controls. */
+/* Write here... */
+
+/* TODO-Ł9: PSEUDO-CLASSES & PSEUDO-ELEMENTS
+   Goal: Buttons interactive states as in Bartek; add h4::before "● " bullet with accent color.
+   Expected: Clear affordances & subtle decoration. */
+/* Write here... */
+
+/* TODO-Ł10: MEDIA QUERY
+   Goal: <= 600px: reduce .card padding; stack .lukasz-flex vertically; full-width buttons.
+   Expected: Comfortable mobile. */
+/* Write here... */
+
+/* TODO-Ł11: CSS VARIABLES (Custom Properties)
+   Goal: Implement a .lukasz-dark theme that changes --accent-lukasz and surface/text and applies via variables.
+   Expected: Easy theme switch in DevTools. */
+/* Write here... */
+
+/* TODO-Ł12: TRANSITIONS
+   Goal: Add short transitions for hover/active states.
+   Expected: Smooth interactions. */
+/* Write here... */
