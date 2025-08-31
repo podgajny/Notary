@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vue 3 Prereqs — HTML Basics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="HTML structure, semantics, forms, lists, and a11y landmarks." />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <header>
+      <h1>HTML Basics (Vue 3 Prerequisites)</h1>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#intro">Intro</a></li>
+          <li><a href="#articles">Articles</a></li>
+          <li><a href="#contact">Contact Form</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section id="intro">
+        <h2>What HTML Is</h2>
+        <p><strong>HTML</strong> defines page structure. CSS styles. JavaScript adds interactivity.</p>
+      </section>
+
+      <section id="articles" aria-labelledby="articles-title">
+        <h2 id="articles-title">Articles</h2>
+
+        <article>
+          <h3>Semantic Tags</h3>
+          <p>Use <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>footer</code> for meaning.</p>
+          <figure>
+            <img src="https://picsum.photos/420/200" alt="Abstract placeholder landscape" width="420" height="200" />
+            <figcaption>Meaningful alt text helps everyone.</figcaption>
+          </figure>
+        </article>
+
+        <!-- TODO: EX1 — Add another <article> with a figure, image (with strong alt), and a short paragraph. -->
+      </section>
+
+      <section id="lists">
+        <h2>Lists</h2>
+        <h3>Features</h3>
+        <ul>
+          <li>Semantic layout</li>
+          <li>Accessible forms</li>
+          <li>Clean internal links</li>
+        </ul>
+        <h3>Steps</h3>
+        <ol>
+          <li>Create the HTML file</li>
+          <li>Add landmarks and headings</li>
+          <li>Validate structure in DevTools</li>
+        </ol>
+        <!-- TODO: EX2 — Add a nested list inside one <li> to represent sub-steps. -->
+      </section>
+
+      <section id="table">
+        <h2>Simple Data Table</h2>
+        <table>
+          <caption>Publishing Schedule</caption>
+          <thead>
+            <tr>
+              <th scope="col">Day</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Mon</th>
+              <td>Intro to HTML</td>
+              <td>Krzysztof</td>
+            </tr>
+            <tr>
+              <th scope="row">Tue</th>
+              <td>Forms & Tables</td>
+              <td>Friend</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- TODO: EX3 — Add one more row and check <th scope="row"> is used for the row header. -->
+      </section>
+
+      <section id="contact">
+        <h2>Contact Form</h2>
+        <form action="#" method="post">
+          <fieldset>
+            <legend>Your Details</legend>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Your name" required />
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="name@example.com" required />
+          </fieldset>
+
+          <fieldset>
+            <legend>Topic</legend>
+            <label for="topic">Choose a topic</label>
+            <select id="topic" name="topic" required>
+              <option value="">-- Select --</option>
+              <option value="html">HTML</option>
+              <option value="css">CSS</option>
+              <option value="js">JavaScript</option>
+            </select>
+
+            <span>Urgency</span>
+            <label><input type="radio" name="urgency" value="low" required /> Low</label>
+            <label><input type="radio" name="urgency" value="high" /> High</label>
+
+            <label>
+              <input name="newsletter" type="checkbox" value="yes" />
+              Subscribe to newsletter
+            </label>
+          </fieldset>
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="Write your message…"></textarea>
+
+          <button type="submit">Send</button>
+        </form>
+        <!-- TODO: EX4 — Try submitting empty to see built-in validation on required fields. -->
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 Learning Repo</p>
+      <!-- TODO: EX5 — Add a "Back to top" link that jumps to the start of the document. -->
+    </footer>
+  </body>
+</html>
