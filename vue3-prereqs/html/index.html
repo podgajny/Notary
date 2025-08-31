@@ -2,132 +2,302 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Vue 3 Prereqs — HTML Basics</title>
+    <title>Vue 3 Prereqs — HTML (Live Session: Bartek & Łukasz)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="HTML structure, semantics, forms, lists, and a11y landmarks." />
+    <meta name="description" content="HTML practice page with two isolated sections for Bartek and Łukasz." />
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
 
     <header>
-      <h1>HTML Basics (Vue 3 Prerequisites)</h1>
+      <h1>HTML Basics — Live Session</h1>
       <nav aria-label="Primary">
         <ul>
           <li><a href="#intro">Intro</a></li>
-          <li><a href="#articles">Articles</a></li>
-          <li><a href="#contact">Contact Form</a></li>
+          <li><a href="#bartek">Bartek’s Section</a></li>
+          <li><a href="#lukasz">Łukasz’s Section</a></li>
         </ul>
       </nav>
     </header>
 
     <main id="main">
-      <section id="intro">
-        <h2>What HTML Is</h2>
-        <p><strong>HTML</strong> defines page structure. CSS styles. JavaScript adds interactivity.</p>
-      </section>
-
-      <section id="articles" aria-labelledby="articles-title">
-        <h2 id="articles-title">Articles</h2>
-
-        <article>
-          <h3>Semantic Tags</h3>
-          <p>Use <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>footer</code> for meaning.</p>
-          <figure>
-            <img src="https://picsum.photos/420/200" alt="Abstract placeholder landscape" width="420" height="200" />
-            <figcaption>Meaningful alt text helps everyone.</figcaption>
-          </figure>
-        </article>
-
-        <!-- TODO: EX1 — Add another <article> with a figure, image (with strong alt), and a short paragraph. -->
-      </section>
-
-      <section id="lists">
-        <h2>Lists</h2>
-        <h3>Features</h3>
-        <ul>
-          <li>Semantic layout</li>
-          <li>Accessible forms</li>
-          <li>Clean internal links</li>
-        </ul>
-        <h3>Steps</h3>
+      <section id="intro" aria-labelledby="intro-title">
+        <h2 id="intro-title">How to Work Here</h2>
+        <p><strong>Rule:</strong> Only edit inside your own person section below, between the BEGIN/END markers. This minimizes merge conflicts.</p>
         <ol>
-          <li>Create the HTML file</li>
-          <li>Add landmarks and headings</li>
-          <li>Validate structure in DevTools</li>
+          <li>Each person has identical TODOs: Article, Lists, Table, Form, Back-to-top link.</li>
+          <li>Keep IDs unique (pre-filled per person: e.g., <code>bartek-articles</code>, <code>lukasz-articles</code>).</li>
+          <li>Commit often. Create your own feature branch (e.g., <code>feat/bartek-todos</code> or <code>feat/lukasz-todos</code>).</li>
         </ol>
-        <!-- TODO: EX2 — Add a nested list inside one <li> to represent sub-steps. -->
       </section>
 
-      <section id="table">
-        <h2>Simple Data Table</h2>
-        <table>
-          <caption>Publishing Schedule</caption>
-          <thead>
-            <tr>
-              <th scope="col">Day</th>
-              <th scope="col">Topic</th>
-              <th scope="col">Owner</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Mon</th>
-              <td>Intro to HTML</td>
-              <td>Krzysztof</td>
-            </tr>
-            <tr>
-              <th scope="row">Tue</th>
-              <td>Forms & Tables</td>
-              <td>Friend</td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- TODO: EX3 — Add one more row and check <th scope="row"> is used for the row header. -->
+      <!-- ===========================
+           BARTEK — START
+           =========================== -->
+      <section id="bartek" aria-labelledby="bartek-title">
+        <h2 id="bartek-title">Bartek — Your Sandbox</h2>
+
+        <section id="bartek-articles" aria-labelledby="bartek-articles-title">
+          <h3 id="bartek-articles-title">Articles</h3>
+          <article>
+            <h4>Semantic Tags Demo</h4>
+            <p>Example uses <code>article</code>, <code>figure</code>, <code>img</code>, <code>figcaption</code>.</p>
+            <figure>
+              <img src="https://picsum.photos/420/200" alt="Abstract placeholder landscape" width="420" height="200" />
+              <figcaption>Meaningful alt text helps accessibility and SEO.</figcaption>
+            </figure>
+          </article>
+
+          <!-- BARTEK TODO EX1 — BEGIN
+               Add a second <article> here with:
+               - <h4> title
+               - <figure> containing an <img> (strong, descriptive alt) and <figcaption>
+               - One paragraph with a link to your form (#bartek-contact)
+               BARTEK TODO EX1 — END -->
+        </section>
+
+        <section id="bartek-lists" aria-labelledby="bartek-lists-title">
+          <h3 id="bartek-lists-title">Lists</h3>
+          <h4>Features (unordered)</h4>
+          <ul>
+            <li>Semantic layout</li>
+            <li>Accessible forms</li>
+            <li>Internal links</li>
+          </ul>
+
+          <h4>Steps (ordered)</h4>
+          <ol>
+            <li>Create the HTML file</li>
+            <li>Add landmarks and headings</li>
+            <li>Validate in DevTools</li>
+          </ol>
+
+          <!-- BARTEK TODO EX2 — BEGIN
+               Inside one of the list items above, add a nested list (<ul> or <ol>) with at least 2 sub-items.
+               Ensure correct nesting: lists contain only <li>, and nested lists go inside an <li>.
+               BARTEK TODO EX2 — END -->
+        </section>
+
+        <section id="bartek-table" aria-labelledby="bartek-table-title">
+          <h3 id="bartek-table-title">Simple Data Table</h3>
+          <table>
+            <caption>Bartek’s Publishing Schedule</caption>
+            <thead>
+              <tr>
+                <th scope="col">Day</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Mon</th>
+                <td>Intro to HTML</td>
+                <td>Bartek</td>
+              </tr>
+              <tr>
+                <th scope="row">Tue</th>
+                <td>Forms &amp; Tables</td>
+                <td>Bartek</td>
+              </tr>
+              <!-- BARTEK TODO EX3 — BEGIN
+                   Add one more <tr> row here.
+                   Use <th scope="row"> for the first cell (row header).
+                   BARTEK TODO EX3 — END -->
+            </tbody>
+          </table>
+        </section>
+
+        <section id="bartek-contact" aria-labelledby="bartek-contact-title">
+          <h3 id="bartek-contact-title">Contact Form</h3>
+          <form action="#" method="post">
+            <fieldset>
+              <legend>Your Details</legend>
+              <label for="bartek-name">Name</label>
+              <input id="bartek-name" name="name" type="text" placeholder="Your name" required />
+
+              <label for="bartek-email">Email</label>
+              <input id="bartek-email" name="email" type="email" placeholder="name@example.com" required />
+            </fieldset>
+
+            <fieldset>
+              <legend>Topic</legend>
+              <label for="bartek-topic">Choose a topic</label>
+              <select id="bartek-topic" name="topic" required>
+                <option value="">-- Select --</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="js">JavaScript</option>
+              </select>
+
+              <span>Urgency</span>
+              <label><input type="radio" name="bartek-urgency" value="low" required /> Low</label>
+              <label><input type="radio" name="bartek-urgency" value="high" /> High</label>
+
+              <label>
+                <input name="bartek-newsletter" type="checkbox" value="yes" />
+                Subscribe to newsletter
+              </label>
+            </fieldset>
+
+            <label for="bartek-message">Message</label>
+            <textarea id="bartek-message" name="message" rows="4" placeholder="Write your message…"></textarea>
+
+            <button type="submit">Send</button>
+          </form>
+
+          <!-- BARTEK TODO EX4 — BEGIN
+               Try to submit the form empty to see browser validation.
+               Then add a new required input (e.g., type="tel" with placeholder) and try again.
+               BARTEK TODO EX4 — END -->
+        </section>
+
+        <p>
+          <!-- BARTEK TODO EX5 — BEGIN
+               Add a "Back to top" internal link that jumps to the start of the document (e.g., href="#main" or "#intro").
+               BARTEK TODO EX5 — END -->
+        </p>
       </section>
+      <!-- ===========================
+           BARTEK — END
+           =========================== -->
 
-      <section id="contact">
-        <h2>Contact Form</h2>
-        <form action="#" method="post">
-          <fieldset>
-            <legend>Your Details</legend>
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Your name" required />
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="name@example.com" required />
-          </fieldset>
+      <hr />
 
-          <fieldset>
-            <legend>Topic</legend>
-            <label for="topic">Choose a topic</label>
-            <select id="topic" name="topic" required>
-              <option value="">-- Select --</option>
-              <option value="html">HTML</option>
-              <option value="css">CSS</option>
-              <option value="js">JavaScript</option>
-            </select>
+      <!-- ===========================
+           ŁUKASZ — START
+           =========================== -->
+      <section id="lukasz" aria-labelledby="lukasz-title">
+        <h2 id="lukasz-title">Łukasz — Your Sandbox</h2>
 
-            <span>Urgency</span>
-            <label><input type="radio" name="urgency" value="low" required /> Low</label>
-            <label><input type="radio" name="urgency" value="high" /> High</label>
+        <section id="lukasz-articles" aria-labelledby="lukasz-articles-title">
+          <h3 id="lukasz-articles-title">Articles</h3>
+          <article>
+            <h4>Semantic Tags Demo</h4>
+            <p>Example uses <code>article</code>, <code>figure</code>, <code>img</code>, <code>figcaption</code>.</p>
+            <figure>
+              <img src="https://picsum.photos/420/200?grayscale" alt="Abstract grayscale scene with mountains" width="420" height="200" />
+              <figcaption>Descriptive alt conveys the key idea without the image.</figcaption>
+            </figure>
+          </article>
 
-            <label>
-              <input name="newsletter" type="checkbox" value="yes" />
-              Subscribe to newsletter
-            </label>
-          </fieldset>
+          <!-- ŁUKASZ TODO EX1 — BEGIN
+               Add a second <article> here with:
+               - <h4> title
+               - <figure> containing an <img> (strong, descriptive alt) and <figcaption>
+               - One paragraph with a link to your form (#lukasz-contact)
+               ŁUKASZ TODO EX1 — END -->
+        </section>
 
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="4" placeholder="Write your message…"></textarea>
+        <section id="lukasz-lists" aria-labelledby="lukasz-lists-title">
+          <h3 id="lukasz-lists-title">Lists</h3>
+          <h4>Features (unordered)</h4>
+          <ul>
+            <li>Semantic layout</li>
+            <li>Accessible forms</li>
+            <li>Internal links</li>
+          </ul>
 
-          <button type="submit">Send</button>
-        </form>
-        <!-- TODO: EX4 — Try submitting empty to see built-in validation on required fields. -->
+          <h4>Steps (ordered)</h4>
+          <ol>
+            <li>Create the HTML file</li>
+            <li>Add landmarks and headings</li>
+            <li>Validate in DevTools</li>
+          </ol>
+
+          <!-- ŁUKASZ TODO EX2 — BEGIN
+               Inside one of the list items above, add a nested list (<ul> or <ol>) with at least 2 sub-items.
+               Ensure correct nesting: lists contain only <li>, and nested lists go inside an <li>.
+               ŁUKASZ TODO EX2 — END -->
+        </section>
+
+        <section id="lukasz-table" aria-labelledby="lukasz-table-title">
+          <h3 id="lukasz-table-title">Simple Data Table</h3>
+          <table>
+            <caption>Łukasz’s Publishing Schedule</caption>
+            <thead>
+              <tr>
+                <th scope="col">Day</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Mon</th>
+                <td>Intro to HTML</td>
+                <td>Łukasz</td>
+              </tr>
+              <tr>
+                <th scope="row">Tue</th>
+                <td>Forms &amp; Tables</td>
+                <td>Łukasz</td>
+              </tr>
+              <!-- ŁUKASZ TODO EX3 — BEGIN
+                   Add one more <tr> row here.
+                   Use <th scope="row"> for the first cell (row header).
+                   ŁUKASZ TODO EX3 — END -->
+            </tbody>
+          </table>
+        </section>
+
+        <section id="lukasz-contact" aria-labelledby="lukasz-contact-title">
+          <h3 id="lukasz-contact-title">Contact Form</h3>
+          <form action="#" method="post">
+            <fieldset>
+              <legend>Your Details</legend>
+              <label for="lukasz-name">Name</label>
+              <input id="lukasz-name" name="name" type="text" placeholder="Your name" required />
+
+              <label for="lukasz-email">Email</label>
+              <input id="lukasz-email" name="email" type="email" placeholder="name@example.com" required />
+            </fieldset>
+
+            <fieldset>
+              <legend>Topic</legend>
+              <label for="lukasz-topic">Choose a topic</label>
+              <select id="lukasz-topic" name="topic" required>
+                <option value="">-- Select --</option>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="js">JavaScript</option>
+              </select>
+
+              <span>Urgency</span>
+              <label><input type="radio" name="lukasz-urgency" value="low" required /> Low</label>
+              <label><input type="radio" name="lukasz-urgency" value="high" /> High</label>
+
+              <label>
+                <input name="lukasz-newsletter" type="checkbox" value="yes" />
+                Subscribe to newsletter
+              </label>
+            </fieldset>
+
+            <label for="lukasz-message">Message</label>
+            <textarea id="lukasz-message" name="message" rows="4" placeholder="Write your message…"></textarea>
+
+            <button type="submit">Send</button>
+          </form>
+
+          <!-- ŁUKASZ TODO EX4 — BEGIN
+               Try to submit the form empty to see browser validation.
+               Then add a new required input (e.g., type="tel" with placeholder) and try again.
+               ŁUKASZ TODO EX4 — END -->
+        </section>
+
+        <p>
+          <!-- ŁUKASZ TODO EX5 — BEGIN
+               Add a "Back to top" internal link that jumps to the start of the document (e.g., href="#main" or "#intro").
+               ŁUKASZ TODO EX5 — END -->
+        </p>
       </section>
+      <!-- ===========================
+           ŁUKASZ — END
+           =========================== -->
     </main>
 
     <footer>
       <p>&copy; 2025 Learning Repo</p>
-      <!-- TODO: EX5 — Add a "Back to top" link that jumps to the start of the document. -->
     </footer>
   </body>
 </html>
