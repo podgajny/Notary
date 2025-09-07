@@ -181,6 +181,14 @@
             </figure>
           </article>
 
+          <article>
+            <h4>Bestia z Wadowic</h4>
+            <figure>
+              <img src="https://a.allegroimg.com/original/114d84/9fd5662e4f3fbac12293bf03e55f/FIGURKA-POTWORY-BESTIA-Z-WADOWIC-MALOWANY-45X50-MM" alt="Mamy zdjęcia potwora szalejącego po Wadowicach, kradnącego kremówki dzieciom" width="420" height="200" />
+              <figcaption>Legendarna bestia terroryzująca mieszkańców Wadowic.</figcaption>
+            </figure>
+          </article>
+
           <!-- ŁUKASZ TODO EX1 — BEGIN
                Add a second <article> here with:
                - <h4> title
@@ -201,7 +209,13 @@
           <h4>Steps (ordered)</h4>
           <ol>
             <li>Create the HTML file</li>
-            <li>Add landmarks and headings</li>
+            <li>Add landmarks and headings
+              <ul>
+                <li>Use semantic HTML5 elements</li>
+                <li>Add proper heading hierarchy</li>
+                <li>Include ARIA labels where needed</li>
+              </ul>
+            </li>
             <li>Validate in DevTools</li>
           </ol>
 
@@ -231,6 +245,11 @@
               <tr>
                 <th scope="row">Tue</th>
                 <td>Forms &amp; Tables</td>
+                <td>Łukasz</td>
+              </tr>
+              <tr>
+                <th scope="row">Wed</th>
+                <td>CSS Fundamentals</td>
                 <td>Łukasz</td>
               </tr>
               <!-- ŁUKASZ TODO EX3 — BEGIN
@@ -273,6 +292,14 @@
               </label>
             </fieldset>
 
+            <label for="lukasz-arka">Arka</label>
+            <select id="lukasz-arka" name="arka" required>
+              <option value="">-- Select --</option>
+              <option value="gdynia">Gdynia</option>
+              <option value="kurwa">kurwa</option>
+              <option value="swinia">świnia</option>
+            </select>
+
             <label for="lukasz-message">Message</label>
             <textarea id="lukasz-message" name="message" rows="4" placeholder="Write your message…"></textarea>
 
@@ -286,6 +313,7 @@
         </section>
 
         <p>
+          <a href="#main">Lol, nie skumałem tego. Dawaj od początku</a>
           <!-- ŁUKASZ TODO EX5 — BEGIN
                Add a "Back to top" internal link that jumps to the start of the document (e.g., href="#main" or "#intro").
                ŁUKASZ TODO EX5 — END -->
