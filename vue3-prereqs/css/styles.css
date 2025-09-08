@@ -198,6 +198,13 @@ details { margin: 6px 0 2px; }
    Goal: .lukasz-flex becomes a row, gap 12, align center, justify space-between, wrap when narrow.
    Expected: Layout behaves nicely across widths. */
 /* Write here... */
+#lukasz .lukasz-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
 /* TODO-Ł6: GRID LAYOUT + RESPONSIVE
    Goal: .lukasz-grid → 2 cols by default, 3 cols at >= 800px. Gap 12px.
