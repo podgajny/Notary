@@ -290,6 +290,11 @@ details { margin: 6px 0 2px; }
    Goal: Implement a .lukasz-dark theme that changes --accent-lukasz and surface/text and applies via variables.
    Expected: Easy theme switch in DevTools. */
 /* Write here... */
+#lukasz.lukasz-dark {
+  --accent-lukasz: #16a34a;
+  --surface: #1d1d1f;
+  --text: #f7f7f8;
+}
 
 /* TODO-Ł12: TRANSITIONS
    Goal: Add short transitions for hover/active states.
