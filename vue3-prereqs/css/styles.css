@@ -178,6 +178,13 @@ details { margin: 6px 0 2px; }
    Goal: Style .bm tags like pills (same as Bartek): padding, border, round, spacing; ensure box-sizing: border-box.
    Expected: Three pill tags in a row. */
 /* Write here... */
+#lukasz .bm {
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid #d7d7de;
+  border-radius: 9999px;
+  margin-right: 8px;
+}
 
 /* TODO-Ł4: UNITS
    Goal: Use rem units for #lukasz body copy (1rem) and make small captions .8rem; set h3 with clamp as in Bartek’s.
