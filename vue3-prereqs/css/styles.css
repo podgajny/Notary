@@ -172,6 +172,7 @@ details { margin: 6px 0 2px; }
    Goal: Make #lukasz-target have white text on Łukasz accent background (var(--accent-lukasz)).
    Expected: Only that one item changes; others keep default. */
 /* Write here... */
+#lukasz-target { color: white; background: var(--accent-lukasz); }
 
 /* TODO-Ł3: BOX MODEL
    Goal: Style .bm tags like pills (same as Bartek): padding, border, round, spacing; ensure box-sizing: border-box.
