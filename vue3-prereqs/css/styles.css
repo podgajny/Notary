@@ -165,6 +165,8 @@ details { margin: 6px 0 2px; }
    Goal: In #lukasz .spec-play, make items with attribute [data-type="hot"] orange; direct children of .nest > li bold.
    Expected: Only items marked data-type="hot" turn orange; nested selectors don’t leak. */
 /* Write here... */
+#lukasz .spec-play [data-type="hot"] { color: orange; }
+#lukasz .spec-play.nest > li { font-weight: 700; }
 
 /* TODO-Ł2: SPECIFICITY (no !important)
    Goal: Make #lukasz-target have white text on Łukasz accent background (var(--accent-lukasz)).
