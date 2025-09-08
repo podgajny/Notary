@@ -206,6 +206,19 @@ details { margin: 6px 0 2px; }
   flex-wrap: wrap;
 }
 
+/* Primary = first button, Ghost = second button */
+#lukasz .lukasz-flex > div > .btn:first-child {
+  background: var(--accent-lukasz);
+  color: #fff;
+  border-color: var(--accent-lukasz);
+}
+
+#lukasz .lukasz-flex > div > .btn:last-child {
+  background: transparent;
+  color: var(--accent-lukasz);
+  border-color: var(--accent-lukasz);
+}
+
 /* TODO-Ł6: GRID LAYOUT + RESPONSIVE
    Goal: .lukasz-grid → 2 cols by default, 3 cols at >= 800px. Gap 12px.
    Expected: Reflow to 3 cols when wide. */
