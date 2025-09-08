@@ -223,6 +223,16 @@ details { margin: 6px 0 2px; }
    Goal: .lukasz-grid → 2 cols by default, 3 cols at >= 800px. Gap 12px.
    Expected: Reflow to 3 cols when wide. */
 /* Write here... */
+#lukasz .lukasz-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (min-width: 800px) {
+  #lukasz .lukasz-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 
 /* TODO-Ł7: POSITIONING
    Goal: .pos-card with .badge top-right via absolute; parent relative.
