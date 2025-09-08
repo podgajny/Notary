@@ -251,6 +251,15 @@ details { margin: 6px 0 2px; }
    Goal: Paragraphs readable (1rem, 1.6 line-height, #2B2B2F); .btn uses var(--accent-lukasz) for border & text with hover darken.
    Expected: Clean readable copy and accented controls. */
 /* Write here... */
+#lukasz p { font-size: 1rem; line-height: 1.6; color: #2B2B2F; }
+#lukasz .btn {
+  border-color: var(--accent-lukasz);
+  color: var(--accent-lukasz);
+}
+#lukasz .btn:hover {
+  background: var(--accent-lukasz);
+  color: #fff;
+} 
 
 /* TODO-Ł9: PSEUDO-CLASSES & PSEUDO-ELEMENTS
    Goal: Buttons interactive states as in Bartek; add h4::before "● " bullet with accent color.
