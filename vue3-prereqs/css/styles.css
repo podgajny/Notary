@@ -300,3 +300,15 @@ details { margin: 6px 0 2px; }
    Goal: Add short transitions for hover/active states.
    Expected: Smooth interactions. */
 /* Write here... */
+#lukasz .btn {
+  transition: 150ms ease;  
+}
+#lukasz .btn:hover {
+  transition: 150ms ease;  
+}
+#lukasz .btn:active {
+  transition: 150ms ease;  
+}
+#lukasz .btn:focus-visible {
+  transition: 150ms ease;  
+}
