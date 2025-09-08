@@ -280,6 +280,11 @@ details { margin: 6px 0 2px; }
    Goal: <= 600px: reduce .card padding; stack .lukasz-flex vertically; full-width buttons.
    Expected: Comfortable mobile. */
 /* Write here... */
+@media (max-width: 600px) {
+  #lukasz .card { padding: 10px; }
+  #lukasz .lukasz-flex { flex-direction: column; }
+  #lukasz .lukasz-flex > div > .btn { width: 100%; }
+}
 
 /* TODO-Ł11: CSS VARIABLES (Custom Properties)
    Goal: Implement a .lukasz-dark theme that changes --accent-lukasz and surface/text and applies via variables.
