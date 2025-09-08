@@ -190,6 +190,9 @@ details { margin: 6px 0 2px; }
    Goal: Use rem units for #lukasz body copy (1rem) and make small captions .8rem; set h3 with clamp as in Bartek’s.
    Expected: Clear visual hierarchy and scaling. */
 /* Write here... */
+#lukasz p { font-size: 1rem; line-height: 1.6; }
+#lukasz small, #lukasz .caption { font-size: .8rem; }
+#lukasz h3 { font-size: clamp(1rem, 1rem + 2vw, 1.6rem); line-height: 1.2; }
 
 /* TODO-Ł5: FLEX LAYOUT
    Goal: .lukasz-flex becomes a row, gap 12, align center, justify space-between, wrap when narrow.
