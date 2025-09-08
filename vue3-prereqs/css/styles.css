@@ -265,6 +265,16 @@ details { margin: 6px 0 2px; }
    Goal: Buttons interactive states as in Bartek; add h4::before "● " bullet with accent color.
    Expected: Clear affordances & subtle decoration. */
 /* Write here... */
+#lukasz .btn:hover {
+  transform: translateY(-1px);
+}
+#lukasz .btn:active {
+  transform: translateY(0);
+}
+#lukasz .btn:focus-visible {
+  outline: 1px solid var(--accent-lukasz);
+}
+#lukasz h4::before { content: "● "; color: var(--accent-lukasz); }
 
 /* TODO-Ł10: MEDIA QUERY
    Goal: <= 600px: reduce .card padding; stack .lukasz-flex vertically; full-width buttons.
