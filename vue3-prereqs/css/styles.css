@@ -238,6 +238,14 @@ details { margin: 6px 0 2px; }
    Goal: .pos-card with .badge top-right via absolute; parent relative.
    Expected: Badge pinned in corner. */
 /* Write here... */
+#lukasz .pos-card {
+  position: relative;
+}
+#lukasz .pos-card .badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
 /* TODO-Ł8: COLORS & TYPOGRAPHY
    Goal: Paragraphs readable (1rem, 1.6 line-height, #2B2B2F); .btn uses var(--accent-lukasz) for border & text with hover darken.
