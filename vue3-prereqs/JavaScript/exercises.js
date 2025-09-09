@@ -347,11 +347,16 @@ helloBtn.addEventListener('click', () => {
 // TODO: fakeFetchUser(id) → Promise resolves after 200ms with {id, name}
 // TODO: getUserNameUpper(id) → await fakeFetchUser, return UPPERCASE name
 function fakeFetchUser(id) {
-  /* TODO */
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ id, name: `User${id}` });
+    }, 200);
+  });
 }
 
 async function getUserNameUpper(id) {
-  /* TODO */
+  const user = await fakeFetchUser(id);
+  return user.name.toUpperCase();
 }
 
 
