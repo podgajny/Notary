@@ -188,12 +188,12 @@ const exampleSum = `${exampleA} + ${exampleB} = ${exampleA + exampleB}`; // "2 +
 
 // TODO: Set PI to 3.14159 (number), radius to 5, and compute area1 = PI * radius^2.
 // TODO: Create your name string in myName, and greetingTemplate = `Hi, ${myName}!`.
-const PI = /* TODO */ 3.14159;           // keep as number
-let radius = /* TODO */ 5;               // you can change later if you want
-let area1  = /* TODO */ PI * radius * radius;
+const PI = /* TODO */ undefined;           // keep as number
+let radius = /* TODO */ undefined;               // you can change later if you want
+let area1  = /* TODO */ undefined;
 
-const myName = /* TODO */ 'Krzysztof';
-const greetingTemplate = /* TODO */ `Hi, ${myName}!`;
+const myName = /* TODO */ '';
+const greetingTemplate = /* TODO */ '';
 
 
 // -------------------------------------------------------------------
@@ -209,10 +209,10 @@ const exStrict = ('5' === 5); // false
 // TODO: set isSameLoose to result of '5' == 5 (should be true)
 // TODO: set isSameStrict to result of '5' === 5 (should be false)
 // TODO: set truthyValue to any truthy value, falsyValue to any falsy one
-const isSameLoose  = /* TODO */ ('5' == 5);
-const isSameStrict = /* TODO */ ('5' === 5);
-const truthyValue  = /* TODO */ 'ok';
-const falsyValue   = /* TODO */ '';
+const isSameLoose  = /* TODO */ undefined;
+const isSameStrict = /* TODO */ undefined;
+const truthyValue  = /* TODO */ undefined;
+const falsyValue   = /* TODO */ undefined;
 
 
 // -------------------------------------------------------------------
@@ -228,16 +228,10 @@ const triple = (x) => x * 3;
 // TODO: Implement toTitleCase(str): "hello world" -> "Hello World"
 function sum(a = 0, b = 0) {
   /* TODO */
-  return a + b;
 }
 
 function toTitleCase(str) {
   /* TODO */
-  return String(str)
-    .split(' ')
-    .filter(Boolean)
-    .map(w => w[0].toUpperCase() + w.slice(1).toLowerCase())
-    .join(' ');
 }
 
 
@@ -256,21 +250,14 @@ const squared = numbers.map(n => n * n); // [1,4,9]
 // TODO: doubleAll(nums) → new array with each value*2 (use map)
 function filterAdults(people) {
   /* TODO */
-  return people
-    .filter(p => p.age >= 18)
-    .map(p => p.name);
 }
 
 function arrayAverage(nums) {
   /* TODO */
-  if (!nums.length) return 0;
-  const total = nums.reduce((acc, n) => acc + n, 0);
-  return total / nums.length;
 }
 
 function doubleAll(nums) {
   /* TODO */
-  return nums.map(n => n * 2);
 }
 
 
@@ -288,13 +275,10 @@ const { price: gadgetPrice } = gadget; // 50
 // TODO: getEmail(user) → safely read user.profile.email or return null
 function calcGross(product) {
   /* TODO */
-  const { price, taxRate } = product;
-  return +(price * (1 + taxRate)).toFixed(2);
 }
 
 function getEmail(user) {
   /* TODO */
-  return user?.profile?.email ?? null;
 }
 
 
@@ -310,13 +294,6 @@ function sign(x) { return x > 0 ? 'pos' : x < 0 ? 'neg' : 'zero'; }
 //  - multiple of 3 => "Fizz", 5 => "Buzz", both => "FizzBuzz"
 function fizzBuzz(n) {
   /* TODO */
-  const out = [];
-  for (let i = 1; i <= n; i++) {
-    const fizz = (i % 3 === 0);
-    const buzz = (i % 5 === 0);
-    out.push(fizz && buzz ? 'FizzBuzz' : fizz ? 'Fizz' : buzz ? 'Buzz' : String(i));
-  }
-  return out;
 }
 
 
@@ -335,12 +312,6 @@ const helloOut  = document.getElementById('helloOut');
 // TODO: On click, read nameInput.value, trim it, and set helloOut text to "Hello, NAME!"
 helloBtn.addEventListener('click', () => {
   /* TODO */
-  const name = (nameInput.value || '').trim();
-  if (name) {
-    helloOut.textContent = `Hello, ${name}!`;
-  } else {
-    helloOut.textContent = '(please type a name)';
-  }
 });
 
 
@@ -355,18 +326,10 @@ helloBtn.addEventListener('click', () => {
 // TODO: getUserNameUpper(id) → await fakeFetchUser, return UPPERCASE name
 function fakeFetchUser(id) {
   /* TODO */
-  return new Promise(resolve => {
-    setTimeout(() => {
-      const user = { id, name: `user_${id}` };
-      resolve(user);
-    }, 200);
-  });
 }
 
 async function getUserNameUpper(id) {
   /* TODO */
-  const u = await fakeFetchUser(id);
-  return u.name.toUpperCase();
 }
 
 
@@ -385,8 +348,6 @@ function parsePositiveInt(s) {
 // TODO: divide(a, b) → if b===0 throw Error('Division by zero'), else return a/b
 function divide(a, b) {
   /* TODO */
-  if (b === 0) throw new Error('Division by zero');
-  return a / b;
 }
 
 
@@ -402,12 +363,10 @@ const demoStr = JSON.stringify(demo); // '{"ok":true}'
 // TODO: toJSON(obj) returns string; fromJSON(str) returns object
 function toJSON(obj) {
   /* TODO */
-  return JSON.stringify(obj);
 }
 
 function fromJSON(str) {
   /* TODO */
-  return JSON.parse(str);
 }
 
 
