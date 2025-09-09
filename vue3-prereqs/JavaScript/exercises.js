@@ -228,11 +228,15 @@ const triple = (x) => x * 3;
 // TODO: Implement sum(a = 0, b = 0) returning a + b
 // TODO: Implement toTitleCase(str): "hello world" -> "Hello World"
 function sum(a = 0, b = 0) {
-  /* TODO */
+  return a + b;
 }
 
 function toTitleCase(str) {
-  /* TODO */
+  return String(str)
+    .trim()
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 }
 
 
