@@ -190,10 +190,10 @@ const exampleSum = `${exampleA} + ${exampleB} = ${exampleA + exampleB}`; // "2 +
 // TODO: Create your name string in myName, and greetingTemplate = `Hi, ${myName}!`.
 const PI = /* TODO */ 3.14159;           // keep as number
 let radius = /* TODO */ 5;               // you can change later if you want
-let area1  = /* TODO */ PI * radius^2;
+let area1  = /* TODO */ PI * (radius ** 2);
 
-const myName = /* TODO */ '';
-const greetingTemplate = /* TODO */ '';
+const myName = /* TODO */ 'Łukasz';
+const greetingTemplate = /* TODO */ `Hi, ${myName}!`;
 
 
 // -------------------------------------------------------------------
