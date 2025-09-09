@@ -282,11 +282,12 @@ const { price: gadgetPrice } = gadget; // 50
 // TODO: calcGross(product) → price*(1+taxRate)
 // TODO: getEmail(user) → safely read user.profile.email or return null
 function calcGross(product) {
-  /* TODO */
+  const { price, taxRate } = product;
+  return price * (1 + taxRate);
 }
 
 function getEmail(user) {
-  /* TODO */
+  return user?.profile?.email ?? null;
 }
 
 
