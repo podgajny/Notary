@@ -332,7 +332,8 @@ const helloOut  = document.getElementById('helloOut');
 
 // TODO: On click, read nameInput.value, trim it, and set helloOut text to "Hello, NAME!"
 helloBtn.addEventListener('click', () => {
-  /* TODO */
+  const name = nameInput.value.trim();
+  helloOut.textContent = `Hello, ${name}!`;
 });
 
 
