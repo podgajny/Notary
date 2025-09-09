@@ -34,7 +34,15 @@ function approxEqual(a, b, eps = 1e-9) {
   return Math.abs(a - b) <= eps;
 }
 
+let isRunning = false;
+
 async function runTests() {
+  if (isRunning) {
+    console.log('Tests already running, skipping...');
+    return;
+  }
+  
+  isRunning = true;
   clearResults();
 
   // Each test is an async function; failures should throw.
@@ -158,6 +166,8 @@ async function runTests() {
   } catch (err) {
     console.error(err);
     showResult(false, 'Test runner error', String(err));
+  } finally {
+    isRunning = false;
   }
 }
 
@@ -172,7 +182,11 @@ function wait(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
 
-runBtn.addEventListener('click', runTests);
+// Ensure only one event listener is attached
+if (!runBtn.hasAttribute('data-listener-attached')) {
+  runBtn.addEventListener('click', runTests);
+  runBtn.setAttribute('data-listener-attached', 'true');
+}
 
 // -------------------------------------------------------------------
 // 1) VARIABLES & TYPES + TEMPLATE LITERALS
