@@ -207,12 +207,13 @@ const exLoose = ('5' == 5);   // true
 const exStrict = ('5' === 5); // false
 
 // TODO: set isSameLoose to result of '5' == 5 (should be true)
+
 // TODO: set isSameStrict to result of '5' === 5 (should be false)
 // TODO: set truthyValue to any truthy value, falsyValue to any falsy one
-const isSameLoose  = /* TODO */ undefined;
-const isSameStrict = /* TODO */ undefined;
-const truthyValue  = /* TODO */ undefined;
-const falsyValue   = /* TODO */ undefined;
+const isSameLoose  = '5' == 5;
+const isSameStrict = '5' === 5;
+const truthyValue  = 'non-empty';
+const falsyValue   = '';
 
 
 // -------------------------------------------------------------------
