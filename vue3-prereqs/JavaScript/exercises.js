@@ -392,11 +392,11 @@ const demoStr = JSON.stringify(demo); // '{"ok":true}'
 
 // TODO: toJSON(obj) returns string; fromJSON(str) returns object
 function toJSON(obj) {
-  /* TODO */
+  return JSON.stringify(obj);
 }
 
 function fromJSON(str) {
-  /* TODO */
+  return JSON.parse(str);
 }
 
 
