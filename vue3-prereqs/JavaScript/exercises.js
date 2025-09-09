@@ -254,15 +254,18 @@ const squared = numbers.map(n => n * n); // [1,4,9]
 // TODO: arrayAverage(nums) → average (use reduce)
 // TODO: doubleAll(nums) → new array with each value*2 (use map)
 function filterAdults(people) {
-  /* TODO */
+  return people
+    .filter(person => person.age >= 18)
+    .map(person => person.name);
 }
 
 function arrayAverage(nums) {
-  /* TODO */
+  if (nums.length === 0) return 0;
+  return nums.reduce((sum, num) => sum + num, 0) / nums.length;
 }
 
 function doubleAll(nums) {
-  /* TODO */
+  return nums.map(num => num * 2);
 }
 
 
