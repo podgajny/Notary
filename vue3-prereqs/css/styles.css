@@ -81,19 +81,42 @@ details { margin: 6px 0 2px; }
    Goal: Color only the 2nd item blue, the last item italic.
    What to edit: #bartek .spec-play list via :nth-child and :last-child.
    Expected: Item #2 becomes blue, last item italic. */
-/* Write here... */
+#bartek .spec-play > li:nth-child(2) { color: blue; }
+#bartek .spec-play > li:last-child { font-style: italic; }
+
 
 /* TODO-B2: SPECIFICITY (no !important)
    Goal: Make the item with id="bartek-target" have white text on Bartek accent background.
    What to edit: Competing rules: element vs class vs id. Add a class selector that loses to #id, then target #id.
    Expected: The #bartek-target is white text on var(--accent-bartek), others unchanged. */
 /* Write here... */
+#bartek #bartek-target {
+  background: var(--accent-bartek);
+  color: #fff;
+}
 
 /* TODO-B3: BOX MODEL
    Goal: The three .bm boxes should look like pill tags: padding 8/12, border 1px solid, rounded 9999px, margin-right 8.
    Also set box-sizing: border-box on .bm.
    Expected: Three pill-like tags in a row. */
 /* Write here... */
+.bm {
+   /* Set box-sizing to border-box */
+   box-sizing: border-box;
+   
+   /* Add padding: 8px top/bottom, 12px left/right */
+   padding: 8px 12px;
+   
+   /* Add a 1px solid border */
+   border: 1px solid;
+   
+   /* Make it perfectly rounded like a pill */
+   border-radius: 9999px;
+   
+   /* Add 8px margin to the right for spacing */
+   margin-right: 8px;
+ }
+
 
 /* TODO-B4: UNITS
    Goal: Make #bartek h3 scale nicely:
@@ -101,12 +124,24 @@ details { margin: 6px 0 2px; }
    - line-height: 1.2
    Expected: The subtitle grows a bit on wider screens. */
 /* Write here... */
+#bartek h3 {
+  font-size: clamp(1rem, 1rem + 2vw, 1.6rem);
+  line-height: 1.2;
+}
+
 
 /* TODO-B5: FLEX LAYOUT
    Goal: Make .bartek-flex a horizontal row with space-between, center alignment, wrapping on small widths, 12px gap.
    Expected: Title left, buttons right; on narrow screens they wrap. */
 /* Write here... */
-
+.bartek-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 /* TODO-B6: GRID LAYOUT + RESPONSIVE
    Goal: Make .bartek-grid a grid:
    - default: 2 columns
@@ -114,18 +149,66 @@ details { margin: 6px 0 2px; }
    Gap: 12px
    Expected: Boxes reflow 2→3 columns when wide. */
 /* Write here... */
+.bartek-grid {
+   /* Make this a grid container */
+   display: grid;
+   
+   /* Default: 2 columns */
+   grid-template-columns: repeat(2, minmax(0, 1fr));
+   
+   /* 12px gap between grid items */
+   gap: 12px;
+ }
+ 
+ /* Media query for screens 800px and wider */
+ @media (min-width: 800px) {
+   .bartek-grid {
+     /* 3 columns on wider screens */
+     grid-template-columns: repeat(3, minmax(0, 1fr));
+   }
+ }
 
 /* TODO-B7: POSITIONING
    Goal: In the .pos-card, place the .badge at the top-right corner of the card using absolute positioning.
    Make the parent positioning context relative.
    Expected: Small badge sits at the card’s top-right. */
 /* Write here... */
+.pos-card {
+  position: relative;
+  padding-top: 30px; /* Dodane zeby badge nie zakrywalo tekstu */
+  padding-right: 30px; /* Dodane zeby badge nie zakrywalo tekstu */
+  padding-left: 30px; /* Dodane zeby badge nie zakrywalo tekstu */
+}
+
+.pos-card .badge {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
 
 /* TODO-B8: COLORS & TYPOGRAPHY
    Goal: Set paragraph text inside #bartek to a readable size (1rem), line-height 1.6, color #2B2B2F.
    Links (.btn) should use var(--accent-bartek) as border & text; hover slightly darkens.
    Expected: Comfortable reading; accent-colored buttons. */
 /* Write here... */
+#bartek p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #2B2B2F;
+}
+
+
+#bartek .btn {
+  border: 1px solid var(--accent-bartek);
+  color: var(--accent-bartek);
+}
+
+
+#bartek .btn:hover {
+  background-color: var(--accent-bartek);
+  color: #fff;
+}
+
 
 /* TODO-B9: PSEUDO-CLASSES & PSEUDO-ELEMENTS
    Goal: Buttons inside #bartek:
@@ -135,6 +218,24 @@ details { margin: 6px 0 2px; }
    - h4::before small decorative "◆ " with accent color
    Expected: Noticeable interactive states and a diamond before h4s. */
 /* Write here... */
+#bartek .btn:hover {
+  transform: translateY(-1px);
+}
+
+#bartek .btn:active {
+  transform: translateY(0);
+} 
+
+#bartek .btn:focus-visible {
+   /* Add outline for accessibility */
+   outline: var(--accent-bartek);
+ }
+
+#bartek .btn::before {
+  content: "◆ ";
+  color: var(#ddd); /* Inny kolor zeby było widoczne */
+}
+
 
 /* TODO-B10: MEDIA QUERY
    Goal: On screens <= 600px:
@@ -142,6 +243,17 @@ details { margin: 6px 0 2px; }
    - Make .bartek-flex buttons full-width stacked (tip: make container column)
    Expected: Mobile adapts spacing and layout. */
 /* Write here... */
+@media (max-width: 600px) {
+  #bartek .card {
+    padding: 10px;
+  }
+  #bartek .bartek-flex {
+    flex-direction: column;
+  }
+  #bartek .bartek-flex .btn {
+    flex: 1;
+  }
+}
 
 /* TODO-B11: CSS VARIABLES (Custom Properties)
    Goal: Change the theme by tweaking variables:
@@ -150,12 +262,34 @@ details { margin: 6px 0 2px; }
    - Use the variables for background/text on #bartek .stage, .btn, etc.
    Expected: Toggling the class in DevTools flips theme (light/dark). */
 /* Write here... */
+.bartek-dark {
+  --accent-bartek: #9693da;
+  --surface: #1d1d1f;
+  --text: #ffffff;
+}
+
+#bartek .stage {
+   background: var(--surface);
+   color: var(--text);          
+ }
+ 
+ #bartek .btn {
+   background: var(--surface);
+   border-color: var(--accent-bartek);
+   color: var(--accent-bartek);
+ }
 
 /* TODO-B12: TRANSITIONS
    Goal: Smooth the hover/press effects with transition: 150ms ease on color, background, border-color, transform.
    Expected: Polished, smooth interactions. */
 /* Write here... */
+#bartek .btn:hover {
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}
 
+#bartek .btn:active {
+  transition: transform 150ms ease;
+}
 
 /* =========================================================
    === ŁUKASZ AREA — write ONLY below this line ============
