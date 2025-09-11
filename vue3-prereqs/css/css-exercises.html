@@ -4,111 +4,169 @@
   <meta charset="utf-8" />
   <title>CSS Basics Lab — Live Session</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Shadcn CSS Framework -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            border: "hsl(var(--border))",
+            input: "hsl(var(--input))",
+            ring: "hsl(var(--ring))",
+            background: "hsl(var(--background))",
+            foreground: "hsl(var(--foreground))",
+            primary: {
+              DEFAULT: "hsl(var(--primary))",
+              foreground: "hsl(var(--primary-foreground))",
+            },
+            secondary: {
+              DEFAULT: "hsl(var(--secondary))",
+              foreground: "hsl(var(--secondary-foreground))",
+            },
+            destructive: {
+              DEFAULT: "hsl(var(--destructive))",
+              foreground: "hsl(var(--destructive-foreground))",
+            },
+            muted: {
+              DEFAULT: "hsl(var(--muted))",
+              foreground: "hsl(var(--muted-foreground))",
+            },
+            accent: {
+              DEFAULT: "hsl(var(--accent))",
+              foreground: "hsl(var(--accent-foreground))",
+            },
+            popover: {
+              DEFAULT: "hsl(var(--popover))",
+              foreground: "hsl(var(--popover-foreground))",
+            },
+            card: {
+              DEFAULT: "hsl(var(--card))",
+              foreground: "hsl(var(--card-foreground))",
+            },
+          },
+          borderRadius: {
+            lg: "var(--radius)",
+            md: "calc(var(--radius) - 2px)",
+            sm: "calc(var(--radius) - 4px)",
+          },
+        },
+      },
+    }
+  </script>
   <!-- Link to the external stylesheet -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <header>
-    <h1>CSS Basics Lab — Selectors · Specificity · Box Model · Units · Flex · Grid · Position · Variables · Media · Transitions</h1>
+<body class="bg-background text-foreground">
+  <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div class="container flex h-14 max-w-screen-2xl items-center">
+      <h1 class="text-2xl font-bold tracking-tight">CSS Basics Lab — Selectors · Specificity · Box Model · Units · Flex · Grid · Position · Variables · Media · Transitions</h1>
+    </div>
   </header>
 
-  <main class="container">
+  <main class="container mx-auto max-w-4xl p-6">
 
     <!-- ======================================================
          BARTEK LAB
     ======================================================= -->
-    <section id="bartek" class="lab">
-      <div class="who">Bartek — your playground</div>
-      <div class="stage">
-        <h2>Selectors & Specificity</h2>
-        <p class="muted">Target things precisely without breaking others.</p>
+    <section id="bartek" class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 my-8">
+      <div class="text-sm font-medium uppercase tracking-wide text-muted-foreground mb-4">Bartek — your playground</div>
+      <div class="rounded-md border-2 border-dashed border-muted bg-muted/50 p-4">
+        <h2 class="text-xl font-semibold mb-2">Selectors & Specificity</h2>
+        <p class="text-muted-foreground mb-4">Target things precisely without breaking others.</p>
 
-        <div class="card vis">
-          <h3>Bartek’s subtitle</h3>
-          <ul class="spec-play" id="bartek-list">
-            <li>Item #1</li>
-            <li>Item #2 (make me blue)</li>
-            <li id="bartek-target">Item #3 (make me white text on accent bg)</li>
-            <li>Item #4</li>
-            <li>Item #5 (last item italic)</li>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 mb-4">
+          <h3 class="text-lg font-medium mb-3">Bartek's subtitle</h3>
+          <ul class="space-y-2" id="bartek-list">
+            <li class="p-2 rounded-md bg-muted/50">Item #1</li>
+            <li class="p-2 rounded-md bg-muted/50">Item #2 (make me blue)</li>
+            <li id="bartek-target" class="p-2 rounded-md bg-muted/50">Item #3 (make me white text on accent bg)</li>
+            <li class="p-2 rounded-md bg-muted/50">Item #4</li>
+            <li class="p-2 rounded-md bg-muted/50">Item #5 (last item italic)</li>
           </ul>
 
-          <div class="todo">
-            <div class="expect"><strong>Goal:</strong> #2 blue, #5 italic; #3 white text on Bartek accent background.</div>
-            <details><summary>Hint</summary><div class="hint">
-              Use <code>:nth-child(2)</code>, <code>:last-child</code>. For specificity, <code>#bartek-target</code> beats classes/elements.
-            </div></details>
+          <div class="mt-4 p-3 rounded-md bg-muted/30 border">
+            <div class="text-sm"><strong>Goal:</strong> #2 blue, #5 italic; #3 white text on Bartek accent background.</div>
+            <details class="mt-2"><summary class="cursor-pointer text-sm text-muted-foreground">Hint</summary>
+              <div class="mt-2 text-sm text-muted-foreground">
+                Use <code>:nth-child(2)</code>, <code>:last-child</code>. For specificity, <code>#bartek-target</code> beats classes/elements.
+              </div>
+            </details>
           </div>
         </div>
 
-        <h2>Box Model & Units</h2>
-        <div class="row">
-          <div class="card vis">
-            <div class="row">
-              <span class="bm">Tag A</span>
-              <span class="bm">Tag B</span>
-              <span class="bm">Tag C</span>
+        <h2 class="text-xl font-semibold mb-2">Box Model & Units</h2>
+        <div class="flex flex-wrap gap-4">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px]">
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bm inline-block px-3 py-1 rounded-full border bg-muted/50">Tag A</span>
+              <span class="bm inline-block px-3 py-1 rounded-full border bg-muted/50">Tag B</span>
+              <span class="bm inline-block px-3 py-1 rounded-full border bg-muted/50">Tag C</span>
             </div>
-            <div class="todo">
-              <div class="expect"><strong>Goal:</strong> Make tags look like rounded pills; ensure <code>box-sizing: border-box</code> on them.</div>
-            </div>
-          </div>
-          <div class="card vis">
-            <p>Resize the window: your h3 above should scale with <code>clamp()</code>.</p>
-            <div class="todo passive"><strong>What to edit:</strong> Bartek area CSS (TODO-B4)</div>
-          </div>
-        </div>
-
-        <h2>Flex & Grid</h2>
-        <div class="card vis bartek-flex">
-          <strong>Toolbar</strong>
-          <div>
-            <a class="btn" href="#">Action</a>
-            <a class="btn" href="#">Secondary</a>
-          </div>
-        </div>
-
-        <div class="card vis">
-          <div class="grid bartek-grid">
-            <div class="box">Box 1</div>
-            <div class="box">Box 2</div>
-            <div class="box">Box 3</div>
-            <div class="box">Box 4</div>
-            <div class="box">Box 5</div>
-            <div class="box">Box 6</div>
-          </div>
-          <div class="todo">
-            <div class="expect"><strong>Goal:</strong> Two columns by default, three at ≥800px.</div>
-            <details><summary>Hint</summary><div class="hint">
-              Media query: <code>@media (min-width: 800px) { ... }</code>
-            </div></details>
-          </div>
-        </div>
-
-        <h2>Positioning</h2>
-        <div class="row">
-          <div class="card vis pos-card">
-            <span class="badge">NEW</span>
-            <p>This card should have a badge pinned in the top-right.</p>
-            <div class="todo passive"><strong>What to edit:</strong> TODO-B7 (make parent relative; badge absolute top/right)</div>
-          </div>
-          <div class="card vis">
-            <h4>Interactive button</h4>
-            <a class="btn" href="#">Hover, Focus, Active</a>
-            <div class="todo">
-              <div class="expect"><strong>Goal:</strong> Add :hover/:active/:focus-visible; add h4::before with a diamond.</div>
+            <div class="p-3 rounded-md bg-muted/30 border">
+              <div class="text-sm"><strong>Goal:</strong> Make tags look like rounded pills; ensure <code>box-sizing: border-box</code> on them.</div>
             </div>
           </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px]">
+            <p class="mb-4">Resize the window: your h3 above should scale with <code>clamp()</code>.</p>
+            <div class="p-3 rounded-md bg-muted/30 border opacity-80"><strong>What to edit:</strong> Bartek area CSS (TODO-B4)</div>
+          </div>
         </div>
 
-        <h2>Variables, Media, Transitions</h2>
-        <div class="card vis">
-          <p>We’ll simulate a theme: tweak CSS variables under a class to flip colors.</p>
-          <div class="todo">
-            <div class="expect"><strong>Goal:</strong> Create a <code>.bartek-dark</code> theme that changes <code>--accent-bartek</code>, background and text. Add small transitions.</div>
-            <details><summary>Hint</summary><div class="hint">
-              Use <code>:root</code> vars, then override inside <code>#bartek.bartek-dark { --accent-bartek: ...; }</code>. Apply variables to <code>.btn</code>, <code>.stage</code>.
-            </div></details>
+        <h2 class="text-xl font-semibold mb-2">Flex & Grid</h2>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 mb-4 bartek-flex">
+          <strong class="text-lg font-medium">Toolbar</strong>
+          <div class="flex gap-2 mt-2">
+            <a class="btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2" href="#">Action</a>
+            <a class="btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2" href="#">Secondary</a>
+          </div>
+        </div>
+
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+          <div class="grid grid-cols-2 gap-3 bartek-grid">
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">Box 1</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">Box 2</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">Box 3</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">Box 4</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">Box 5</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">Box 6</div>
+          </div>
+          <div class="mt-4 p-3 rounded-md bg-muted/30 border">
+            <div class="text-sm"><strong>Goal:</strong> Two columns by default, three at ≥800px.</div>
+            <details class="mt-2"><summary class="cursor-pointer text-sm text-muted-foreground">Hint</summary>
+              <div class="mt-2 text-sm text-muted-foreground">
+                Media query: <code>@media (min-width: 800px) { ... }</code>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <h2 class="text-xl font-semibold mb-2">Positioning</h2>
+        <div class="flex flex-wrap gap-4">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px] relative pos-card">
+            <span class="badge absolute top-2 right-2 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">NEW</span>
+            <p class="mb-4">This card should have a badge pinned in the top-right.</p>
+            <div class="p-3 rounded-md bg-muted/30 border opacity-80"><strong>What to edit:</strong> TODO-B7 (make parent relative; badge absolute top/right)</div>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px]">
+            <h4 class="text-lg font-medium mb-3">Interactive button</h4>
+            <a class="btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2" href="#">Hover, Focus, Active</a>
+            <div class="mt-4 p-3 rounded-md bg-muted/30 border">
+              <div class="text-sm"><strong>Goal:</strong> Add :hover/:active/:focus-visible; add h4::before with a diamond.</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="text-xl font-semibold mb-2">Variables, Media, Transitions</h2>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+          <p class="mb-4">We'll simulate a theme: tweak CSS variables under a class to flip colors.</p>
+          <div class="p-3 rounded-md bg-muted/30 border">
+            <div class="text-sm"><strong>Goal:</strong> Create a <code>.bartek-dark</code> theme that changes <code>--accent-bartek</code>, background and text. Add small transitions.</div>
+            <details class="mt-2"><summary class="cursor-pointer text-sm text-muted-foreground">Hint</summary>
+              <div class="mt-2 text-sm text-muted-foreground">
+                Use <code>:root</code> vars, then override inside <code>#bartek.bartek-dark { --accent-bartek: ...; }</code>. Apply variables to <code>.btn</code>, <code>.stage</code>.
+              </div>
+            </details>
           </div>
         </div>
       </div>
@@ -117,122 +175,128 @@
     <!-- ======================================================
          ŁUKASZ LAB
     ======================================================= -->
-    <section id="lukasz" class="lab">
-      <div class="who">Łukasz — your playground</div>
-      <div class="stage">
-        <h2>Selectors & Specificity</h2>
-        <p class="muted">Practice attribute selectors and combinators.</p>
+    <section id="lukasz" class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 my-8">
+      <div class="text-sm font-medium uppercase tracking-wide text-muted-foreground mb-4">Łukasz — your playground</div>
+      <div class="rounded-md border-2 border-dashed border-muted bg-muted/50 p-4">
+        <h2 class="text-xl font-semibold mb-2">Selectors & Specificity</h2>
+        <p class="text-muted-foreground mb-4">Practice attribute selectors and combinators.</p>
 
-        <div class="card vis">
-          <ul class="spec-play nest" id="lukasz-list">
-            <li data-type="normal">List A</li>
-            <li data-type="hot">List B (should be orange)</li>
-            <li id="lukasz-target" data-type="normal">List C (white text on accent bg)</li>
-            <li data-type="hot">List D (should be orange)</li>
-            <li>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 mb-4">
+          <ul class="space-y-2 nest" id="lukasz-list">
+            <li class="p-2 rounded-md bg-muted/50" data-type="normal">List A</li>
+            <li class="p-2 rounded-md bg-muted/50" data-type="hot">List B (should be orange)</li>
+            <li id="lukasz-target" class="p-2 rounded-md bg-muted/50" data-type="normal">List C (white text on accent bg)</li>
+            <li class="p-2 rounded-md bg-muted/50" data-type="hot">List D (should be orange)</li>
+            <li class="p-2 rounded-md bg-muted/50">
               Nested
-              <ul>
-                <li>Child One</li>
-                <li>Child Two</li>
+              <ul class="mt-2 space-y-1">
+                <li class="p-1 rounded bg-muted/30">Child One</li>
+                <li class="p-1 rounded bg-muted/30">Child Two</li>
               </ul>
             </li>
           </ul>
-          <div class="todo">
-            <div class="expect"><strong>Goal:</strong> Only data-type="hot" items orange; direct children of <code>.nest</code> bold; target item gets accent background.</div>
-            <details><summary>Hint</summary><div class="hint">
-              Attribute selector: <code>[data-type="hot"]</code>. Direct child combinator: <code>.nest > li</code>.
-            </div></details>
+          <div class="mt-4 p-3 rounded-md bg-muted/30 border">
+            <div class="text-sm"><strong>Goal:</strong> Only data-type="hot" items orange; direct children of <code>.nest</code> bold; target item gets accent background.</div>
+            <details class="mt-2"><summary class="cursor-pointer text-sm text-muted-foreground">Hint</summary>
+              <div class="mt-2 text-sm text-muted-foreground">
+                Attribute selector: <code>[data-type="hot"]</code>. Direct child combinator: <code>.nest > li</code>.
+              </div>
+            </details>
           </div>
         </div>
 
-        <h2>Box Model & Units</h2>
-        <div class="row">
-          <div class="card vis">
-            <div class="row">
-              <span class="bm">Chip 1</span>
-              <span class="bm">Chip 2</span>
-              <span class="bm">Chip 3</span>
+        <h2 class="text-xl font-semibold mb-2">Box Model & Units</h2>
+        <div class="flex flex-wrap gap-4">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px]">
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span class="bm inline-block px-3 py-1 rounded-full border bg-muted/50">Chip 1</span>
+              <span class="bm inline-block px-3 py-1 rounded-full border bg-muted/50">Chip 2</span>
+              <span class="bm inline-block px-3 py-1 rounded-full border bg-muted/50">Chip 3</span>
             </div>
-            <div class="todo"><div class="expect"><strong>Goal:</strong> Rounded pill chips with even spacing.</div></div>
+            <div class="p-3 rounded-md bg-muted/30 border">
+              <div class="text-sm"><strong>Goal:</strong> Rounded pill chips with even spacing.</div>
+            </div>
           </div>
-          <div class="card vis">
-            <h3>Łukasz’s subtitle</h3>
-            <p>Use rem for text; clamp for h3 size; captions smaller with .8rem.</p>
-          </div>
-        </div>
-
-        <h2>Flex & Grid</h2>
-        <div class="card vis lukasz-flex">
-          <strong>Toolbar</strong>
-          <div>
-            <a class="btn" href="#">Primary</a>
-            <a class="btn" href="#">Ghost</a>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px]">
+            <h3 class="text-lg font-medium mb-3">Łukasz's subtitle</h3>
+            <p class="text-sm text-muted-foreground">Use rem for text; clamp for h3 size; captions smaller with .8rem.</p>
           </div>
         </div>
 
-        <div class="card vis">
-          <div class="grid lukasz-grid">
-            <div class="box">A</div>
-            <div class="box">B</div>
-            <div class="box">C</div>
-            <div class="box">D</div>
-            <div class="box">E</div>
-            <div class="box">F</div>
-          </div>
-          <div class="todo">
-            <div class="expect"><strong>Goal:</strong> 2 cols → 3 cols at ≥800px.</div>
+        <h2 class="text-xl font-semibold mb-2">Flex & Grid</h2>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 mb-4 lukasz-flex">
+          <strong class="text-lg font-medium">Toolbar</strong>
+          <div class="flex gap-2 mt-2">
+            <a class="btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2" href="#">Primary</a>
+            <a class="btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2" href="#">Ghost</a>
           </div>
         </div>
 
-        <h2>Positioning</h2>
-        <div class="row">
-          <div class="card vis pos-card">
-            <span class="badge">HOT</span>
-            <p>Badge should pin to the top-right corner (absolute).</p>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+          <div class="grid grid-cols-2 gap-3 lukasz-grid">
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">A</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">B</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">C</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">D</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">E</div>
+            <div class="box rounded-lg border bg-muted/50 p-3 min-h-[54px] flex items-center">F</div>
           </div>
-          <div class="card vis">
-            <h4>Button states</h4>
-            <a class="btn" href="#">Try me</a>
-            <div class="todo"><div class="expect"><strong>Goal:</strong> Hover/active/focus-visible + h4::before "● " bullet.</div></div>
+          <div class="mt-4 p-3 rounded-md bg-muted/30 border">
+            <div class="text-sm"><strong>Goal:</strong> 2 cols → 3 cols at ≥800px.</div>
           </div>
         </div>
 
-        <h2>Variables, Media, Transitions</h2>
-        <div class="card vis">
-          <p>Create a <code>.lukasz-dark</code> theme by overriding custom properties (accent, surface, text). Add transitions for polish.</p>
+        <h2 class="text-xl font-semibold mb-2">Positioning</h2>
+        <div class="flex flex-wrap gap-4">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px] relative pos-card">
+            <span class="badge absolute top-2 right-2 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">HOT</span>
+            <p class="mb-4">Badge should pin to the top-right corner (absolute).</p>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex-1 min-w-[240px]">
+            <h4 class="text-lg font-medium mb-3">Button states</h4>
+            <a class="btn inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2" href="#">Try me</a>
+            <div class="mt-4 p-3 rounded-md bg-muted/30 border">
+              <div class="text-sm"><strong>Goal:</strong> Hover/active/focus-visible + h4::before "● " bullet.</div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="text-xl font-semibold mb-2">Variables, Media, Transitions</h2>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+          <p class="text-muted-foreground">Create a <code>.lukasz-dark</code> theme by overriding custom properties (accent, surface, text). Add transitions for polish.</p>
         </div>
       </div>
     </section>
 
-    <section class="lab">
-      <div class="who">Cheat Sheet (fast recap)</div>
-      <div class="stage">
-        <div class="row">
-          <div class="card">
-            <h4>Specificity</h4>
-            <ul>
+    <section class="rounded-lg border bg-card text-card-foreground shadow-sm p-6 my-8">
+      <div class="text-sm font-medium uppercase tracking-wide text-muted-foreground mb-4">Cheat Sheet (fast recap)</div>
+      <div class="rounded-md border-2 border-dashed border-muted bg-muted/50 p-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+            <h4 class="text-lg font-medium mb-3">Specificity</h4>
+            <ul class="space-y-2 text-sm">
               <li>Inline &gt; #id &gt; .class / [attr] / :pseudo &gt; element</li>
               <li>Later rules win if specificity ties</li>
               <li>Avoid <code>!important</code> in normal code</li>
             </ul>
           </div>
-          <div class="card">
-            <h4>Box Model</h4>
-            <ul>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+            <h4 class="text-lg font-medium mb-3">Box Model</h4>
+            <ul class="space-y-2 text-sm">
               <li><code>box-sizing: border-box;</code> keeps width predictable</li>
               <li>Margin collapses vertically between blocks</li>
             </ul>
           </div>
-          <div class="card">
-            <h4>Layout</h4>
-            <ul>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+            <h4 class="text-lg font-medium mb-3">Layout</h4>
+            <ul class="space-y-2 text-sm">
               <li>Flex: one-dimensional, main/cross axis</li>
               <li>Grid: two-dimensional, rows × columns</li>
             </ul>
           </div>
-          <div class="card">
-            <h4>Units</h4>
-            <ul>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
+            <h4 class="text-lg font-medium mb-3">Units</h4>
+            <ul class="space-y-2 text-sm">
               <li><code>rem</code> = root font size, <code>em</code> = parent</li>
               <li><code>vw/vh</code> = viewport, <code>clamp(min, pref, max)</code></li>
             </ul>
@@ -241,7 +305,7 @@
       </div>
     </section>
 
-    <p class="muted">Tip: To “toggle dark mode” for testing, temporarily add <code>bartek-dark</code> to the <code>#bartek</code> element (via DevTools) or <code>lukasz-dark</code> to <code>#lukasz</code>.</p>
+    <p class="text-muted-foreground text-sm">Tip: To "toggle dark mode" for testing, temporarily add <code>bartek-dark</code> to the <code>#bartek</code> element (via DevTools) or <code>lukasz-dark</code> to <code>#lukasz</code>.</p>
   </main>
 </body>
 </html>
