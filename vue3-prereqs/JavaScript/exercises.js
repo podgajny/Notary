@@ -116,18 +116,18 @@ async function runTests() {
       const input = document.getElementById('nameInput');
       const out = document.getElementById('helloOut');
       const btn = document.getElementById('helloBtn');
-      input.value = '  Krzysztof  ';
+      input.value = '  Mg  ';
       btn.click();
       await wait(10);
-      showResult(out.textContent === 'Hello, Krzysztof!', 'Clicking button shows greeting with trimmed name');
+      showResult(out.textContent === 'Hello, Mg!', 'Clicking button shows greeting with trimmed name');
     },
 
     // 8) Async (Promises, async/await)
     async () => {
       showGroup('Async (Promises / async/await)');
-      const u = await fakeFetchUser(42);
-      showResult(u && u.id === 42 && typeof u.name === 'string', 'fakeFetchUser resolves with id and name');
-      const upper = await getUserNameUpper(42);
+      const u = await fakeFetchUser(420);
+      showResult(u && u.id === 420 && typeof u.name === 'string', 'fakeFetchUser resolves with id and name');
+      const upper = await getUserNameUpper(420);
       showResult(typeof upper === 'string' && upper === upper.toUpperCase(), 'getUserNameUpper returns UPPERCASE');
     },
 
@@ -186,14 +186,14 @@ const exampleB = 3;
 const exampleSum = `${exampleA} + ${exampleB} = ${exampleA + exampleB}`; // "2 + 3 = 5"
 // console.log(exampleSum);
 
-// TODO: Set PI to 3.14159 (number), radius to 5, and compute area1 = PI * radius^2.
+// TODO: Set PI to 3.14159 (number), radius to 2.137, and compute area1 = PI * radius^2.
 // TODO: Create your name string in myName, and greetingTemplate = `Hi, ${myName}!`.
-const PI = /* TODO */ undefined;           // keep as number
-let radius = /* TODO */ undefined;               // you can change later if you want
-let area1  = /* TODO */ undefined;
+const PI = 3.14159;           // keep as number
+let radius = 2.137               // you can change later if you want
+let area1  = PI * radius * radius;
 
-const myName = /* TODO */ '';
-const greetingTemplate = /* TODO */ '';
+const myName = 'Bartek';
+const greetingTemplate = `Hi, ${myName}!`;
 
 
 // -------------------------------------------------------------------
@@ -209,10 +209,10 @@ const exStrict = ('5' === 5); // false
 // TODO: set isSameLoose to result of '5' == 5 (should be true)
 // TODO: set isSameStrict to result of '5' === 5 (should be false)
 // TODO: set truthyValue to any truthy value, falsyValue to any falsy one
-const isSameLoose  = /* TODO */ undefined;
-const isSameStrict = /* TODO */ undefined;
-const truthyValue  = /* TODO */ undefined;
-const falsyValue   = /* TODO */ undefined;
+const isSameLoose  = true;
+const isSameStrict = false;
+const truthyValue  = '8==>'
+const falsyValue   = ''
 
 
 // -------------------------------------------------------------------
@@ -226,12 +226,12 @@ const triple = (x) => x * 3;
 
 // TODO: Implement sum(a = 0, b = 0) returning a + b
 // TODO: Implement toTitleCase(str): "hello world" -> "Hello World"
-function sum(a = 0, b = 0) {
-  /* TODO */
-}
+function sum(a = 0, b = 0) {return a + b; }
 
 function toTitleCase(str) {
-  /* TODO */
+  return str.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 
@@ -248,16 +248,14 @@ const squared = numbers.map(n => n * n); // [1,4,9]
 // TODO: filterAdults(people) → array of names for age >= 18
 // TODO: arrayAverage(nums) → average (use reduce)
 // TODO: doubleAll(nums) → new array with each value*2 (use map)
-function filterAdults(people) {
-  /* TODO */
+function filterAdults(people) { return people.filter(person => person.age >= 18).map(person => person.name);
 }
 
 function arrayAverage(nums) {
-  /* TODO */
+  return nums.reduce((sum, num) => sum + num, 0) / nums.length;
 }
 
-function doubleAll(nums) {
-  /* TODO */
+function doubleAll(nums) { return nums.map(num => num * 2); 
 }
 
 
@@ -273,12 +271,10 @@ const { price: gadgetPrice } = gadget; // 50
 
 // TODO: calcGross(product) → price*(1+taxRate)
 // TODO: getEmail(user) → safely read user.profile.email or return null
-function calcGross(product) {
-  /* TODO */
+function calcGross(product) { return product.price * (1+ product.taxRate);
 }
 
-function getEmail(user) {
-  /* TODO */
+function getEmail(user) { return user.profile?.email || null;
 }
 
 
@@ -293,7 +289,21 @@ function sign(x) { return x > 0 ? 'pos' : x < 0 ? 'neg' : 'zero'; }
 // TODO: fizzBuzz(n) → array [1..n] with rules:
 //  - multiple of 3 => "Fizz", 5 => "Buzz", both => "FizzBuzz"
 function fizzBuzz(n) {
-  /* TODO */
+  const result = [];
+  
+  for (let i = 1; i <= n; i++) {
+    if (i % 3 === 0 && i % 5 === 0) {
+      result.push("FizzBuzz");
+    } else if (i % 3 === 0) {
+      result.push("Fizz");
+    } else if (i % 5 === 0) {
+      result.push("Buzz");
+    } else {
+      result.push(i);
+    }
+  }
+  
+  return result;
 }
 
 
@@ -311,7 +321,8 @@ const helloOut  = document.getElementById('helloOut');
 
 // TODO: On click, read nameInput.value, trim it, and set helloOut text to "Hello, NAME!"
 helloBtn.addEventListener('click', () => {
-  /* TODO */
+const name = nameInput.value.trim();
+helloOut.textContent = `Hello, ${name}!`;
 });
 
 
@@ -325,11 +336,16 @@ helloBtn.addEventListener('click', () => {
 // TODO: fakeFetchUser(id) → Promise resolves after 200ms with {id, name}
 // TODO: getUserNameUpper(id) → await fakeFetchUser, return UPPERCASE name
 function fakeFetchUser(id) {
-  /* TODO */
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ id: id, name: "User " + id });
+    }, 200);
+  });
 }
 
 async function getUserNameUpper(id) {
-  /* TODO */
+  const user = await fakeFetchUser(id);
+  return user.name.toUpperCase();
 }
 
 
@@ -347,7 +363,10 @@ function parsePositiveInt(s) {
 
 // TODO: divide(a, b) → if b===0 throw Error('Division by zero'), else return a/b
 function divide(a, b) {
-  /* TODO */
+  if (b === 0) {
+    throw new Error('Opsie, division by zero');
+  }
+  return a / b;
 }
 
 
@@ -362,11 +381,11 @@ const demoStr = JSON.stringify(demo); // '{"ok":true}'
 
 // TODO: toJSON(obj) returns string; fromJSON(str) returns object
 function toJSON(obj) {
-  /* TODO */
+  return JSON.stringify(obj);
 }
 
 function fromJSON(str) {
-  /* TODO */
+  return JSON.parse(str);
 }
 
 
