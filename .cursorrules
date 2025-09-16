@@ -1,0 +1,124 @@
+# Ogólne zasady dla Cursor
+- Zawsze używaj Vue 3 + Vite.
+- Stosuj shadcn/ui jako bazę komponentów UI.
+- Stylowanie przez TailwindCSS.
+- Unikaj bibliotek typu Bootstrap, MaterialUI.
+- Komentarze w kodzie pisz po polsku.
+ 
+## Uruchomienie projektu notary-vue
+
+Wymagania: Node 20 (LTS) oraz npm.
+
+1. Przejdź do katalogu projektu:
+
+```bash
+cd notary-vue
+```
+
+2. Zainstaluj zależności:
+
+```bash
+npm install
+```
+
+3. Uruchom serwer deweloperski:
+
+```bash
+npm run dev
+```
+
+Domyślny port: 5173.
+
+# Konwencje UI – Tailwind + shadcn-vue
+
+Ten dokument opisuje zasady korzystania z Tailwinda i komponentów shadcn-vue w naszym projekcie.
+
+⸻
+
+1. Struktura katalogów
+	•	src/components/ui/* – komponenty wygenerowane przez CLI shadcn-vue (atomy, molekuły).
+	•	src/components/* – komponenty domenowe (np. InvoiceList.vue) korzystające z ui/*.
+	•	src/lib/* – utilsy, funkcje pomocnicze, logika bez UI.
+
+⸻
+
+2. Nazewnictwo komponentów
+	•	Komponenty z shadcn mają prefiks Ui, np. UiButton, UiCard.
+	•	Komponenty domenowe – PascalCase, np. InvoiceList.
+	•	Export zawsze default z .vue.
+
+⸻
+
+3. Tailwind – użycie klas
+	•	Porządek klas: wymusza prettier-plugin-tailwindcss.
+	•	Preferuj gap-* zamiast marginesów do odstępów.
+	•	Arbitrary values (w-[37px]) tylko wyjątkowo, oznacz TODO.
+	•	Jeśli zestaw klas powtarza się 3+ razy → wydziel komponent albo użyj @apply.
+
+⸻
+
+4. Warianty i rozmiary
+	•	Zarządzanie przez class-variance-authority lub tailwind-variants.
+	•	Standardowe wartości:
+	•	variant: default | destructive | outline | ghost | link
+	•	size: sm | md | lg | icon
+	•	Domyślne: variant="default", size="md".
+
+⸻
+
+5. Tokeny i kolory
+	•	Kolory brandowe w tailwind.config.cjs → theme.extend.colors.
+	•	Używamy CSS variables (--primary, --secondary, --muted, --accent, --destructive).
+	•	Nie używamy hexów w kodzie.
+
+⸻
+
+6. Responsywność
+	•	Mobile-first, potem md, lg.
+	•	Max 2 breakpointy na komponent.
+
+⸻
+
+7. Limity i prostota
+	•	Maks. 10 klas na elemencie.
+	•	Maks. 3 poziomy zagnieżdżenia kontenerów.
+
+⸻
+
+8. Dostępność
+	•	Interaktywne elementy muszą mieć focus-visible:*.
+	•	disabled: opacity-*, cursor-not-allowed, aria-disabled="true".
+	•	Pilnujemy kontrastu i wielkości hit-area.
+
+⸻
+
+9. Checklist przy code review
+	•	Brak arbitrary values bez uzasadnienia.
+	•	Klasy posortowane (Prettier plugin).
+	•	Powtarzalne wzorce → komponent lub @apply.
+	•	Focus-states i aria-atributy poprawne.
+	•	Komponent ≤10 klas / ≤3 kontenery.
+
+⸻
+
+10. Jak dodawać komponenty shadcn-vue
+
+npx shadcn-vue@latest add button
+
+Plik trafi do src/components/ui/. Import jako UiButton.
+
+⸻
+
+11. Przykład
+
+Źle:
+
+<div class="w-full p-4 bg-white rounded-lg shadow flex items-center justify-between mt-4 mb-8 sm:flex-col hover:bg-gray-50 text-gray-800"></div>
+
+Dobrze:
+
+<UiCard class="mt-4 mb-8">
+  <div class="flex items-center justify-between sm:flex-col">
+    <p class="text-gray-800">Hello World</p>
+  </div>
+</UiCard>

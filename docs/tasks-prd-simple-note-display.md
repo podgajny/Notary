@@ -1,13 +1,13 @@
 ## Relevant Files
 
-- `notary-vue/src/components/NoteDisplay.vue` - Main component that displays the single note with title and body content
-- `notary-vue/src/components/ui/UiCard.vue` - shadcn/ui Card component for note container (if not already present)
-- `notary-vue/src/App.vue` - Root application component that will render the NoteDisplay component
-- `notary-vue/src/views/HomeView.vue` - Main view component that contains the note display
-- `notary-vue/src/assets/main.css` - Main CSS file for any custom styles (already exists)
-- `notary-vue/package.json` - Project dependencies and scripts configuration
-- `notary-vue/vite.config.js` - Vite configuration file
-- `notary-vue/tailwind.config.js` - TailwindCSS configuration with shadcn/ui integration
+- `src/components/NoteDisplay.vue` - Main component that displays the single note with title and body content
+- `src/components/ui/UiCard.vue` - shadcn/ui Card component for note container (if not already present)
+- `src/App.vue` - Root application component that will render the NoteDisplay component
+- `src/views/HomeView.vue` - Main view component that contains the note display
+- `src/assets/main.css` - Main CSS file for any custom styles (already exists)
+- `package.json` - Project dependencies and scripts configuration
+- `vite.config.js` - Vite configuration file
+- `tailwind.config.js` - TailwindCSS configuration with shadcn/ui integration
 
 ### Notes
 
@@ -19,7 +19,7 @@
 ## Tasks
 
 - [x] 1.0 Set up basic environment
-  - [x] 1.1 Navigate to notary-vue directory and run `npm install`
+  - [x] 1.1 Navigate to project root directory and run `npm install`
   - [x] 1.2 Start development server with `npm run dev` to verify it works
 
 - [x] 2.0 Create and integrate the note display component
