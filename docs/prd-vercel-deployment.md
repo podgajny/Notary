@@ -1,14 +1,14 @@
-# PRD: Vercel Deployment for Notary-web App
+# PRD: Vercel Deployment for Notary App
 
 ## Introduction/Overview
 
-This PRD outlines the deployment of the Notary-web application to Vercel's free tier platform. The goal is to make the Vue 3 + Vite application publicly accessible on the internet with automatic deployments from the main branch and preview deployments for feature branches and pull requests.
+This PRD outlines the deployment of the Notary application to Vercel's free tier platform. The goal is to make the Vue 3 + Vite application publicly accessible on the internet with automatic deployments from the main branch and preview deployments for feature branches and pull requests.
 
 The current application is a simple note display MVP built with Vue 3, Vite, and TailwindCSS that shows static content. This deployment will serve as the foundation for future backend integration and user management features.
 
 ## Goals
 
-1. **Public Accessibility**: Make the Notary-web app accessible via a public URL on the internet
+1. **Public Accessibility**: Make the Notary app accessible via a public URL on the internet
 2. **Automated Deployments**: Set up automatic production deployments from the main branch
 3. **Preview Deployments**: Enable preview deployments for all feature branches and pull requests
 4. **Zero-Cost Hosting**: Utilize Vercel's free tier for hosting the static Vue application
@@ -29,13 +29,13 @@ The current application is a simple note display MVP built with Vue 3, Vite, and
 
 ## Functional Requirements
 
-1. **Vercel Project Setup**: The Notary-web app must be connected to a Vercel project with automatic Git integration.
+1. **Vercel Project Setup**: The Notary app must be connected to a Vercel project with automatic Git integration.
 
 2. **Build Configuration**: Vercel must successfully build the Vue 3 + Vite application using the existing `npm run build` command.
 
 3. **Production Deployment**: 
    - Production deployments must trigger automatically when code is pushed to the main branch
-   - Production deployment must be accessible via a stable Vercel-provided domain (e.g., `notary-web-xyz.vercel.app`)
+   - Production deployment must be accessible via a stable Vercel-provided domain (e.g., `notary-xyz.vercel.app`)
 
 4. **Preview Deployments**:
    - Preview deployments must be created for all feature branches
