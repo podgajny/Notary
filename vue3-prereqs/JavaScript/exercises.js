@@ -124,18 +124,18 @@ async function runTests() {
       const input = document.getElementById('nameInput');
       const out = document.getElementById('helloOut');
       const btn = document.getElementById('helloBtn');
-      input.value = '  Krzysztof  ';
+      input.value = '  Mg  ';
       btn.click();
       await wait(10);
-      showResult(out.textContent === 'Hello, Krzysztof!', 'Clicking button shows greeting with trimmed name');
+      showResult(out.textContent === 'Hello, Mg!', 'Clicking button shows greeting with trimmed name');
     },
 
     // 8) Async (Promises, async/await)
     async () => {
       showGroup('Async (Promises / async/await)');
-      const u = await fakeFetchUser(42);
-      showResult(u && u.id === 42 && typeof u.name === 'string', 'fakeFetchUser resolves with id and name');
-      const upper = await getUserNameUpper(42);
+      const u = await fakeFetchUser(420);
+      showResult(u && u.id === 420 && typeof u.name === 'string', 'fakeFetchUser resolves with id and name');
+      const upper = await getUserNameUpper(420);
       showResult(typeof upper === 'string' && upper === upper.toUpperCase(), 'getUserNameUpper returns UPPERCASE');
     },
 
@@ -200,14 +200,15 @@ const exampleB = 3;
 const exampleSum = `${exampleA} + ${exampleB} = ${exampleA + exampleB}`; // "2 + 3 = 5"
 // console.log(exampleSum);
 
-// TODO: Set PI to 3.14159 (number), radius to 5, and compute area1 = PI * radius^2.
+// TODO: Set PI to 3.14159 (number), radius to 2.137, and compute area1 = PI * radius^2.
 // TODO: Create your name string in myName, and greetingTemplate = `Hi, ${myName}!`.
-const PI = /* TODO */ 3.14159;           // keep as number
-let radius = /* TODO */ 5;               // you can change later if you want
-let area1  = /* TODO */ PI * (radius ** 2);
+const PI = 3.14159;           // keep as number
+let radius = 2.137               // you can change later if you want
+let area1  = PI * radius * radius;
 
-const myName = /* TODO */ 'Łukasz';
-const greetingTemplate = /* TODO */ `Hi, ${myName}!`;
+const myName = 'Bartek';
+const greetingTemplate = `Hi, ${myName}!`;
+
 
 
 // -------------------------------------------------------------------
@@ -224,10 +225,11 @@ const exStrict = ('5' === 5); // false
 
 // TODO: set isSameStrict to result of '5' === 5 (should be false)
 // TODO: set truthyValue to any truthy value, falsyValue to any falsy one
-const isSameLoose  = '5' == 5;
-const isSameStrict = '5' === 5;
-const truthyValue  = 'non-empty';
-const falsyValue   = '';
+const isSameLoose  = true;
+const isSameStrict = false;
+const truthyValue  = '8==>'
+const falsyValue   = ''
+
 
 
 // -------------------------------------------------------------------
@@ -241,15 +243,12 @@ const triple = (x) => x * 3;
 
 // TODO: Implement sum(a = 0, b = 0) returning a + b
 // TODO: Implement toTitleCase(str): "hello world" -> "Hello World"
-function sum(a = 0, b = 0) {
-  return a + b;
-}
+function sum(a = 0, b = 0) {return a + b; }
 
 function toTitleCase(str) {
-  return String(str)
-    .trim()
-    .split(/\s+/)
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+  return str.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+
     .join(' ');
 }
 
@@ -267,19 +266,15 @@ const squared = numbers.map(n => n * n); // [1,4,9]
 // TODO: filterAdults(people) → array of names for age >= 18
 // TODO: arrayAverage(nums) → average (use reduce)
 // TODO: doubleAll(nums) → new array with each value*2 (use map)
-function filterAdults(people) {
-  return people
-    .filter(person => person.age >= 18)
-    .map(person => person.name);
+function filterAdults(people) { return people.filter(person => person.age >= 18).map(person => person.name);
 }
 
 function arrayAverage(nums) {
-  if (nums.length === 0) return 0;
   return nums.reduce((sum, num) => sum + num, 0) / nums.length;
 }
 
-function doubleAll(nums) {
-  return nums.map(num => num * 2);
+function doubleAll(nums) { return nums.map(num => num * 2); 
+
 }
 
 
@@ -295,13 +290,11 @@ const { price: gadgetPrice } = gadget; // 50
 
 // TODO: calcGross(product) → price*(1+taxRate)
 // TODO: getEmail(user) → safely read user.profile.email or return null
-function calcGross(product) {
-  const { price, taxRate } = product;
-  return price * (1 + taxRate);
+function calcGross(product) { return product.price * (1+ product.taxRate);
 }
 
-function getEmail(user) {
-  return user?.profile?.email ?? null;
+function getEmail(user) { return user.profile?.email || null;
+
 }
 
 
@@ -317,17 +310,20 @@ function sign(x) { return x > 0 ? 'pos' : x < 0 ? 'neg' : 'zero'; }
 //  - multiple of 3 => "Fizz", 5 => "Buzz", both => "FizzBuzz"
 function fizzBuzz(n) {
   const result = [];
+  
   for (let i = 1; i <= n; i++) {
-    if (i % 15 === 0) {
-      result.push('FizzBuzz');
+    if (i % 3 === 0 && i % 5 === 0) {
+      result.push("FizzBuzz");
     } else if (i % 3 === 0) {
-      result.push('Fizz');
+      result.push("Fizz");
     } else if (i % 5 === 0) {
-      result.push('Buzz');
+      result.push("Buzz");
+
     } else {
       result.push(i);
     }
   }
+ 
   return result;
 }
 
@@ -346,8 +342,9 @@ const helloOut  = document.getElementById('helloOut');
 
 // TODO: On click, read nameInput.value, trim it, and set helloOut text to "Hello, NAME!"
 helloBtn.addEventListener('click', () => {
-  const name = nameInput.value.trim();
-  helloOut.textContent = `Hello, ${name}!`;
+const name = nameInput.value.trim();
+helloOut.textContent = `Hello, ${name}!`;
+
 });
 
 
@@ -363,7 +360,8 @@ helloBtn.addEventListener('click', () => {
 function fakeFetchUser(id) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve({ id, name: `User${id}` });
+      resolve({ id: id, name: "User " + id });
+
     }, 200);
   });
 }
@@ -389,7 +387,8 @@ function parsePositiveInt(s) {
 // TODO: divide(a, b) → if b===0 throw Error('Division by zero'), else return a/b
 function divide(a, b) {
   if (b === 0) {
-    throw new Error('Division by zero');
+    throw new Error('Opsie, division by zero');
+
   }
   return a / b;
 }
