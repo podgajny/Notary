@@ -18,16 +18,16 @@
 
 ## Tasks
 
-- [ ] 1.0 Set up basic environment
-  - [ ] 1.1 Navigate to notary-vue directory and run `npm install`
-  - [ ] 1.2 Start development server with `npm run dev` to verify it works
+- [x] 1.0 Set up basic environment
+  - [x] 1.1 Navigate to notary-vue directory and run `npm install`
+  - [x] 1.2 Start development server with `npm run dev` to verify it works
 
-- [ ] 2.0 Create and integrate the note display component
-  - [ ] 2.1 Create `src/components/NoteDisplay.vue` with basic Vue 3 structure
-  - [ ] 2.2 Add static content: title "Hello World" and lorem ipsum body
-  - [ ] 2.3 Import NoteDisplay in `src/App.vue` and render it
-  - [ ] 2.4 Test that the note displays in browser (unstyled)
+- [x] 2.0 Create and integrate the note display component
+  - [x] 2.1 Create `src/components/NoteDisplay.vue` with basic Vue 3 structure
+  - [x] 2.2 Add static content: title "Hello World" and lorem ipsum body
+  - [x] 2.3 Import NoteDisplay in `src/App.vue` and render it
+  - [x] 2.4 Test that the note displays in browser (unstyled)
 
-- [ ] 3.0 Add minimal styling
-  - [ ] 3.1 Add basic TailwindCSS classes for readable typography
-  - [ ] 3.2 Test final result displays cleanly
+- [x] 3.0 Add minimal styling
+  - [x] 3.1 Add basic TailwindCSS classes for readable typography
+  - [x] 3.2 Test final result displays cleanly
