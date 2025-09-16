@@ -5,10 +5,10 @@ Based on PRD: `prd-vercel-deployment.md`
 ## Relevant Files
 
 - `package.json` - Contains build scripts and dependencies for deployment configuration
-- `vite.config.js` - Vite configuration that may need optimization for Vercel deployment
-- `vercel.json` - Vercel-specific configuration file (to be created if needed)
-- `.gitignore` - Ensure proper files are ignored for deployment
-- `docs/deployment-guide.md` - Documentation for deployment process and troubleshooting (to be created)
+- `vite.config.js` - Vite configuration that may need optimization for Vercel deployment  
+- `vercel.json` - Vercel-specific configuration file (CREATED - defines build settings)
+- `.gitignore` - Ensure proper files are ignored for deployment (UPDATED - added .vercel exclusion)
+- `docs/deployment-guide.md` - Documentation for deployment process and troubleshooting (CREATED)
 
 ### Notes
 
