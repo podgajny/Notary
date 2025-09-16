@@ -34,7 +34,15 @@ function approxEqual(a, b, eps = 1e-9) {
   return Math.abs(a - b) <= eps;
 }
 
+let isRunning = false;
+
 async function runTests() {
+  if (isRunning) {
+    console.log('Tests already running, skipping...');
+    return;
+  }
+  
+  isRunning = true;
   clearResults();
 
   // Each test is an async function; failures should throw.
@@ -158,6 +166,8 @@ async function runTests() {
   } catch (err) {
     console.error(err);
     showResult(false, 'Test runner error', String(err));
+  } finally {
+    isRunning = false;
   }
 }
 
@@ -172,7 +182,11 @@ function wait(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
 
-runBtn.addEventListener('click', runTests);
+// Ensure only one event listener is attached
+if (!runBtn.hasAttribute('data-listener-attached')) {
+  runBtn.addEventListener('click', runTests);
+  runBtn.setAttribute('data-listener-attached', 'true');
+}
 
 // -------------------------------------------------------------------
 // 1) VARIABLES & TYPES + TEMPLATE LITERALS
@@ -196,6 +210,7 @@ const myName = 'Bartek';
 const greetingTemplate = `Hi, ${myName}!`;
 
 
+
 // -------------------------------------------------------------------
 // 2) EQUALITY & COERCION
 // Explanation:
@@ -207,12 +222,14 @@ const exLoose = ('5' == 5);   // true
 const exStrict = ('5' === 5); // false
 
 // TODO: set isSameLoose to result of '5' == 5 (should be true)
+
 // TODO: set isSameStrict to result of '5' === 5 (should be false)
 // TODO: set truthyValue to any truthy value, falsyValue to any falsy one
 const isSameLoose  = true;
 const isSameStrict = false;
 const truthyValue  = '8==>'
 const falsyValue   = ''
+
 
 
 // -------------------------------------------------------------------
@@ -231,6 +248,7 @@ function sum(a = 0, b = 0) {return a + b; }
 function toTitleCase(str) {
   return str.split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+
     .join(' ');
 }
 
@@ -256,6 +274,7 @@ function arrayAverage(nums) {
 }
 
 function doubleAll(nums) { return nums.map(num => num * 2); 
+
 }
 
 
@@ -275,6 +294,7 @@ function calcGross(product) { return product.price * (1+ product.taxRate);
 }
 
 function getEmail(user) { return user.profile?.email || null;
+
 }
 
 
@@ -298,11 +318,12 @@ function fizzBuzz(n) {
       result.push("Fizz");
     } else if (i % 5 === 0) {
       result.push("Buzz");
+
     } else {
       result.push(i);
     }
   }
-  
+ 
   return result;
 }
 
@@ -323,6 +344,7 @@ const helloOut  = document.getElementById('helloOut');
 helloBtn.addEventListener('click', () => {
 const name = nameInput.value.trim();
 helloOut.textContent = `Hello, ${name}!`;
+
 });
 
 
@@ -339,6 +361,7 @@ function fakeFetchUser(id) {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ id: id, name: "User " + id });
+
     }, 200);
   });
 }
@@ -365,6 +388,7 @@ function parsePositiveInt(s) {
 function divide(a, b) {
   if (b === 0) {
     throw new Error('Opsie, division by zero');
+
   }
   return a / b;
 }
