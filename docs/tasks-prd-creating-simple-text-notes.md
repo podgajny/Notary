@@ -33,7 +33,7 @@ Approach: Test-Driven Development (TDD)
 ## Tasks
 
 - [ ] 1.0 Setup Testing Infrastructure and Data Layer
-  - [ ] 1.1 Install and configure required dependencies (`pinia`, `idb-keyval`)
+  - [x] 1.1 Install and configure required dependencies (`pinia`, `idb-keyval`)
   - [ ] 1.2 Setup Vitest configuration for unit tests if not already present
   - [ ] 1.3 Setup Playwright configuration for e2e tests if not already present
   - [ ] 1.4 Create test utilities and mocks for IndexedDB operations
