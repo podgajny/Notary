@@ -56,13 +56,13 @@ Approach: Test-Driven Development (TDD)
   - [x] 3.6 Add error handling for save failures with inline error messages
   - [x] 3.7 Test component integration with store actions
 
-- [ ] 4.0 Implement Note Display and List Management
-  - [ ] 4.1 **TDD**: Write tests for NoteList.vue - rendering, sorting, empty states
-  - [ ] 4.2 Implement `src/components/NoteList.vue` - display notes newest first (by updatedAt)
-  - [ ] 4.3 Create dynamic card sizing that adapts to content length
-  - [ ] 4.4 Add proper timestamp formatting and display
-  - [ ] 4.5 Implement optimistic UI updates when new notes are saved
-  - [ ] 4.6 Test list rendering with various note content lengths
+- [x] 4.0 Implement Note Display and List Management
+  - [x] 4.1 **TDD**: Write tests for NoteList.vue - rendering, sorting, empty states
+  - [x] 4.2 Implement `src/components/NoteList.vue` - display notes newest first (by updatedAt)
+  - [x] 4.3 Create dynamic card sizing that adapts to content length
+  - [x] 4.4 Add proper timestamp formatting and display
+  - [x] 4.5 Implement optimistic UI updates when new notes are saved
+  - [x] 4.6 Test list rendering with various note content lengths
 
 - [ ] 5.0 Add Auto-save and Navigation Protection Features
   - [ ] 5.1 **TDD**: Write tests for draft auto-save functionality with debouncing
