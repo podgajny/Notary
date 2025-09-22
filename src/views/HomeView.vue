@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import NoteDisplay from '../components/NoteDisplay.vue'
+import NoteEditor from '../components/NoteEditor.vue'
 </script>
 
 <template>
   <main>
-    <NoteDisplay />
+    <NoteEditor />
   </main>
 </template>
