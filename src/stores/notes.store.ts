@@ -43,6 +43,17 @@ export const useNotesStore = defineStore('notes', () => {
     error.value = message;
   }
 
+  // Helper function to convert reactive notes array to plain objects for IndexedDB
+  function getPlainNotes(): Note[] {
+    return notes.value.map(note => ({
+      id: note.id,
+      title: note.title,
+      body: note.body,
+      createdAt: note.createdAt,
+      updatedAt: note.updatedAt,
+    }));
+  }
+
   function validateNoteData(data: { title?: string; body?: string }) {
     if (data.title !== undefined) {
       const trimmedTitle = data.title.trim();
@@ -88,7 +99,7 @@ export const useNotesStore = defineStore('notes', () => {
       notes.value.push(newNote);
 
       // Zapisz do bazy danych
-      await setNotes(notes.value);
+      await setNotes(getPlainNotes());
 
       return newNote;
     } catch (err) {
@@ -141,7 +152,7 @@ export const useNotesStore = defineStore('notes', () => {
       notes.value[noteIndex] = updatedNote;
 
       // Zapisz do bazy danych
-      await setNotes(notes.value);
+      await setNotes(getPlainNotes());
 
       return updatedNote;
     } catch (err) {
@@ -171,7 +182,7 @@ export const useNotesStore = defineStore('notes', () => {
       notes.value.splice(noteIndex, 1);
 
       // Zapisz do bazy danych
-      await setNotes(notes.value);
+      await setNotes(getPlainNotes());
     } catch (err) {
       // Cofnij optimistic update
       notes.value.splice(noteIndex, 0, noteToDelete);
