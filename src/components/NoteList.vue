@@ -69,11 +69,6 @@
           >
             {{ getPreviewText(note.body) }}
           </p>
-          
-          <!-- Debug info - remove this later -->
-          <div v-if="!note.body || !note.body.trim()" class="text-xs text-red-500 italic">
-            [Debug: Brak treści - body: "{{ note.body }}", length: {{ note.body?.length || 0 }}]
-          </div>
 
           <!-- Timestamp -->
           <div
@@ -167,16 +162,15 @@ const getNoteItemSizeClass = (note: Note): string => {
 const getNotePreviewClass = (note: Note): string => {
   const sizeClass = getNoteItemSizeClass(note);
   
-  // Temporarily disable line-clamp to debug
   switch (sizeClass) {
     case 'note-size-small':
-      return 'max-h-20 overflow-hidden'; // 'line-clamp-3';
+      return 'line-clamp-3';
     case 'note-size-medium':
-      return 'max-h-24 overflow-hidden'; // 'line-clamp-4';
+      return 'line-clamp-4';
     case 'note-size-large':
-      return 'max-h-32 overflow-hidden'; // 'line-clamp-6';
+      return 'line-clamp-6';
     default:
-      return 'max-h-24 overflow-hidden'; // 'line-clamp-4';
+      return 'line-clamp-4';
   }
 };
 </script>

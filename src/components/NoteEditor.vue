@@ -186,23 +186,20 @@ const handleSave = async () => {
   }
 
   try {
-    console.log('Starting save process...', { draft: store.draft });
+    console.log('Starting save process...', { formData: formData.value, draft: store.draft });
     
-    // Użyj createNoteFromDraft jeśli draft istnieje, w przeciwnym razie createNote
-    if (store.draft) {
-      console.log('Creating note from draft');
-      await store.createNoteFromDraft();
-    } else {
-      // Convert reactive object to plain object for IndexedDB
-      const plainFormData = {
-        title: formData.value.title,
-        body: formData.value.body,
-      };
-      console.log('Creating new note', plainFormData);
-      await store.createNote(plainFormData);
-    }
+    // Always use current form data to ensure we save what user sees
+    const plainFormData = {
+      title: formData.value.title,
+      body: formData.value.body,
+    };
+    console.log('Creating new note with current form data', plainFormData);
+    await store.createNote(plainFormData);
 
     console.log('Note saved successfully');
+    
+    // Wyczyść draft po pomyślnym zapisaniu
+    await store.clearDraft();
     
     // Sukces - wyczyść formularz
     formData.value = { title: '', body: '' };
