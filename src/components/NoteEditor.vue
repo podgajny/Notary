@@ -4,7 +4,7 @@
       <CardHeader>
         <CardTitle class="flex items-center justify-between">
           <span>Nowa notatka</span>
-          <div v-if="hasUnsavedChanges" class="flex items-center gap-2 text-sm text-muted-foreground">
+          <div v-if="store.hasUnsavedChanges" class="flex items-center gap-2 text-sm text-muted-foreground">
             <div class="w-2 h-2 bg-yellow-500 rounded-full" />
             <span data-testid="unsaved-indicator">Niezapisane zmiany</span>
           </div>
@@ -13,7 +13,7 @@
 
       <CardContent>
         <form @submit.prevent="handleSave">
-          <fieldset :disabled="isLoading" class="space-y-4">
+          <fieldset :disabled="store.isLoading" class="space-y-4">
             <legend class="sr-only">Nowa notatka</legend>
             
             <!-- Tytuł notatki -->
@@ -51,8 +51,8 @@
             </div>
 
             <!-- Komunikaty błędów -->
-            <div v-if="error" data-testid="error-message" class="p-3 text-sm text-destructive bg-destructive/10 rounded-md">
-              {{ error }}
+            <div v-if="store.error" data-testid="error-message" class="p-3 text-sm text-destructive bg-destructive/10 rounded-md">
+              {{ store.error }}
             </div>
 
             <!-- Komunikat sukcesu -->
@@ -69,17 +69,17 @@
 
       <CardFooter class="flex justify-between">
         <div class="text-sm text-muted-foreground">
-          <span v-if="draft?.lastModified">
-            Ostatnio zapisano: {{ formatDate(draft.lastModified) }}
+          <span v-if="store.draft?.lastModified">
+            Ostatnio zapisano: {{ formatDate(store.draft.lastModified) }}
           </span>
         </div>
         
         <div class="flex gap-2">
           <Button
-            v-if="hasUnsavedChanges"
+            v-if="store.hasUnsavedChanges"
             variant="outline"
             @click="handleClear"
-            :disabled="isLoading"
+            :disabled="store.isLoading"
           >
             Wyczyść
           </Button>
@@ -87,10 +87,10 @@
           <Button
             data-testid="save-button"
             @click="handleSave"
-            :disabled="!isValidForm || isLoading"
+            :disabled="!isValidForm || store.isLoading"
             class="min-w-[100px]"
           >
-            <span v-if="isLoading">Zapisywanie...</span>
+            <span v-if="store.isLoading">Zapisywanie...</span>
             <span v-else>Zapisz</span>
           </Button>
         </div>
@@ -112,9 +112,6 @@ import { Button } from '@/components/ui/button';
 
 // Store
 const store = useNotesStore();
-
-// Reactive store properties
-const { draft, isLoading, error, hasUnsavedChanges } = store;
 
 // Formularz
 const formData = ref<NoteFormData>({
@@ -174,20 +171,29 @@ const handleInput = () => {
 
 // Obsługa zapisywania
 const handleSave = async () => {
+  console.log('handleSave called', { formData: formData.value, isValidForm: isValidForm.value });
+  
   // Walidacja
   if (!isValidForm.value) {
+    console.log('Form is not valid, showing title error');
     showTitleError.value = true;
     return;
   }
 
   try {
+    console.log('Starting save process...', { draft: store.draft });
+    
     // Użyj createNoteFromDraft jeśli draft istnieje, w przeciwnym razie createNote
-    if (draft) {
+    if (store.draft) {
+      console.log('Creating note from draft');
       await store.createNoteFromDraft();
     } else {
+      console.log('Creating new note', formData.value);
       await store.createNote(formData.value);
     }
 
+    console.log('Note saved successfully');
+    
     // Sukces - wyczyść formularz
     formData.value = { title: '', body: '' };
     showSuccessMessage.value = true;
@@ -218,16 +224,16 @@ const handleClear = async () => {
 
 // Ładowanie draftu przy montowaniu komponentu
 onMounted(async () => {
-  if (draft) {
+  if (store.draft) {
     formData.value = {
-      title: draft.title,
-      body: draft.body,
+      title: store.draft.title,
+      body: store.draft.body,
     };
   }
 });
 
 // Obserwowanie zmian w draft ze store
-watch(() => draft, (newDraft) => {
+watch(() => store.draft, (newDraft) => {
   if (newDraft && (!formData.value.title && !formData.value.body)) {
     formData.value = {
       title: newDraft.title,
