@@ -75,7 +75,7 @@ Approach: Test-Driven Development (TDD)
 
 - [ ] 6.0 Integration and End-to-End Testing
   - [x] 6.1 Write integration tests - NoteEditor + NoteList interaction
-  - [ ] 6.2 Write e2e test: Create note, verify it appears, reload page, verify persistence
+  - [x] 6.2 Write e2e test: Create note, verify it appears, reload page, verify persistence
   - [ ] 6.3 Write e2e test: Auto-save draft, refresh page, verify draft recovery
   - [ ] 6.4 Write e2e test: Navigation warning when leaving with unsaved changes
   - [ ] 6.5 Write e2e test: Storage failure simulation and error message display
