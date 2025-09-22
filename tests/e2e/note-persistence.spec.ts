@@ -22,6 +22,8 @@ test('E2E: creates a note and persists after reload', async ({ page }) => {
 
   // Po odświeżeniu notatka nadal jest widoczna
   await expect(page.getByTestId('note-list')).toBeVisible();
+  // Poczekaj na wyrenderowanie elementu notatki po inicjalizacji store
+  await expect(page.getByTestId('note-item').first()).toBeVisible();
   await expect(page.getByTestId('note-title').first()).toContainText(title);
 });
 
