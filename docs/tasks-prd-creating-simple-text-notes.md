@@ -48,7 +48,7 @@ Approach: Test-Driven Development (TDD)
   - [x] 2.6 Test error scenarios - storage failures, invalid data handling
 
 - [ ] 3.0 Create Note Editor Component with Validation
-  - [ ] 3.1 Add required shadcn-vue UI components (Button, Input, Textarea, Card) if missing
+  - [x] 3.1 Add required shadcn-vue UI components (Button, Input, Textarea, Card) if missing
   - [ ] 3.2 **TDD**: Write tests for NoteEditor.vue - form validation, save button states
   - [ ] 3.3 Implement `src/components/NoteEditor.vue` - title/body inputs with placeholders
   - [ ] 3.4 Add form validation - disable save when title empty, show helper text
