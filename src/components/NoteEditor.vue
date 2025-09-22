@@ -161,7 +161,12 @@ const handleInput = () => {
   debounceTimer.value = window.setTimeout(async () => {
     if (formData.value.title.trim() || formData.value.body.trim()) {
       try {
-        await store.saveDraft(formData.value);
+        // Convert reactive object to plain object for IndexedDB
+        const plainFormData = {
+          title: formData.value.title,
+          body: formData.value.body,
+        };
+        await store.saveDraft(plainFormData);
       } catch (err) {
         console.error('Błąd podczas zapisywania draftu:', err);
       }
@@ -188,8 +193,13 @@ const handleSave = async () => {
       console.log('Creating note from draft');
       await store.createNoteFromDraft();
     } else {
-      console.log('Creating new note', formData.value);
-      await store.createNote(formData.value);
+      // Convert reactive object to plain object for IndexedDB
+      const plainFormData = {
+        title: formData.value.title,
+        body: formData.value.body,
+      };
+      console.log('Creating new note', plainFormData);
+      await store.createNote(plainFormData);
     }
 
     console.log('Note saved successfully');
