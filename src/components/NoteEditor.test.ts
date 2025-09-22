@@ -651,3 +651,228 @@ describe('Draft Auto-save with Debouncing', () => {
     clearTimeoutSpy.mockRestore();
   });
 });
+
+// Testy navigation protection i draft recovery
+describe('Navigation Protection and Draft Recovery', () => {
+  let mockLoadDraft: any;
+  let mockClearDraft: any;
+
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    
+    // Mock dla draft operations
+    mockLoadDraft = vi.fn().mockResolvedValue(undefined);
+    mockClearDraft = vi.fn().mockResolvedValue(undefined);
+    
+    // Aktualizuj mock store
+    vi.mocked(useNotesStore).mockReturnValue({
+      draft: null,
+      isLoading: false,
+      error: null,
+      hasUnsavedChanges: false,
+      createNote: vi.fn().mockResolvedValue(createMockNote()),
+      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
+      saveDraft: vi.fn().mockResolvedValue(undefined),
+      clearDraft: mockClearDraft,
+      loadDraft: mockLoadDraft,
+      clearError: vi.fn(),
+    } as any);
+  });
+
+  it('should recover draft on component mount when draft exists', async () => {
+    const mockDraft = createMockDraft();
+    
+    // Mock store z istniejącym draftem
+    vi.mocked(useNotesStore).mockReturnValue({
+      draft: mockDraft,
+      isLoading: false,
+      error: null,
+      hasUnsavedChanges: true,
+      createNote: vi.fn().mockResolvedValue(createMockNote()),
+      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
+      saveDraft: vi.fn().mockResolvedValue(undefined),
+      clearDraft: mockClearDraft,
+      loadDraft: mockLoadDraft,
+      clearError: vi.fn(),
+    } as any);
+
+    const wrapper = mount(NoteEditor);
+    await nextTick();
+
+    // Sprawdź czy formularz został wypełniony danymi z draftu
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+    const bodyTextarea = wrapper.find('[data-testid="note-body-textarea"]');
+
+    expect(titleInput.element.value).toBe(mockDraft.title);
+    expect(bodyTextarea.element.value).toBe(mockDraft.body);
+  });
+
+  it('should not recover draft when no draft exists', async () => {
+    const wrapper = mount(NoteEditor);
+    await nextTick();
+
+    // Sprawdź czy formularz pozostaje pusty
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+    const bodyTextarea = wrapper.find('[data-testid="note-body-textarea"]');
+
+    expect(titleInput.element.value).toBe('');
+    expect(bodyTextarea.element.value).toBe('');
+  });
+
+  it('should show unsaved changes indicator when draft exists', async () => {
+    // Mock store z istniejącym draftem
+    vi.mocked(useNotesStore).mockReturnValue({
+      draft: createMockDraft(),
+      isLoading: false,
+      error: null,
+      hasUnsavedChanges: true,
+      createNote: vi.fn().mockResolvedValue(createMockNote()),
+      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
+      saveDraft: vi.fn().mockResolvedValue(undefined),
+      clearDraft: mockClearDraft,
+      loadDraft: mockLoadDraft,
+      clearError: vi.fn(),
+    } as any);
+
+    const wrapper = mount(NoteEditor);
+    await nextTick();
+
+    // Sprawdź czy wskaźnik niezapisanych zmian jest widoczny
+    const unsavedIndicator = wrapper.find('[data-testid="unsaved-indicator"]');
+    expect(unsavedIndicator.exists()).toBe(true);
+    expect(unsavedIndicator.text()).toBe('Niezapisane zmiany');
+  });
+
+  it('should set up beforeunload event handler when component mounts', async () => {
+    const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
+    
+    mount(NoteEditor);
+    await nextTick();
+
+    expect(addEventListenerSpy).toHaveBeenCalledWith('beforeunload', expect.any(Function));
+    
+    addEventListenerSpy.mockRestore();
+  });
+
+  it('should remove beforeunload event handler when component unmounts', async () => {
+    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
+    
+    const wrapper = mount(NoteEditor);
+    await nextTick();
+    
+    wrapper.unmount();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('beforeunload', expect.any(Function));
+    
+    removeEventListenerSpy.mockRestore();
+  });
+
+  it('should prevent navigation when unsaved changes exist', async () => {
+    // Mock store z niezapisanymi zmianami
+    vi.mocked(useNotesStore).mockReturnValue({
+      draft: createMockDraft(),
+      isLoading: false,
+      error: null,
+      hasUnsavedChanges: true,
+      createNote: vi.fn().mockResolvedValue(createMockNote()),
+      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
+      saveDraft: vi.fn().mockResolvedValue(undefined),
+      clearDraft: mockClearDraft,
+      loadDraft: mockLoadDraft,
+      clearError: vi.fn(),
+    } as any);
+
+    let beforeunloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
+    
+    const addEventListenerSpy = vi.spyOn(window, 'addEventListener').mockImplementation((event, handler) => {
+      if (event === 'beforeunload') {
+        beforeunloadHandler = handler as (event: BeforeUnloadEvent) => void;
+      }
+    });
+
+    mount(NoteEditor);
+    await nextTick();
+
+    // Symuluj zdarzenie beforeunload
+    const mockEvent = {
+      preventDefault: vi.fn(),
+      returnValue: '',
+    } as unknown as BeforeUnloadEvent;
+
+    if (beforeunloadHandler) {
+      beforeunloadHandler(mockEvent);
+    }
+
+    expect(mockEvent.preventDefault).toHaveBeenCalled();
+    expect(mockEvent.returnValue).toBe('');
+    
+    addEventListenerSpy.mockRestore();
+  });
+
+  it('should not prevent navigation when no unsaved changes exist', async () => {
+    // Mock store bez niezapisanych zmian
+    vi.mocked(useNotesStore).mockReturnValue({
+      draft: null,
+      isLoading: false,
+      error: null,
+      hasUnsavedChanges: false,
+      createNote: vi.fn().mockResolvedValue(createMockNote()),
+      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
+      saveDraft: vi.fn().mockResolvedValue(undefined),
+      clearDraft: mockClearDraft,
+      loadDraft: mockLoadDraft,
+      clearError: vi.fn(),
+    } as any);
+
+    let beforeunloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
+    
+    const addEventListenerSpy = vi.spyOn(window, 'addEventListener').mockImplementation((event, handler) => {
+      if (event === 'beforeunload') {
+        beforeunloadHandler = handler as (event: BeforeUnloadEvent) => void;
+      }
+    });
+
+    mount(NoteEditor);
+    await nextTick();
+
+    // Symuluj zdarzenie beforeunload
+    const mockEvent = {
+      preventDefault: vi.fn(),
+      returnValue: '',
+    } as unknown as BeforeUnloadEvent;
+
+    if (beforeunloadHandler) {
+      beforeunloadHandler(mockEvent);
+    }
+
+    expect(mockEvent.preventDefault).not.toHaveBeenCalled();
+    expect(mockEvent.returnValue).toBe('');
+    
+    addEventListenerSpy.mockRestore();
+  });
+
+  it('should show draft recovery timestamp when draft exists', async () => {
+    const mockDraft = createMockDraft();
+    
+    // Mock store z draftem
+    vi.mocked(useNotesStore).mockReturnValue({
+      draft: mockDraft,
+      isLoading: false,
+      error: null,
+      hasUnsavedChanges: true,
+      createNote: vi.fn().mockResolvedValue(createMockNote()),
+      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
+      saveDraft: vi.fn().mockResolvedValue(undefined),
+      clearDraft: mockClearDraft,
+      loadDraft: mockLoadDraft,
+      clearError: vi.fn(),
+    } as any);
+
+    const wrapper = mount(NoteEditor);
+    await nextTick();
+
+    // Sprawdź czy timestamp jest wyświetlany
+    const timestampText = wrapper.text();
+    expect(timestampText).toContain('Ostatnio zapisano:');
+  });
+});
