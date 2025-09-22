@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import { useNotesStore } from '../stores/notes.store';
 import type { NoteFormData } from '../types';
 
@@ -229,15 +229,6 @@ const handleClear = async () => {
   }
 };
 
-// Ładowanie draftu przy montowaniu komponentu
-onMounted(async () => {
-  if (store.draft) {
-    formData.value = {
-      title: store.draft.title,
-      body: store.draft.body,
-    };
-  }
-});
 
 // Obserwowanie zmian w draft ze store
 watch(() => store.draft, (newDraft) => {
@@ -249,13 +240,40 @@ watch(() => store.draft, (newDraft) => {
   }
 }, { immediate: true });
 
+// Navigation protection - ostrzeżenie przed opuszczeniem strony z niezapisanymi zmianami
+const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+  // Sprawdź czy są niezapisane zmiany
+  if (store.hasUnsavedChanges) {
+    // Standardowy sposób zapobiegania zamknięciu strony
+    event.preventDefault();
+    event.returnValue = ''; // Chrome wymaga tego
+    return ''; // Dla starszych przeglądarek
+  }
+};
+
+// Lifecycle hooks
+onMounted(async () => {
+  // Załaduj draft jeśli istnieje
+  if (store.draft) {
+    formData.value = {
+      title: store.draft.title,
+      body: store.draft.body,
+    };
+  }
+
+  // Dodaj listener dla ostrzeżenia przed opuszczeniem strony
+  window.addEventListener('beforeunload', handleBeforeUnload);
+});
+
 // Cleanup
-onMounted(() => {
-  return () => {
-    if (debounceTimer.value) {
-      clearTimeout(debounceTimer.value);
-    }
-  };
+onUnmounted(() => {
+  // Wyczyść timer debounce
+  if (debounceTimer.value) {
+    clearTimeout(debounceTimer.value);
+  }
+  
+  // Usuń listener dla beforeunload
+  window.removeEventListener('beforeunload', handleBeforeUnload);
 });
 </script>
 

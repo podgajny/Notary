@@ -68,7 +68,7 @@ Approach: Test-Driven Development (TDD)
   - [x] 5.1 **TDD**: Write tests for draft auto-save functionality with debouncing
   - [x] 5.2 Implement auto-save drafts to separate storage (`drafts:v1` namespace)
   - [x] 5.3 Add debounced auto-save (1-2 second delay) to prevent excessive writes
-  - [ ] 5.4 **TDD**: Write tests for navigation protection and draft recovery
+  - [x] 5.4 **TDD**: Write tests for navigation protection and draft recovery
   - [ ] 5.5 Implement beforeunload event handler for unsaved changes warning
   - [ ] 5.6 Add draft recovery on component mount after page refresh
   - [ ] 5.7 Ensure drafts don't overwrite published notes until Save is clicked
