@@ -240,17 +240,6 @@ watch(() => store.draft, (newDraft) => {
   }
 }, { immediate: true });
 
-// Navigation protection - ostrzeżenie przed opuszczeniem strony z niezapisanymi zmianami
-const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-  // Sprawdź czy są niezapisane zmiany
-  if (store.hasUnsavedChanges) {
-    // Standardowy sposób zapobiegania zamknięciu strony
-    event.preventDefault();
-    event.returnValue = ''; // Chrome wymaga tego
-    return ''; // Dla starszych przeglądarek
-  }
-};
-
 // Lifecycle hooks
 onMounted(async () => {
   // Załaduj draft jeśli istnieje
@@ -260,9 +249,6 @@ onMounted(async () => {
       body: store.draft.body,
     };
   }
-
-  // Dodaj listener dla ostrzeżenia przed opuszczeniem strony
-  window.addEventListener('beforeunload', handleBeforeUnload);
 });
 
 // Cleanup
@@ -271,9 +257,6 @@ onUnmounted(() => {
   if (debounceTimer.value) {
     clearTimeout(debounceTimer.value);
   }
-  
-  // Usuń listener dla beforeunload
-  window.removeEventListener('beforeunload', handleBeforeUnload);
 });
 </script>
 

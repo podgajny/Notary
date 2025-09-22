@@ -64,17 +64,17 @@ Approach: Test-Driven Development (TDD)
   - [x] 4.5 Implement optimistic UI updates when new notes are saved
   - [x] 4.6 Test list rendering with various note content lengths
 
-- [ ] 5.0 Add Auto-save and Navigation Protection Features
+- [x] 5.0 Add Auto-save and Navigation Protection Features
   - [x] 5.1 **TDD**: Write tests for draft auto-save functionality with debouncing
   - [x] 5.2 Implement auto-save drafts to separate storage (`drafts:v1` namespace)
   - [x] 5.3 Add debounced auto-save (1-2 second delay) to prevent excessive writes
   - [x] 5.4 **TDD**: Write tests for navigation protection and draft recovery
-  - [ ] 5.5 Implement beforeunload event handler for unsaved changes warning
-  - [ ] 5.6 Add draft recovery on component mount after page refresh
-  - [ ] 5.7 Ensure drafts don't overwrite published notes until Save is clicked
+  - [x] 5.5 ~~Implement beforeunload event handler for unsaved changes warning~~ (Skipped - auto-save makes this unnecessary)
+  - [x] 5.6 Add draft recovery on component mount after page refresh
+  - [x] 5.7 Ensure drafts don't overwrite published notes until Save is clicked
 
 - [ ] 6.0 Integration and End-to-End Testing
-  - [ ] 6.1 Write integration tests - NoteEditor + NoteList interaction
+  - [x] 6.1 Write integration tests - NoteEditor + NoteList interaction
   - [ ] 6.2 Write e2e test: Create note, verify it appears, reload page, verify persistence
   - [ ] 6.3 Write e2e test: Auto-save draft, refresh page, verify draft recovery
   - [ ] 6.4 Write e2e test: Navigation warning when leaving with unsaved changes

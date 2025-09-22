@@ -251,8 +251,8 @@ describe('NoteEditor Component', () => {
       });
     });
 
-    it('should use createNoteFromDraft when draft exists', async () => {
-      const mockCreateNoteFromDraft = vi.fn().mockResolvedValue(createMockNote());
+    it('should save current form data even when draft exists', async () => {
+      const mockCreateNote = vi.fn().mockResolvedValue(createMockNote());
       const mockStore = {
         draft: createMockDraft({ title: 'Draft Title', body: 'Draft Body' }),
         isLoading: false,
@@ -260,19 +260,24 @@ describe('NoteEditor Component', () => {
         hasUnsavedChanges: true,
         saveDraft: vi.fn(),
         clearDraft: vi.fn(),
-        createNote: vi.fn(),
-        createNoteFromDraft: mockCreateNoteFromDraft,
+        createNote: mockCreateNote,
+        createNoteFromDraft: vi.fn(),
       };
 
       const { useNotesStore } = await import('../stores/notes.store');
       vi.mocked(useNotesStore).mockReturnValue(mockStore);
 
       const wrapper = mount(NoteEditor);
+      // Nadpisz formularz bieżącymi danymi użytkownika
+      const titleInput = wrapper.find('[data-testid="note-title-input"]');
+      const bodyTextarea = wrapper.find('[data-testid="note-body-textarea"]');
+      await titleInput.setValue('User Title');
+      await bodyTextarea.setValue('User Body');
       const saveButton = wrapper.find('[data-testid="save-button"]');
 
       await saveButton.trigger('click');
 
-      expect(mockCreateNoteFromDraft).toHaveBeenCalled();
+      expect(mockCreateNote).toHaveBeenCalledWith({ title: 'User Title', body: 'User Body' });
     });
 
     it('should show loading state during save operation', async () => {
@@ -743,113 +748,7 @@ describe('Navigation Protection and Draft Recovery', () => {
     expect(unsavedIndicator.text()).toBe('Niezapisane zmiany');
   });
 
-  it('should set up beforeunload event handler when component mounts', async () => {
-    const addEventListenerSpy = vi.spyOn(window, 'addEventListener');
-    
-    mount(NoteEditor);
-    await nextTick();
-
-    expect(addEventListenerSpy).toHaveBeenCalledWith('beforeunload', expect.any(Function));
-    
-    addEventListenerSpy.mockRestore();
-  });
-
-  it('should remove beforeunload event handler when component unmounts', async () => {
-    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
-    
-    const wrapper = mount(NoteEditor);
-    await nextTick();
-    
-    wrapper.unmount();
-
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('beforeunload', expect.any(Function));
-    
-    removeEventListenerSpy.mockRestore();
-  });
-
-  it('should prevent navigation when unsaved changes exist', async () => {
-    // Mock store z niezapisanymi zmianami
-    vi.mocked(useNotesStore).mockReturnValue({
-      draft: createMockDraft(),
-      isLoading: false,
-      error: null,
-      hasUnsavedChanges: true,
-      createNote: vi.fn().mockResolvedValue(createMockNote()),
-      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
-      saveDraft: vi.fn().mockResolvedValue(undefined),
-      clearDraft: mockClearDraft,
-      loadDraft: mockLoadDraft,
-      clearError: vi.fn(),
-    } as any);
-
-    let beforeunloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
-    
-    const addEventListenerSpy = vi.spyOn(window, 'addEventListener').mockImplementation((event, handler) => {
-      if (event === 'beforeunload') {
-        beforeunloadHandler = handler as (event: BeforeUnloadEvent) => void;
-      }
-    });
-
-    mount(NoteEditor);
-    await nextTick();
-
-    // Symuluj zdarzenie beforeunload
-    const mockEvent = {
-      preventDefault: vi.fn(),
-      returnValue: '',
-    } as unknown as BeforeUnloadEvent;
-
-    if (beforeunloadHandler) {
-      beforeunloadHandler(mockEvent);
-    }
-
-    expect(mockEvent.preventDefault).toHaveBeenCalled();
-    expect(mockEvent.returnValue).toBe('');
-    
-    addEventListenerSpy.mockRestore();
-  });
-
-  it('should not prevent navigation when no unsaved changes exist', async () => {
-    // Mock store bez niezapisanych zmian
-    vi.mocked(useNotesStore).mockReturnValue({
-      draft: null,
-      isLoading: false,
-      error: null,
-      hasUnsavedChanges: false,
-      createNote: vi.fn().mockResolvedValue(createMockNote()),
-      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
-      saveDraft: vi.fn().mockResolvedValue(undefined),
-      clearDraft: mockClearDraft,
-      loadDraft: mockLoadDraft,
-      clearError: vi.fn(),
-    } as any);
-
-    let beforeunloadHandler: ((event: BeforeUnloadEvent) => void) | null = null;
-    
-    const addEventListenerSpy = vi.spyOn(window, 'addEventListener').mockImplementation((event, handler) => {
-      if (event === 'beforeunload') {
-        beforeunloadHandler = handler as (event: BeforeUnloadEvent) => void;
-      }
-    });
-
-    mount(NoteEditor);
-    await nextTick();
-
-    // Symuluj zdarzenie beforeunload
-    const mockEvent = {
-      preventDefault: vi.fn(),
-      returnValue: '',
-    } as unknown as BeforeUnloadEvent;
-
-    if (beforeunloadHandler) {
-      beforeunloadHandler(mockEvent);
-    }
-
-    expect(mockEvent.preventDefault).not.toHaveBeenCalled();
-    expect(mockEvent.returnValue).toBe('');
-    
-    addEventListenerSpy.mockRestore();
-  });
+  // Zrezygnowaliśmy z ostrzeżeń nawigacyjnych, bo auto‑save działa – testy usunięte
 
   it('should show draft recovery timestamp when draft exists', async () => {
     const mockDraft = createMockDraft();

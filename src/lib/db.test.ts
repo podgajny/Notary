@@ -140,7 +140,10 @@ describe('Database Layer - Draft Operations', () => {
       await setDraft(mockDraft);
       const retrievedDraft = await getDraft();
 
-      expect(retrievedDraft).toEqual(mockDraft);
+      // lastModified jest aktualizowane w setDraft, więc porównujemy pola poza timestampem
+      expect(retrievedDraft?.title).toBe(mockDraft.title);
+      expect(retrievedDraft?.body).toBe(mockDraft.body);
+      expect(typeof retrievedDraft?.lastModified).toBe('string');
     });
 
     it('should handle corrupted draft data', async () => {
