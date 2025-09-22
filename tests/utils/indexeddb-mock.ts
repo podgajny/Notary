@@ -58,8 +58,11 @@ export const mockIdbKeyval = {
   keys: mockIndexedDB.keys.bind(mockIndexedDB),
 };
 
+// Import typów z aplikacji
+import type { Note, Draft } from '../../src/types';
+
 // Typ guards i helpers dla testów
-export const createMockNote = (overrides: Partial<any> = {}) => ({
+export const createMockNote = (overrides: Partial<Note> = {}): Note => ({
   id: 'test-note-id',
   title: 'Test Note',
   body: 'Test note body content',
@@ -68,7 +71,7 @@ export const createMockNote = (overrides: Partial<any> = {}) => ({
   ...overrides,
 });
 
-export const createMockDraft = (overrides: Partial<any> = {}) => ({
+export const createMockDraft = (overrides: Partial<Draft> = {}): Draft => ({
   title: 'Draft title',
   body: 'Draft body content',
   lastModified: new Date().toISOString(),
