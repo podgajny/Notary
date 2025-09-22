@@ -80,6 +80,7 @@
             variant="outline"
             @click="handleClear"
             :disabled="store.isLoading"
+            class="min-w-[44px] min-h-[44px]"
           >
             Wyczyść
           </Button>
@@ -88,7 +89,7 @@
             data-testid="save-button"
             @click="handleSave"
             :disabled="!isValidForm || store.isLoading"
-            class="min-w-[100px]"
+            class="min-w-[100px] min-h-[44px]"
           >
             <span v-if="store.isLoading">Zapisywanie...</span>
             <span v-else>Zapisz</span>
