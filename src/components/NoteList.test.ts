@@ -109,13 +109,13 @@ describe('NoteList.vue', () => {
       expect(notePreview[2].text()).toBe('Krótka treść');
     });
 
-    it('obcina długą treść w podglądzie', () => {
+    it('wyświetla pełną treść notatek bez obcinania', () => {
       const notePreview = wrapper.findAll('[data-testid="note-preview"]');
       const longNotePreview = notePreview[1].text();
       
-      // Sprawdź czy treść została obcięta (mniej niż pełna długość)
-      expect(longNotePreview.length).toBeLessThan(mockNotes[1].body.length);
-      expect(longNotePreview).toContain('...');
+      // Sprawdź czy treść jest wyświetlana w pełni
+      expect(longNotePreview).toBe(mockNotes[1].body);
+      expect(longNotePreview).not.toContain('...');
     });
 
     it('wyświetla daty ostatniej modyfikacji', () => {

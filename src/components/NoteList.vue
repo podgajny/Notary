@@ -94,11 +94,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 // Store
 const store = useNotesStore();
 
-// Stałe dla dynamicznego rozmiaru
-const PREVIEW_LENGTH_SMALL = 100;
-const PREVIEW_LENGTH_MEDIUM = 150;
-const PREVIEW_LENGTH_LARGE = 250;
-
+// Stałe dla dynamicznego rozmiaru kart
 const CONTENT_LENGTH_SMALL = 100;
 const CONTENT_LENGTH_LARGE = 200;
 
@@ -117,28 +113,10 @@ const formatDate = (isoString: string): string => {
 };
 
 /**
- * Zwraca skrócony tekst podglądu na podstawie długości treści
+ * Zwraca pełną treść notatki (bez skracania)
  */
 const getPreviewText = (body: string): string => {
-  if (!body) return '';
-  
-  const contentLength = body.length;
-  let maxLength: number;
-  
-  // Dynamiczny limit na podstawie długości treści
-  if (contentLength <= CONTENT_LENGTH_SMALL) {
-    maxLength = PREVIEW_LENGTH_SMALL;
-  } else if (contentLength <= CONTENT_LENGTH_LARGE) {
-    maxLength = PREVIEW_LENGTH_MEDIUM;
-  } else {
-    maxLength = PREVIEW_LENGTH_LARGE;
-  }
-  
-  if (body.length <= maxLength) {
-    return body;
-  }
-  
-  return body.substring(0, maxLength).trim() + '...';
+  return body || '';
 };
 
 /**
@@ -157,21 +135,11 @@ const getNoteItemSizeClass = (note: Note): string => {
 };
 
 /**
- * Zwraca klasę CSS dla podglądu tekstu
+ * Zwraca klasę CSS dla podglądu tekstu (bez ograniczania wysokości)
  */
 const getNotePreviewClass = (note: Note): string => {
-  const sizeClass = getNoteItemSizeClass(note);
-  
-  switch (sizeClass) {
-    case 'note-size-small':
-      return 'line-clamp-3';
-    case 'note-size-medium':
-      return 'line-clamp-4';
-    case 'note-size-large':
-      return 'line-clamp-6';
-    default:
-      return 'line-clamp-4';
-  }
+  // Zwróć podstawowe klasy bez line-clamp - pozwól na pełne wyświetlanie
+  return 'whitespace-pre-wrap';
 };
 </script>
 
@@ -180,17 +148,17 @@ const getNotePreviewClass = (note: Note): string => {
   @apply w-full;
 }
 
-/* Dynamiczne rozmiary kart */
+/* Dynamiczne rozmiary kart - pozwól na naturalne dopasowanie */
 .note-size-small {
-  @apply min-h-[120px];
+  @apply min-h-[100px];
 }
 
 .note-size-medium {
-  @apply min-h-[160px];
+  @apply min-h-[120px];
 }
 
 .note-size-large {
-  @apply min-h-[200px];
+  @apply min-h-[140px];
 }
 
 /* Line clamp utilities - fallback jeśli Tailwind nie ma line-clamp */
