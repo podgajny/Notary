@@ -6,10 +6,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { setActivePinia, createPinia } from 'pinia';
+import { nextTick } from 'vue';
 import { createMockNote, createMockDraft } from '../../tests/utils/indexeddb-mock';
 
 // Import komponentu do testowania (będzie zaimplementowany w następnym kroku)
 import NoteEditor from './NoteEditor.vue';
+import { useNotesStore } from '../stores/notes.store';
 
 // Mock dla store
 vi.mock('../stores/notes.store', () => ({
@@ -459,5 +461,193 @@ describe('NoteEditor Component', () => {
       expect(legend.exists()).toBe(true);
       expect(legend.text()).toBe('Nowa notatka');
     });
+  });
+});
+
+// Testy auto-save i debouncing
+describe('Draft Auto-save with Debouncing', () => {
+  let mockSaveDraft: any;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    setActivePinia(createPinia());
+    
+    // Mock dla saveDraft
+    mockSaveDraft = vi.fn().mockResolvedValue(undefined);
+    
+    // Aktualizuj mock store
+    vi.mocked(useNotesStore).mockReturnValue({
+      draft: null,
+      isLoading: false,
+      error: null,
+      hasUnsavedChanges: false,
+      createNote: vi.fn().mockResolvedValue(createMockNote()),
+      createNoteFromDraft: vi.fn().mockResolvedValue(createMockNote()),
+      saveDraft: mockSaveDraft,
+      clearDraft: vi.fn().mockResolvedValue(undefined),
+      clearError: vi.fn(),
+    } as any);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('should auto-save draft after 2 seconds of inactivity', async () => {
+    const wrapper = mount(NoteEditor);
+
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+    const bodyTextarea = wrapper.find('[data-testid="note-body-textarea"]');
+
+    // Wprowadź dane
+    await titleInput.setValue('Test tytuł');
+    await bodyTextarea.setValue('Test treść');
+
+    // Sprawdź że saveDraft nie został jeszcze wywołany
+    expect(mockSaveDraft).not.toHaveBeenCalled();
+
+    // Przesuń czas o 1 sekundę - jeszcze za wcześnie
+    vi.advanceTimersByTime(1000);
+    expect(mockSaveDraft).not.toHaveBeenCalled();
+
+    // Przesuń czas o kolejną sekundę - teraz powinno się zapisać
+    vi.advanceTimersByTime(1000);
+    await nextTick();
+
+    expect(mockSaveDraft).toHaveBeenCalledWith({
+      title: 'Test tytuł',
+      body: 'Test treść',
+    });
+  });
+
+  it('should debounce auto-save when user types continuously', async () => {
+    const wrapper = mount(NoteEditor);
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+
+    // Symuluj ciągłe pisanie
+    await titleInput.setValue('A');
+    vi.advanceTimersByTime(500);
+    
+    await titleInput.setValue('AB');
+    vi.advanceTimersByTime(500);
+    
+    await titleInput.setValue('ABC');
+    vi.advanceTimersByTime(500);
+
+    // Sprawdź że saveDraft nie został jeszcze wywołany mimo upływu 1.5s
+    expect(mockSaveDraft).not.toHaveBeenCalled();
+
+    // Przestań pisać i poczekaj 2 sekundy
+    vi.advanceTimersByTime(2000);
+    await nextTick();
+
+    // Teraz powinno się zapisać tylko raz z ostatnią wartością
+    expect(mockSaveDraft).toHaveBeenCalledTimes(1);
+    expect(mockSaveDraft).toHaveBeenCalledWith({
+      title: 'ABC',
+      body: '',
+    });
+  });
+
+  it('should not auto-save when both title and body are empty', async () => {
+    const wrapper = mount(NoteEditor);
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+
+    // Wprowadź dane i usuń je
+    await titleInput.setValue('Test');
+    await titleInput.setValue('');
+
+    // Przesuń czas
+    vi.advanceTimersByTime(2000);
+    await nextTick();
+
+    // Nie powinno się zapisać
+    expect(mockSaveDraft).not.toHaveBeenCalled();
+  });
+
+  it('should auto-save when only title is filled', async () => {
+    const wrapper = mount(NoteEditor);
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+    await titleInput.setValue('Tylko tytuł');
+
+    vi.advanceTimersByTime(2000);
+    await nextTick();
+
+    expect(mockSaveDraft).toHaveBeenCalledWith({
+      title: 'Tylko tytuł',
+      body: '',
+    });
+  });
+
+  it('should auto-save when only body is filled', async () => {
+    const wrapper = mount(NoteEditor);
+    const bodyTextarea = wrapper.find('[data-testid="note-body-textarea"]');
+    await bodyTextarea.setValue('Tylko treść');
+
+    vi.advanceTimersByTime(2000);
+    await nextTick();
+
+    expect(mockSaveDraft).toHaveBeenCalledWith({
+      title: '',
+      body: 'Tylko treść',
+    });
+  });
+
+  it('should handle auto-save errors gracefully', async () => {
+    // Zmień mock na błąd dla tego testu
+    mockSaveDraft.mockRejectedValueOnce(new Error('Storage error'));
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const wrapper = mount(NoteEditor);
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+    await titleInput.setValue('Test');
+
+    vi.advanceTimersByTime(2000);
+    await nextTick();
+
+    expect(mockSaveDraft).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Błąd podczas zapisywania draftu:', expect.any(Error));
+
+    consoleErrorSpy.mockRestore();
+  });
+
+  it('should cancel previous auto-save timer when new input occurs', async () => {
+    const wrapper = mount(NoteEditor);
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+
+    // Pierwsza zmiana
+    await titleInput.setValue('A');
+    vi.advanceTimersByTime(1500);
+
+    // Druga zmiana - powinna anulować poprzedni timer
+    await titleInput.setValue('AB');
+    vi.advanceTimersByTime(1500);
+
+    // Sprawdź że jeszcze nie zapisano
+    expect(mockSaveDraft).not.toHaveBeenCalled();
+
+    // Dokończ drugi timer
+    vi.advanceTimersByTime(500);
+    await nextTick();
+
+    // Powinno się zapisać tylko raz z ostatnią wartością
+    expect(mockSaveDraft).toHaveBeenCalledTimes(1);
+    expect(mockSaveDraft).toHaveBeenCalledWith({
+      title: 'AB',
+      body: '',
+    });
+  });
+
+  it('should clean up timer on component unmount', async () => {
+    const clearTimeoutSpy = vi.spyOn(window, 'clearTimeout');
+    const wrapper = mount(NoteEditor);
+    const titleInput = wrapper.find('[data-testid="note-title-input"]');
+    await titleInput.setValue('Test');
+
+    // Odmontuj komponent przed upływem timera
+    wrapper.unmount();
+
+    expect(clearTimeoutSpy).toHaveBeenCalled();
+    clearTimeoutSpy.mockRestore();
   });
 });
