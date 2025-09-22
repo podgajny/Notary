@@ -108,8 +108,17 @@ describe('NoteEditor Component', () => {
     it('should show helper text when title is empty and user tried to save', async () => {
       const wrapper = mount(NoteEditor);
 
-      const saveButton = wrapper.find('[data-testid="save-button"]');
-      await saveButton.trigger('click');
+      const titleInput = wrapper.find('[data-testid="note-title-input"]');
+      
+      // Wprowadź tytuł aby przycisk stał się aktywny
+      await titleInput.setValue('Test');
+      
+      // Usuń tytuł aby przycisk stał się nieaktywny, ale zachowaj focus
+      await titleInput.setValue('');
+      
+      // Symuluj próbę zapisania przez naciśnięcie Enter w formularzu
+      const form = wrapper.find('form');
+      await form.trigger('submit');
 
       const helperText = wrapper.find('[data-testid="title-helper-text"]');
       expect(helperText.exists()).toBe(true);
@@ -421,12 +430,22 @@ describe('NoteEditor Component', () => {
     it('should associate error messages with inputs via aria-describedby', async () => {
       const wrapper = mount(NoteEditor);
 
-      const saveButton = wrapper.find('[data-testid="save-button"]');
-      await saveButton.trigger('click');
-
       const titleInput = wrapper.find('[data-testid="note-title-input"]');
-      const helperText = wrapper.find('[data-testid="title-helper-text"]');
+      
+      // Wprowadź i usuń tytuł aby wywołać walidację
+      await titleInput.setValue('Test');
+      await titleInput.setValue('');
+      
+      // Symuluj próbę zapisania
+      const form = wrapper.find('form');
+      await form.trigger('submit');
 
+      const helperText = wrapper.find('[data-testid="title-helper-text"]');
+      
+      // Sprawdź czy helper text istnieje
+      expect(helperText.exists()).toBe(true);
+      
+      // Sprawdź powiązanie aria-describedby
       expect(titleInput.attributes('aria-describedby')).toContain(helperText.attributes('id'));
     });
 
