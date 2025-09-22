@@ -32,12 +32,12 @@ Approach: Test-Driven Development (TDD)
 
 ## Tasks
 
-- [ ] 1.0 Setup Testing Infrastructure and Data Layer
+- [x] 1.0 Setup Testing Infrastructure and Data Layer
   - [x] 1.1 Install and configure required dependencies (`pinia`, `idb-keyval`)
-  - [ ] 1.2 Setup Vitest configuration for unit tests if not already present
-  - [ ] 1.3 Setup Playwright configuration for e2e tests if not already present
-  - [ ] 1.4 Create test utilities and mocks for IndexedDB operations
-  - [ ] 1.5 Define TypeScript interfaces for Note and Draft types
+  - [x] 1.2 Setup Vitest configuration for unit tests if not already present
+  - [x] 1.3 Setup Playwright configuration for e2e tests if not already present
+  - [x] 1.4 Create test utilities and mocks for IndexedDB operations
+  - [x] 1.5 Define TypeScript interfaces for Note and Draft types
 
 - [ ] 2.0 Implement Core Data Management (Store + Persistence)
   - [ ] 2.1 **TDD**: Write tests for `src/lib/db.ts` - test getNotes(), setNotes(), getDraft(), setDraft()
