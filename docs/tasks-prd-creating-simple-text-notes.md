@@ -41,7 +41,7 @@ Approach: Test-Driven Development (TDD)
 
 - [ ] 2.0 Implement Core Data Management (Store + Persistence)
   - [x] 2.1 **TDD**: Write tests for `src/lib/db.ts` - test getNotes(), setNotes(), getDraft(), setDraft()
-  - [ ] 2.2 Implement `src/lib/db.ts` - IndexedDB wrapper using idb-keyval with error handling
+  - [x] 2.2 Implement `src/lib/db.ts` - IndexedDB wrapper using idb-keyval with error handling
   - [ ] 2.3 **TDD**: Write tests for notes store - test create(), state management, validation
   - [ ] 2.4 Implement `src/stores/notes.store.ts` - Pinia store with Note type and CRUD operations
   - [ ] 2.5 Add UUID generation utility with crypto.randomUUID() and fallback
