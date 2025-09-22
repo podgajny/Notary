@@ -39,13 +39,13 @@ Approach: Test-Driven Development (TDD)
   - [x] 1.4 Create test utilities and mocks for IndexedDB operations
   - [x] 1.5 Define TypeScript interfaces for Note and Draft types
 
-- [ ] 2.0 Implement Core Data Management (Store + Persistence)
+- [x] 2.0 Implement Core Data Management (Store + Persistence)
   - [x] 2.1 **TDD**: Write tests for `src/lib/db.ts` - test getNotes(), setNotes(), getDraft(), setDraft()
   - [x] 2.2 Implement `src/lib/db.ts` - IndexedDB wrapper using idb-keyval with error handling
-  - [ ] 2.3 **TDD**: Write tests for notes store - test create(), state management, validation
-  - [ ] 2.4 Implement `src/stores/notes.store.ts` - Pinia store with Note type and CRUD operations
-  - [ ] 2.5 Add UUID generation utility with crypto.randomUUID() and fallback
-  - [ ] 2.6 Test error scenarios - storage failures, invalid data handling
+  - [x] 2.3 **TDD**: Write tests for notes store - test create(), state management, validation
+  - [x] 2.4 Implement `src/stores/notes.store.ts` - Pinia store with Note type and CRUD operations
+  - [x] 2.5 Add UUID generation utility with crypto.randomUUID() and fallback
+  - [x] 2.6 Test error scenarios - storage failures, invalid data handling
 
 - [ ] 3.0 Create Note Editor Component with Validation
   - [ ] 3.1 Add required shadcn-vue UI components (Button, Input, Textarea, Card) if missing
