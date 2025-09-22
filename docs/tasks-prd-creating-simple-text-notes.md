@@ -40,7 +40,7 @@ Approach: Test-Driven Development (TDD)
   - [x] 1.5 Define TypeScript interfaces for Note and Draft types
 
 - [ ] 2.0 Implement Core Data Management (Store + Persistence)
-  - [ ] 2.1 **TDD**: Write tests for `src/lib/db.ts` - test getNotes(), setNotes(), getDraft(), setDraft()
+  - [x] 2.1 **TDD**: Write tests for `src/lib/db.ts` - test getNotes(), setNotes(), getDraft(), setDraft()
   - [ ] 2.2 Implement `src/lib/db.ts` - IndexedDB wrapper using idb-keyval with error handling
   - [ ] 2.3 **TDD**: Write tests for notes store - test create(), state management, validation
   - [ ] 2.4 Implement `src/stores/notes.store.ts` - Pinia store with Note type and CRUD operations
