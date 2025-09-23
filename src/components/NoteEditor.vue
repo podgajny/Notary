@@ -80,7 +80,8 @@
             variant="outline"
             @click="handleClear"
             :disabled="store.isLoading"
-            class="min-w-[44px] min-h-[44px]"
+            :aria-disabled="store.isLoading ? 'true' : undefined"
+            class="h-11 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
           >
             Wyczyść
           </Button>
@@ -89,7 +90,8 @@
             data-testid="save-button"
             @click="handleSave"
             :disabled="!isValidForm || store.isLoading"
-            class="min-w-[100px] min-h-[44px]"
+            :aria-disabled="(!isValidForm || store.isLoading) ? 'true' : undefined"
+            class="h-11 min-w-24 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
           >
             <span v-if="store.isLoading">Zapisywanie...</span>
             <span v-else>Zapisz</span>

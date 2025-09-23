@@ -84,7 +84,7 @@ Approach: Test-Driven Development (TDD)
 
 - [ ] 7.0 Final Integration and Documentation
   - [x] 7.1 Update `src/views/HomeView.vue` to integrate NoteEditor and NoteList
-  - [ ] 7.2 Ensure proper component styling with Tailwind CSS and shadcn-vue
+  - [x] 7.2 Ensure proper component styling with Tailwind CSS and shadcn-vue
   - [ ] 7.3 Add proper Polish comments throughout the codebase
   - [ ] 7.4 Run all tests and ensure 100% pass rate
   - [ ] 7.5 Update README.md with local storage information and draft system explanation
