@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { } from 'vue';
 import { useNotesStore } from '../stores/notes.store';
 import type { Note } from '../types';
 
@@ -137,7 +137,7 @@ const getNoteItemSizeClass = (note: Note): string => {
 /**
  * Zwraca klasę CSS dla podglądu tekstu (bez ograniczania wysokości)
  */
-const getNotePreviewClass = (note: Note): string => {
+const getNotePreviewClass = (_note: Note): string => {
   // Zwróć podstawowe klasy bez line-clamp - pozwól na pełne wyświetlanie
   return 'whitespace-pre-wrap';
 };
