@@ -83,7 +83,7 @@ Approach: Test-Driven Development (TDD)
   - [x] 6.6 Test mobile responsiveness and touch interactions
 
 - [ ] 7.0 Final Integration and Documentation
-  - [ ] 7.1 Update `src/views/HomeView.vue` to integrate NoteEditor and NoteList
+  - [x] 7.1 Update `src/views/HomeView.vue` to integrate NoteEditor and NoteList
   - [ ] 7.2 Ensure proper component styling with Tailwind CSS and shadcn-vue
   - [ ] 7.3 Add proper Polish comments throughout the codebase
   - [ ] 7.4 Run all tests and ensure 100% pass rate
