@@ -1,0 +1,5 @@
+# Uruchom lint-staged dla plików w staging area
+npx lint-staged
+
+# Uruchom testy jednostkowe przed commitem
+npm run test:run
