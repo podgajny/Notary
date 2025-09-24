@@ -40,10 +40,37 @@ jobs:
     # Sprawdź czy nie ma konfliktów
     - name: Check for merge conflicts
       run: |
-        if git merge-tree $(git merge-base HEAD main) HEAD main | grep -q '<<<<<<<'; then
-          echo "Merge conflicts detected"
+        echo "Checking for merge conflicts with main branch..."
+        
+        # Sprawdź czy main branch istnieje
+        if ! git show-ref --verify --quiet refs/remotes/origin/main; then
+          echo "Warning: main branch not found, skipping merge conflict check"
+          exit 0
+        fi
+        
+        # Znajdź wspólny ancestor
+        if ! MERGE_BASE=$(git merge-base HEAD origin/main 2>/dev/null); then
+          echo "Warning: No common ancestor found between HEAD and main, skipping conflict check"
+          exit 0
+        fi
+        
+        echo "Common ancestor: $MERGE_BASE"
+        
+        # Użyj git merge-tree do sprawdzenia konfliktów
+        # Wersja z --write-tree zwraca kod błędu gdy są konflikty
+        if ! git merge-tree --write-tree $MERGE_BASE HEAD origin/main >/dev/null 2>&1; then
+          echo "❌ Merge conflicts detected between current branch and main!"
+          echo ""
+          echo "To resolve conflicts locally:"
+          echo "1. git fetch origin"
+          echo "2. git merge origin/main"
+          echo "3. Resolve conflicts manually"
+          echo "4. git add . && git commit"
+          echo "5. git push"
           exit 1
         fi
+        
+        echo "✅ No merge conflicts detected"
     
     # Sprawdź rozmiar bundle (opcjonalnie)
     - name: Bundle size check
