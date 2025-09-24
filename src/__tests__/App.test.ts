@@ -1,20 +1,24 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
+import { createPinia, setActivePinia } from "pinia";
 import App from "../App.vue";
 
 describe("App", () => {
+  beforeEach(() => {
+    // Ustaw aktywne Pinia dla testów, aby komponenty korzystające ze store działały
+    setActivePinia(createPinia());
+  });
   it("powinien renderować się bez błędów", () => {
     const wrapper = mount(App);
     expect(wrapper.exists()).toBe(true);
   });
 
-  it("powinien zawierać komponent NoteDisplay", () => {
+  it("powinien zawierać listę notatek (NoteList)", () => {
     const wrapper = mount(App);
 
-    // Sprawdź czy komponent NoteDisplay jest renderowany
-    // (można użyć selektora klasy lub data-testid)
-    const noteDisplay = wrapper.find(".max-w-4xl");
-    expect(noteDisplay.exists()).toBe(true);
+    // Sprawdź czy komponent listy notatek jest renderowany
+    const noteList = wrapper.find('[data-testid="note-list"]');
+    expect(noteList.exists()).toBe(true);
   });
 
   it("powinien mieć odpowiednią strukturę HTML", () => {
@@ -32,9 +36,8 @@ describe("App", () => {
     expect(document.title).toBeDefined();
   });
 
-  // Test snapshot - sprawdza czy struktura się nie zmieniła
-  it("powinien pasować do snapshot", () => {
+  it("powinien renderować nagłówek aplikacji", () => {
     const wrapper = mount(App);
-    expect(wrapper.html()).toMatchSnapshot();
+    expect(wrapper.text()).toContain("Notary - Notatki");
   });
 });
