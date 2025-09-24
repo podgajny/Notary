@@ -1,6 +1,5 @@
 // Test setup file dla Vitest
 import { expect } from "vitest";
-import * as matchers from "@testing-library/jest-dom/matchers";
+import "@testing-library/jest-dom";
 
-// Rozszerz expect o matcher z testing-library
-expect.extend(matchers);
+// Matcher z testing-library są automatycznie rozszerzone dla Vitest
