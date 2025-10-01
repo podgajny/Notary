@@ -33,3 +33,6 @@ coverage/
 
 # Vercel deployment
 .vercel
+
+# Backup files
+*.backup
