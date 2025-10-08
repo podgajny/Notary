@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`NoteDisplay > powinien być dostępny (accessibility) 1`] = `
+exports[`NoteDisplay > powinien pasować do snapshot 1`] = `
 "<div data-v-6a099708="" class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
   <!-- Tytuł notatki -->
   <h1 data-v-6a099708="" class="text-3xl font-bold text-gray-900 mb-6 leading-tight">TEST: Zmieniony tytuł notatki - wersja testowa2</h1><!-- Treść notatki -->

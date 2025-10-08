@@ -57,20 +57,25 @@ jobs:
         echo "Common ancestor: $MERGE_BASE"
         
         # Użyj git merge-tree do sprawdzenia konfliktów
-        # Wersja z --write-tree zwraca kod błędu gdy są konflikty
-        if ! git merge-tree --write-tree $MERGE_BASE HEAD origin/main >/dev/null 2>&1; then
-          echo "❌ Merge conflicts detected between current branch and main!"
-          echo ""
-          echo "To resolve conflicts locally:"
-          echo "1. git fetch origin"
-          echo "2. git merge origin/main"
-          echo "3. Resolve conflicts manually"
-          echo "4. git add . && git commit"
-          echo "5. git push"
-          exit 1
+        # Nowa składnia wymaga --merge-base; dodajemy fallback dla starszych wersji
+        if git merge-tree --write-tree --merge-base "$MERGE_BASE" HEAD origin/main >/dev/null 2>&1; then
+          echo "✅ No merge conflicts detected"
+        else
+          # Fallback: starsza składnia: git merge-tree <base> <branch1> <branch2>
+          if git merge-tree "$MERGE_BASE" HEAD origin/main >/dev/null 2>&1; then
+            echo "✅ No merge conflicts detected"
+          else
+            echo "❌ Merge conflicts detected between current branch and main!"
+            echo ""
+            echo "To resolve conflicts locally:"
+            echo "1. git fetch origin"
+            echo "2. git merge origin/main"
+            echo "3. Resolve conflicts manually"
+            echo "4. git add . && git commit"
+            echo "5. git push"
+            exit 1
+          fi
         fi
-        
-        echo "✅ No merge conflicts detected"
     
     # Sprawdź rozmiar bundle (opcjonalnie)
     - name: Bundle size check
