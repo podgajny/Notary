@@ -46,7 +46,6 @@ Ten projekt jest skonfigurowany do pracy z TDD. Zobacz przykłady w:
 - `src/components/__tests__/NoteEditor.spec.ts` - testy komponentu edytora notatek
 - `src/components/__tests__/NoteList.spec.ts` - testy komponentu listy notatek
 - `src/stores/__tests__/notes.store.spec.ts` - testy store'a Pinia
-- `src/lib/__tests__/db.test.ts` - testy warstwy bazy danych
 
 ### TDD Workflow
 
