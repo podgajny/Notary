@@ -247,7 +247,7 @@ describe("NoteEditor", () => {
     const wrapper = mount(NoteEditor);
 
     // Assert
-    expect((wrapper.vm as any).titleInputRef).toBeDefined();
+    expect(wrapper.vm.$refs.titleInputRef).toBeDefined();
   });
 
   it("powinien mieć odpowiednie etykiety dla dostępności", () => {
