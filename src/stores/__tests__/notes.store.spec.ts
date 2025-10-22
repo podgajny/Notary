@@ -19,7 +19,7 @@ vi.mock("../../lib/db", () => ({
   },
 }));
 
-import { getNotes, setNotes, DbError } from "../../lib/db";
+import { getNotes, setNotes, DbError, type StoredNote } from "../../lib/db";
 
 describe("notes.store.ts - Pinia store for notes", () => {
   beforeEach(() => {
@@ -97,8 +97,8 @@ describe("notes.store.ts - Pinia store for notes", () => {
 
     it("powinien ustawić isLoading na true podczas ładowania", async () => {
       // Arrange
-      let resolvePromise: (value: any) => void;
-      const promise = new Promise<any[]>((resolve) => {
+      let resolvePromise: (value: StoredNote[]) => void;
+      const promise = new Promise<StoredNote[]>((resolve) => {
         resolvePromise = resolve;
       });
       vi.mocked(getNotes).mockReturnValue(promise);
