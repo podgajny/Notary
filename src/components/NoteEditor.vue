@@ -1,127 +1,155 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { NoteStoreError } from '../stores/notes.store'
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
+import { NoteStoreError } from "../stores/notes.store";
 
 type SaveNoteInput = {
-  title: string
-  body: string
-}
+  title: string;
+  body: string;
+};
 
 const props = withDefaults(
   defineProps<{
-    saveNote?: (input: SaveNoteInput) => Promise<unknown> | unknown
+    saveNote?: (input: SaveNoteInput) => Promise<unknown> | unknown;
   }>(),
   {
     saveNote: async () => {},
   },
-)
+);
 
-const title = ref('')
-const body = ref('')
-const isSaving = ref(false)
-const errorMessage = ref('')
-const successMessage = ref('')
-const titleInputRef = ref<HTMLInputElement | null>(null)
+const title = ref("");
+const body = ref("");
+const isSaving = ref(false);
+const errorMessage = ref("");
+const successMessage = ref("");
+const titleInputRef = ref<HTMLInputElement | null>(null);
+let successTimeoutId: number | undefined;
 
-const TITLE_REQUIRED_COPY = 'Title is required'
-const SAVE_SUCCESS_COPY = 'Note saved'
-const SAVE_FAILED_COPY = 'Could not save. Try again.'
+const TITLE_REQUIRED_COPY = "Title is required";
+const SAVE_SUCCESS_COPY = "Note saved";
+const SAVE_FAILED_COPY = "Could not save. Try again.";
 
-const isTitleEmpty = computed(() => title.value.trim().length === 0)
-const isSaveDisabled = computed(() => isSaving.value || isTitleEmpty.value)
+const isTitleEmpty = computed(() => title.value.trim().length === 0);
+const isSaveDisabled = computed(() => isSaving.value || isTitleEmpty.value);
 
 const focusTitleInput = () => {
-  titleInputRef.value?.focus()
-}
+  titleInputRef.value?.focus();
+};
+
+const clearSuccessAfterDelay = () => {
+  if (successTimeoutId) {
+    window.clearTimeout(successTimeoutId);
+  }
+
+  successTimeoutId = window.setTimeout(() => {
+    successMessage.value = "";
+    successTimeoutId = undefined;
+  }, 2500);
+};
 
 const resetForm = async () => {
-  title.value = ''
-  body.value = ''
-  await nextTick()
-  focusTitleInput()
-}
+  title.value = "";
+  body.value = "";
+  await nextTick();
+  focusTitleInput();
+};
 
 const mapErrorToMessage = (error: unknown): string => {
   if (error instanceof NoteStoreError) {
-    if (error.code === 'STORAGE_WRITE_FAILED') {
-      return SAVE_FAILED_COPY
+    if (error.code === "STORAGE_WRITE_FAILED") {
+      return SAVE_FAILED_COPY;
     }
 
-    if (error.code === 'TITLE_REQUIRED') {
-      return TITLE_REQUIRED_COPY
+    if (error.code === "TITLE_REQUIRED") {
+      return TITLE_REQUIRED_COPY;
     }
   }
 
   if (error instanceof Error) {
-    if (error.message === 'STORAGE_WRITE_FAILED') {
-      return SAVE_FAILED_COPY
+    if (error.message === "STORAGE_WRITE_FAILED") {
+      return SAVE_FAILED_COPY;
     }
 
-    if (error.message === 'TITLE_REQUIRED') {
-      return TITLE_REQUIRED_COPY
+    if (error.message === "TITLE_REQUIRED") {
+      return TITLE_REQUIRED_COPY;
     }
   }
 
-  return SAVE_FAILED_COPY
-}
+  return SAVE_FAILED_COPY;
+};
 
 const submit = async () => {
   if (isTitleEmpty.value) {
-    errorMessage.value = TITLE_REQUIRED_COPY
-    return
+    errorMessage.value = TITLE_REQUIRED_COPY;
+    return;
   }
 
-  isSaving.value = true
-  errorMessage.value = ''
-  successMessage.value = ''
+  isSaving.value = true;
+  errorMessage.value = "";
+  successMessage.value = "";
 
   try {
     await props.saveNote({
       title: title.value.trim(),
       body: body.value,
-    })
+    });
 
-    successMessage.value = SAVE_SUCCESS_COPY
-    await resetForm()
+    successMessage.value = SAVE_SUCCESS_COPY;
+    clearSuccessAfterDelay();
+    await resetForm();
   } catch (error) {
-    errorMessage.value = mapErrorToMessage(error)
+    errorMessage.value = mapErrorToMessage(error);
   } finally {
-    isSaving.value = false
+    isSaving.value = false;
   }
-}
+};
 
-// Clear error message when user starts typing
 watch(title, () => {
   if (errorMessage.value) {
-    errorMessage.value = ''
+    errorMessage.value = "";
   }
 
   if (successMessage.value) {
-    successMessage.value = ''
+    successMessage.value = "";
   }
-})
+});
 
 watch(body, () => {
   if (successMessage.value) {
-    successMessage.value = ''
+    successMessage.value = "";
   }
-})
+});
 
 onMounted(() => {
-  focusTitleInput()
-})
+  focusTitleInput();
+});
+
+onBeforeUnmount(() => {
+  if (successTimeoutId) {
+    window.clearTimeout(successTimeoutId);
+  }
+});
 </script>
 
 <template>
   <section class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
     <h2 class="text-lg font-semibold text-slate-900">Create a note</h2>
     <p class="mt-2 text-sm text-slate-600">
-      Capture your thoughts quickly. Add a title, jot down the details, and save.
+      Capture your thoughts quickly. Add a title, jot down the details, and
+      save.
     </p>
 
     <form class="mt-4 space-y-5" @submit.prevent="submit">
       <div>
-        <label for="note-title" class="block text-sm font-medium text-slate-700">Title</label>
+        <label for="note-title" class="block text-sm font-medium text-slate-700"
+          >Title</label
+        >
         <input
           id="note-title"
           ref="titleInputRef"
@@ -131,11 +159,15 @@ onMounted(() => {
           placeholder="Title"
           :disabled="isSaving"
         />
-        <p v-if="isTitleEmpty" class="mt-1 text-sm text-red-600">{{ TITLE_REQUIRED_COPY }}</p>
+        <p v-if="isTitleEmpty" class="mt-1 text-sm text-red-600">
+          {{ TITLE_REQUIRED_COPY }}
+        </p>
       </div>
 
       <div>
-        <label for="note-body" class="block text-sm font-medium text-slate-700">Body</label>
+        <label for="note-body" class="block text-sm font-medium text-slate-700"
+          >Body</label
+        >
         <textarea
           id="note-body"
           v-model="body"
@@ -156,8 +188,12 @@ onMounted(() => {
           <span v-else>Save</span>
         </button>
 
-        <p v-if="successMessage" class="text-sm text-green-600">{{ successMessage }}</p>
-        <p v-else-if="errorMessage" class="text-sm text-red-600">{{ errorMessage }}</p>
+        <p v-if="successMessage" class="text-sm text-green-600">
+          {{ successMessage }}
+        </p>
+        <p v-else-if="errorMessage" class="text-sm text-red-600">
+          {{ errorMessage }}
+        </p>
       </div>
     </form>
   </section>
