@@ -1,6 +1,14 @@
-# Notary Vue - TDD + CI Setup
+# Notary Vue - Local-First Notes App
 
-Vue 3 aplikacja z pełną konfiguracją TDD (Test-Driven Development) i CI/CD.
+Vue 3 aplikacja do tworzenia notatek z lokalnym przechowywaniem danych. Zbudowana z wykorzystaniem TDD (Test-Driven Development) i CI/CD.
+
+## ✨ Funkcjonalności
+
+- **Tworzenie notatek** - Dodawaj tytuł i treść notatki
+- **Lokalne przechowywanie** - Dane zapisywane w IndexedDB przeglądarki
+- **Responsywny design** - Działa na wszystkich urządzeniach
+- **Walidacja formularzy** - Sprawdzanie poprawności danych
+- **Obsługa błędów** - Przyjazne komunikaty dla użytkownika
 
 ## 🚀 Quick Start
 
@@ -15,12 +23,29 @@ npm run dev
 npm run test
 ```
 
+## 📝 Jak to działa
+
+1. **Tworzenie notatki**: Wpisz tytuł (wymagany) i treść notatki, następnie kliknij "Save"
+2. **Lokalne przechowywanie**: Notatki są automatycznie zapisywane w IndexedDB przeglądarki
+3. **Wyświetlanie**: Wszystkie notatki pojawiają się poniżej formularza, posortowane od najnowszych
+4. **Trwałość**: Notatki pozostają po odświeżeniu strony - dane są przechowywane lokalnie
+
+### Architektura
+
+- **Vue 3** + **Composition API** - nowoczesny framework
+- **Pinia** - zarządzanie stanem aplikacji
+- **Vue Router** - nawigacja między stronami
+- **IndexedDB** - lokalne przechowywanie danych
+- **TailwindCSS** - stylowanie komponentów
+- **Vitest** - testowanie jednostkowe
+
 ## 🧪 Test-Driven Development
 
 Ten projekt jest skonfigurowany do pracy z TDD. Zobacz przykłady w:
 
-- `src/components/__tests__/NoteCounter.test.ts` - przykład TDD dla komponentu Vue
-- `src/utils/__tests__/noteUtils.test.ts` - przykład TDD dla funkcji utility
+- `src/components/__tests__/NoteEditor.spec.ts` - testy komponentu edytora notatek
+- `src/components/__tests__/NoteList.spec.ts` - testy komponentu listy notatek
+- `src/stores/__tests__/notes.store.spec.ts` - testy store'a Pinia
 
 ### TDD Workflow
 
@@ -90,21 +115,20 @@ npm run lint:fix     # Formatowanie kodu
 src/
 ├── components/           # Komponenty Vue
 │   ├── __tests__/       # Testy komponentów
-│   └── *.vue
-├── utils/               # Funkcje pomocnicze
-│   ├── __tests__/       # Testy utility
-│   └── *.ts
+│   ├── NoteEditor.vue   # Formularz tworzenia notatek
+│   └── NoteList.vue     # Lista wyświetlająca notatki
+├── stores/              # Store Pinia
+│   ├── __tests__/       # Testy store'a
+│   └── notes.store.ts   # Store zarządzający notatkami
+├── lib/                 # Warstwa bazy danych
+│   ├── __tests__/       # Testy bazy danych
+│   └── db.ts           # IndexedDB wrapper
 ├── views/               # Komponenty stron
+│   └── HomeView.vue     # Główna strona aplikacji
+├── router/              # Konfiguracja routingu
+│   └── index.js         # Definicje tras
 ├── assets/              # Statyczne assety
 └── __tests__/           # Testy główne
-
-tests/
-└── e2e/                 # Testy End-to-End
-
-.github/
-└── workflows/           # GitHub Actions
-    ├── ci.yml          # Main CI/CD
-    └── pr-validation.yml # PR validation
 
 docs/                    # Dokumentacja
 ├── tdd-ci-setup.md     # Przewodnik TDD + CI
