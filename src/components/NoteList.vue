@@ -54,7 +54,10 @@ const formatUpdatedAt = (timestamp: number) =>
             {{ formatUpdatedAt(note.updatedAt) }}
           </time>
         </header>
-        <p v-if="note.body" class="mt-2 line-clamp-5 text-sm text-slate-600">
+        <p
+          v-if="note.body"
+          class="mt-2 break-words line-clamp-5 text-sm text-slate-600"
+        >
           {{ note.body }}
         </p>
         <p v-else class="mt-2 text-sm text-slate-400">No body text yet.</p>
