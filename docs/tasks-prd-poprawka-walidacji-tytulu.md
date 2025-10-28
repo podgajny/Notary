@@ -20,15 +20,15 @@ Following the Red-Green-Refactor cycle from [tdd-ci-setup.md](tdd-ci-setup.md)
 
 ### Phase 1: RED ❌ - Write failing tests
 
-- [ ] 1.1 Update test: "powinien wyłączyć przycisk Save gdy tytuł jest pusty" to expect enabled button
-- [ ] 1.2 Add new test: "powinien nie wyświetlać błędu walidacji przy załadowaniu formularza"
-- [ ] 1.3 Update test expectations for button state with empty title
-- [ ] 1.4 Run tests and verify they fail (`npm run test`)
+- [x] 1.1 Update test: "powinien wyłączyć przycisk Save gdy tytuł jest pusty" to expect enabled button
+- [x] 1.2 Add new test: "powinien nie wyświetlać błędu walidacji przy załadowaniu formularza"
+- [x] 1.3 Update test expectations for button state with empty title
+- [x] 1.4 Run tests and verify they fail (`npm run test`) - ✅ 3 tests failing as expected
 
 ### Phase 2: GREEN ✅ - Implement minimal code to pass tests
 
-- [ ] 2.1 Add `showTitleError` reactive state to NoteEditor.vue
-- [ ] 2.2 Update `isSaveDisabled` computed property (remove `isTitleEmpty` check)
+- [x] 2.1 Add `showTitleError` reactive state to NoteEditor.vue
+- [x] 2.2 Update `isSaveDisabled` computed property (remove `isTitleEmpty` check)
 - [ ] 2.3 Update template: change `v-if="isTitleEmpty"` to `v-if="showTitleError"`
 - [ ] 2.4 Update `submit` function to set `showTitleError = true` on validation failure
 - [ ] 2.5 Update title watcher to clear `showTitleError`

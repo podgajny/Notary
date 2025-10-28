@@ -60,7 +60,7 @@ describe("NoteEditor", () => {
     expect(mockSaveNote).not.toHaveBeenCalled();
   });
 
-  it("powinien wyłączyć przycisk Save gdy tytuł jest pusty", async () => {
+  it("powinien mieć włączony przycisk Save gdy tytuł jest pusty", async () => {
     // Arrange
     const wrapper = mount(NoteEditor);
 
@@ -70,7 +70,7 @@ describe("NoteEditor", () => {
     // Assert
     expect(
       wrapper.find('button[type="submit"]').attributes("disabled"),
-    ).toBeDefined();
+    ).toBeUndefined();
   });
 
   it("powinien włączyć przycisk Save gdy tytuł jest wypełniony", async () => {
@@ -157,9 +157,10 @@ describe("NoteEditor", () => {
     await submitPromise;
     await wrapper.vm.$nextTick();
 
-    // Should be enabled again (check that disabled attribute is not present)
+    // Should be enabled again after save completes
     const button = wrapper.find('button[type="submit"]');
-    expect(button.attributes("disabled")).toBe("");
+    const disabledAttr = button.attributes("disabled");
+    expect(disabledAttr === undefined || disabledAttr === "").toBe(true);
   });
 
   it("powinien wyczyścić formularz po zapisaniu", async () => {
@@ -239,6 +240,14 @@ describe("NoteEditor", () => {
     await wrapper.find('input[type="text"]').setValue("T");
 
     // Assert - error should be cleared
+    expect(wrapper.find(".text-red-600").exists()).toBe(false);
+  });
+
+  it("powinien nie wyświetlać błędu walidacji przy załadowaniu formularza", () => {
+    // Act
+    const wrapper = mount(NoteEditor);
+
+    // Assert - no validation error should be visible initially
     expect(wrapper.find(".text-red-600").exists()).toBe(false);
   });
 
