@@ -28,6 +28,7 @@ const body = ref("");
 const isSaving = ref(false);
 const errorMessage = ref("");
 const successMessage = ref("");
+// Walidacja reaktywna - błąd wyświetla się tylko po próbie zapisu
 const showTitleError = ref(false);
 const titleInputRef = ref<HTMLInputElement | null>(null);
 let successTimeoutId: number | undefined;
