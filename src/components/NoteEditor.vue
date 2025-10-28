@@ -89,6 +89,7 @@ const mapErrorToMessage = (error: unknown): string => {
 const submit = async () => {
   if (isTitleEmpty.value) {
     showTitleError.value = true;
+    title.value = title.value.trim();
     focusTitleInput();
     return;
   }
@@ -114,7 +115,7 @@ const submit = async () => {
 };
 
 watch(title, () => {
-  if (showTitleError.value) {
+  if (showTitleError.value && !isTitleEmpty.value) {
     showTitleError.value = false;
   }
 
