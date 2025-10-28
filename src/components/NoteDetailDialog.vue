@@ -2,6 +2,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -13,7 +14,7 @@ type Note = {
   createdAt: Date;
 };
 
-const props = defineProps<{
+defineProps<{
   note: Note;
   isOpen: boolean;
 }>();
@@ -38,11 +39,14 @@ const handleOpenChange = (open: boolean) => {
 
 <template>
   <Dialog :open="isOpen" @update:open="handleOpenChange">
-    <DialogContent class="max-w-2xl p-6">
+    <DialogContent class="max-h-[80vh] max-w-2xl overflow-y-auto p-6">
       <DialogHeader>
         <DialogTitle class="text-lg font-semibold text-slate-900">
           {{ note.title }}
         </DialogTitle>
+        <DialogDescription class="sr-only">
+          View full note details including title, content, and creation date
+        </DialogDescription>
       </DialogHeader>
 
       <div class="space-y-5">
