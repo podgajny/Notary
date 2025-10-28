@@ -117,13 +117,24 @@ describe("NoteList", () => {
     );
   });
 
-  it("powinien wyświetlać skróconą treść gdy jest długa", () => {
-    // Arrange
-    const longBody =
-      "This is a very long body content that should be truncated because it exceeds the maximum length of 120 characters and should show an ellipsis at the end to indicate there is more content";
+  it("powinien wyświetlać maksymalnie 5 linii tekstu dla długich notatek", () => {
+    // Arrange - tworzenie notatki z 10+ liniami tekstu
+    const longMultilineBody = [
+      "First line of the note content",
+      "Second line with more information",
+      "Third line continues the story",
+      "Fourth line adds more details",
+      "Fifth line is still visible",
+      "Sixth line should be hidden",
+      "Seventh line is also hidden",
+      "Eighth line not visible",
+      "Ninth line truncated away",
+      "Tenth line completely hidden",
+    ].join("\n");
+
     const note = createMockNote({
-      title: "Long Note",
-      body: longBody,
+      title: "Long Multiline Note",
+      body: longMultilineBody,
     });
 
     // Act
@@ -133,10 +144,9 @@ describe("NoteList", () => {
       },
     });
 
-    // Assert
-    const bodyText = wrapper.find(".text-slate-600").text();
-    expect(bodyText).toHaveLength(121); // 120 chars + ellipsis
-    expect(bodyText.endsWith("…")).toBe(true);
+    // Assert - sprawdzenie czy element ma klasę line-clamp
+    const bodyElement = wrapper.find(".text-slate-600");
+    expect(bodyElement.classes()).toContain("line-clamp-5");
   });
 
   it("powinien wyświetlać pełną treść gdy jest krótka", () => {

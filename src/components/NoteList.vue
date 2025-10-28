@@ -26,13 +26,6 @@ const formatUpdatedAt = (timestamp: number) =>
     hour: "2-digit",
     minute: "2-digit",
   });
-
-const getBodyPreview = (body: string) => {
-  if (!body) return "";
-
-  const preview = body.slice(0, 120);
-  return body.length > 120 ? `${preview}…` : preview;
-};
 </script>
 
 <template>
@@ -61,8 +54,8 @@ const getBodyPreview = (body: string) => {
             {{ formatUpdatedAt(note.updatedAt) }}
           </time>
         </header>
-        <p v-if="note.body" class="mt-2 text-sm text-slate-600">
-          {{ getBodyPreview(note.body) }}
+        <p v-if="note.body" class="mt-2 line-clamp-5 text-sm text-slate-600">
+          {{ note.body }}
         </p>
         <p v-else class="mt-2 text-sm text-slate-400">No body text yet.</p>
       </li>
