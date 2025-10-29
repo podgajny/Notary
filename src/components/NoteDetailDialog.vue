@@ -6,13 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-type Note = {
-  id: string;
-  title: string;
-  body: string;
-  createdAt: Date;
-};
+import type { Note } from "../stores/notes.store";
 
 defineProps<{
   note: Note;
@@ -23,13 +17,13 @@ const emit = defineEmits<{
   (e: "update:isOpen", value: boolean): void;
 }>();
 
-// Formatuj datę do czytelnego formatu
-const formatDate = (date: Date): string => {
+// Formatuj datę do czytelnego formatu - timestamp w ms
+const formatDate = (timestamp: number): string => {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(date);
+  }).format(new Date(timestamp));
 };
 
 const handleOpenChange = (open: boolean) => {

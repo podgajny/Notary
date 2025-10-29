@@ -1,13 +1,17 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import NoteDetailDialog from "../NoteDetailDialog.vue";
+import type { Note } from "../../stores/notes.store";
 
 describe("NoteDetailDialog", () => {
-  const mockNote = {
+  const mockNote: Note = {
     id: "test-id-123",
     title: "Test Note Title",
     body: "This is the test note body content.\nWith multiple lines.",
-    createdAt: new Date("2025-10-28T10:30:00.000Z"),
+    tags: [],
+    pinned: false,
+    createdAt: new Date("2025-10-28T10:30:00.000Z").getTime(),
+    updatedAt: new Date("2025-10-28T10:30:00.000Z").getTime(),
   };
 
   beforeEach(() => {
