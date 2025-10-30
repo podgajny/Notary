@@ -2,10 +2,17 @@
 import { onMounted, ref } from "vue";
 import NoteEditor from "../components/NoteEditor.vue";
 import NoteList from "../components/NoteList.vue";
-import { NoteStoreError, useNotesStore } from "../stores/notes.store";
+import NoteDetailDialog from "../components/NoteDetailDialog.vue";
+import {
+  NoteStoreError,
+  useNotesStore,
+  type Note,
+} from "../stores/notes.store";
 
 const notesStore = useNotesStore();
 const loadErrorMessage = ref("");
+const selectedNote = ref<Note | null>(null);
+const isDialogOpen = ref(false);
 
 const handleSave = async (input: { title: string; body: string }) => {
   await notesStore.createNote(input);
@@ -31,6 +38,11 @@ const fetchNotes = async () => {
   }
 };
 
+const handleNoteClicked = (note: Note) => {
+  selectedNote.value = note;
+  isDialogOpen.value = true;
+};
+
 onMounted(() => {
   fetchNotes();
 });
@@ -51,6 +63,13 @@ onMounted(() => {
         :notes="notesStore.notes"
         :is-loading="notesStore.isLoading"
         :load-error="loadErrorMessage"
+        @note-clicked="handleNoteClicked"
+      />
+      <NoteDetailDialog
+        v-if="selectedNote"
+        :note="selectedNote"
+        :is-open="isDialogOpen"
+        @update:is-open="isDialogOpen = $event"
       />
     </div>
   </main>

@@ -14,6 +14,10 @@ const props = withDefaults(
   },
 );
 
+const emit = defineEmits<{
+  (e: "note-clicked", note: Note): void;
+}>();
+
 const showEmptyState = computed(
   () => !props.isLoading && !props.loadError && props.notes.length === 0,
 );
@@ -26,6 +30,10 @@ const formatUpdatedAt = (timestamp: number) =>
     hour: "2-digit",
     minute: "2-digit",
   });
+
+const handleNoteClick = (note: Note) => {
+  emit("note-clicked", note);
+};
 </script>
 
 <template>
@@ -44,7 +52,8 @@ const formatUpdatedAt = (timestamp: number) =>
       <li
         v-for="note in props.notes"
         :key="note.id"
-        class="rounded-md border border-slate-200 p-4"
+        class="cursor-pointer rounded-md border border-slate-200 p-4 transition hover:bg-slate-50"
+        @click="handleNoteClick(note)"
       >
         <header
           class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between"
