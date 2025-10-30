@@ -117,12 +117,13 @@ describe("NoteList", () => {
     );
   });
 
-  it("powinien wyświetlać skróconą treść gdy jest długa", () => {
-    // Arrange
+  it("powinien wyświetlać maksymalnie 5 linii tekstu dla długich notatek", () => {
+    // Arrange - tworzenie notatki z długą treścią (200+ słów, która na pewno przekroczy 5 linii)
     const longBody =
-      "This is a very long body content that should be truncated because it exceeds the maximum length of 120 characters and should show an ellipsis at the end to indicate there is more content";
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.";
+
     const note = createMockNote({
-      title: "Long Note",
+      title: "Long Multiline Note",
       body: longBody,
     });
 
@@ -133,10 +134,55 @@ describe("NoteList", () => {
       },
     });
 
-    // Assert
-    const bodyText = wrapper.find(".text-slate-600").text();
-    expect(bodyText).toHaveLength(121); // 120 chars + ellipsis
-    expect(bodyText.endsWith("…")).toBe(true);
+    // Assert - sprawdzenie czy element ma klasę line-clamp
+    const bodyElement = wrapper.find(".text-slate-600");
+    expect(bodyElement.classes()).toContain("line-clamp-5");
+    expect(bodyElement.classes()).toContain("break-words");
+  });
+
+  it("powinien mieć break-words dla krótkiej notatki", () => {
+    // Arrange - krótka notatka (20-30 słów, 1-2 linie)
+    const shortBody =
+      "This is a short note with just a few words that should display normally without any truncation issues.";
+
+    const note = createMockNote({
+      title: "Short Note",
+      body: shortBody,
+    });
+
+    // Act
+    const wrapper = mount(NoteList, {
+      props: {
+        notes: [note],
+      },
+    });
+
+    // Assert - nawet krótkie notatki powinny mieć obie klasy
+    const bodyElement = wrapper.find(".text-slate-600");
+    expect(bodyElement.classes()).toContain("line-clamp-5");
+    expect(bodyElement.classes()).toContain("break-words");
+  });
+
+  it("powinien łamać bardzo długie nierozdzielne ciągi znaków", () => {
+    // Arrange - notatka z bardzo długim słowem bez spacji (symulacja buga z "Dłuuuuuuu...")
+    const unbreakableString = "Dł" + "u".repeat(500) + "ga notatka";
+
+    const note = createMockNote({
+      title: "Unbreakable String Note",
+      body: unbreakableString,
+    });
+
+    // Act
+    const wrapper = mount(NoteList, {
+      props: {
+        notes: [note],
+      },
+    });
+
+    // Assert - break-words musi być obecny, aby zapobiec poziomemu przepełnieniu
+    const bodyElement = wrapper.find(".text-slate-600");
+    expect(bodyElement.classes()).toContain("break-words");
+    expect(bodyElement.classes()).toContain("line-clamp-5");
   });
 
   it("powinien wyświetlać pełną treść gdy jest krótka", () => {
