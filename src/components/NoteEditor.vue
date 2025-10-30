@@ -28,6 +28,8 @@ const body = ref("");
 const isSaving = ref(false);
 const errorMessage = ref("");
 const successMessage = ref("");
+// Walidacja reaktywna - błąd wyświetla się tylko po próbie zapisu
+const showTitleError = ref(false);
 const titleInputRef = ref<HTMLInputElement | null>(null);
 let successTimeoutId: number | undefined;
 
@@ -36,7 +38,7 @@ const SAVE_SUCCESS_COPY = "Note saved";
 const SAVE_FAILED_COPY = "Could not save. Try again.";
 
 const isTitleEmpty = computed(() => title.value.trim().length === 0);
-const isSaveDisabled = computed(() => isSaving.value || isTitleEmpty.value);
+const isSaveDisabled = computed(() => isSaving.value);
 
 const focusTitleInput = () => {
   titleInputRef.value?.focus();
@@ -86,7 +88,8 @@ const mapErrorToMessage = (error: unknown): string => {
 
 const submit = async () => {
   if (isTitleEmpty.value) {
-    errorMessage.value = TITLE_REQUIRED_COPY;
+    showTitleError.value = true;
+    focusTitleInput();
     return;
   }
 
@@ -111,6 +114,10 @@ const submit = async () => {
 };
 
 watch(title, () => {
+  if (showTitleError.value && !isTitleEmpty.value) {
+    showTitleError.value = false;
+  }
+
   if (errorMessage.value) {
     errorMessage.value = "";
   }
@@ -159,7 +166,7 @@ onBeforeUnmount(() => {
           placeholder="Title"
           :disabled="isSaving"
         />
-        <p v-if="isTitleEmpty" class="mt-1 text-sm text-red-600">
+        <p v-if="showTitleError" class="mt-1 text-sm text-red-600">
           {{ TITLE_REQUIRED_COPY }}
         </p>
       </div>
