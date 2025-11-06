@@ -349,4 +349,63 @@ describe("NoteList", () => {
     expect(wrapper.find(".text-red-600").exists()).toBe(true);
     expect(wrapper.find(".text-slate-600").exists()).toBe(false);
   });
+
+  it("powinien emitować zdarzenie 'note-clicked' z obiektem notatki gdy użytkownik kliknie notatkę", async () => {
+    // Arrange
+    const note = createMockNote({
+      id: "test-123",
+      title: "Clickable Note",
+      body: "Click me!",
+    });
+
+    const wrapper = mount(NoteList, {
+      props: {
+        notes: [note],
+      },
+    });
+
+    // Act
+    const listItem = wrapper.find("li");
+    await listItem.trigger("click");
+
+    // Assert
+    expect(wrapper.emitted("note-clicked")).toBeTruthy();
+    expect(wrapper.emitted("note-clicked")?.[0]).toEqual([note]);
+  });
+
+  it("powinien dodać cursor-pointer do elementów notatek", () => {
+    // Arrange
+    const note = createMockNote();
+
+    // Act
+    const wrapper = mount(NoteList, {
+      props: {
+        notes: [note],
+      },
+    });
+
+    // Assert
+    const listItem = wrapper.find("li");
+    expect(listItem.classes()).toContain("cursor-pointer");
+  });
+
+  it("powinien wyświetlić hover effect na notatkach", () => {
+    // Arrange
+    const note = createMockNote();
+
+    // Act
+    const wrapper = mount(NoteList, {
+      props: {
+        notes: [note],
+      },
+    });
+
+    // Assert
+    const listItem = wrapper.find("li");
+    // Sprawdzamy, czy są klasy hover - używamy regex/zawiera
+    const hasHoverClass =
+      listItem.classes().some((cls) => cls.includes("hover:")) ||
+      listItem.attributes("class")?.includes("hover:");
+    expect(hasHoverClass).toBe(true);
+  });
 });
