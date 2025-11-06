@@ -18,7 +18,7 @@ describe("NoteDetailDialog", () => {
     vi.clearAllMocks();
   });
 
-  it("powinien renderować tytuł notatki w DialogTitle", async () => {
+  it("should render note title in DialogTitle", async () => {
     // Arrange & Act
     const wrapper = mount(NoteDetailDialog, {
       props: {
@@ -36,7 +36,7 @@ describe("NoteDetailDialog", () => {
     wrapper.unmount();
   });
 
-  it("powinien renderować treść notatki z zachowaniem formatowania", async () => {
+  it("should render note body with formatting preserved", async () => {
     // Arrange & Act
     const wrapper = mount(NoteDetailDialog, {
       props: {
@@ -56,7 +56,7 @@ describe("NoteDetailDialog", () => {
     wrapper.unmount();
   });
 
-  it("powinien renderować datę utworzenia w formacie czytelnym dla użytkownika", async () => {
+  it("should render creation date in user-readable format", async () => {
     // Arrange & Act
     const wrapper = mount(NoteDetailDialog, {
       props: {
@@ -76,7 +76,7 @@ describe("NoteDetailDialog", () => {
     wrapper.unmount();
   });
 
-  it("powinien wyświetlić Dialog gdy isOpen jest true", async () => {
+  it("should display Dialog when isOpen is true", async () => {
     // Arrange & Act
     const wrapper = mount(NoteDetailDialog, {
       props: {
@@ -95,7 +95,7 @@ describe("NoteDetailDialog", () => {
     wrapper.unmount();
   });
 
-  it("powinien ukryć Dialog gdy isOpen jest false", async () => {
+  it("should hide Dialog when isOpen is false", async () => {
     // Arrange & Act
     const wrapper = mount(NoteDetailDialog, {
       props: {
@@ -114,7 +114,7 @@ describe("NoteDetailDialog", () => {
     wrapper.unmount();
   });
 
-  it("powinien emitować zdarzenie 'update:isOpen' z wartością false gdy użytkownik zamyka Dialog", async () => {
+  it("should emit 'update:isOpen' event with false value when user closes Dialog", async () => {
     // Arrange
     const wrapper = mount(NoteDetailDialog, {
       props: {
@@ -140,7 +140,7 @@ describe("NoteDetailDialog", () => {
     wrapper.unmount();
   });
 
-  it("powinien zawierać przycisk zamykający (X button)", async () => {
+  it("should contain close button (X button)", async () => {
     // Arrange & Act
     const wrapper = mount(NoteDetailDialog, {
       props: {
@@ -159,7 +159,7 @@ describe("NoteDetailDialog", () => {
     wrapper.unmount();
   });
 
-  it("powinien renderować poprawną strukturę komponentu", async () => {
+  it("should render correct component structure", async () => {
     // Arrange & Act
     const wrapper = mount(NoteDetailDialog, {
       props: {

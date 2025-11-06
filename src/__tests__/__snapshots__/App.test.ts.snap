@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`App > powinien pasować do snapshot 1`] = `
+exports[`App > should match snapshot 1`] = `
 "<div id="app">
   <!---->
 </div>"

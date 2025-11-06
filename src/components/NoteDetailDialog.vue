@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (e: "update:isOpen", value: boolean): void;
 }>();
 
-// Formatuj datę do czytelnego formatu - timestamp w ms
+// Format date to readable format - timestamp in ms
 const formatDate = (timestamp: number): string => {
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",

@@ -1,80 +1,80 @@
 # Notary Vue - Local-First Notes App
 
-Vue 3 aplikacja do tworzenia notatek z lokalnym przechowywaniem danych. Zbudowana z wykorzystaniem TDD (Test-Driven Development) i CI/CD.
+Vue 3 application for creating notes with local data storage. Built using TDD (Test-Driven Development) and CI/CD.
 
-## ✨ Funkcjonalności
+## ✨ Features
 
-- **Tworzenie notatek** - Dodawaj tytuł i treść notatki
-- **Lokalne przechowywanie** - Dane zapisywane w IndexedDB przeglądarki
-- **Responsywny design** - Działa na wszystkich urządzeniach
-- **Walidacja formularzy** - Sprawdzanie poprawności danych
-- **Obsługa błędów** - Przyjazne komunikaty dla użytkownika
+- **Note creation** - Add title and note content
+- **Local storage** - Data saved in browser's IndexedDB
+- **Responsive design** - Works on all devices
+- **Form validation** - Data correctness checking
+- **Error handling** - User-friendly error messages
 
 ## 🚀 Quick Start
 
 ```bash
-# Zainstaluj zależności
+# Install dependencies
 npm install
 
-# Uruchom dev server
+# Run dev server
 npm run dev
 
-# Uruchom testy w watch mode
+# Run tests in watch mode
 npm run test
 ```
 
-## 📝 Jak to działa
+## 📝 How it works
 
-1. **Tworzenie notatki**: Wpisz tytuł (wymagany) i treść notatki, następnie kliknij "Save"
-2. **Lokalne przechowywanie**: Notatki są automatycznie zapisywane w IndexedDB przeglądarki
-3. **Wyświetlanie**: Wszystkie notatki pojawiają się poniżej formularza, posortowane od najnowszych
-4. **Trwałość**: Notatki pozostają po odświeżeniu strony - dane są przechowywane lokalnie
+1. **Creating a note**: Enter a title (required) and note content, then click "Save"
+2. **Local storage**: Notes are automatically saved in browser's IndexedDB
+3. **Display**: All notes appear below the form, sorted from newest
+4. **Persistence**: Notes remain after page refresh - data is stored locally
 
-### Architektura
+### Architecture
 
-- **Vue 3** + **Composition API** - nowoczesny framework
-- **Pinia** - zarządzanie stanem aplikacji
-- **Vue Router** - nawigacja między stronami
-- **IndexedDB** - lokalne przechowywanie danych
-- **TailwindCSS** - stylowanie komponentów
-- **Vitest** - testowanie jednostkowe
+- **Vue 3** + **Composition API** - modern framework
+- **Pinia** - application state management
+- **Vue Router** - navigation between pages
+- **IndexedDB** - local data storage
+- **TailwindCSS** - component styling
+- **Vitest** - unit testing
 
 ## 🧪 Test-Driven Development
 
-Ten projekt jest skonfigurowany do pracy z TDD. Zobacz przykłady w:
+This project is configured to work with TDD. See examples in:
 
-- `src/components/__tests__/NoteEditor.spec.ts` - testy komponentu edytora notatek
-- `src/components/__tests__/NoteList.spec.ts` - testy komponentu listy notatek
-- `src/stores/__tests__/notes.store.spec.ts` - testy store'a Pinia
+- `src/components/__tests__/NoteEditor.spec.ts` - note editor component tests
+- `src/components/__tests__/NoteList.spec.ts` - note list component tests
+- `src/stores/__tests__/notes.store.spec.ts` - Pinia store tests
 
 ### TDD Workflow
 
-1. **RED ❌** - Napisz test, który się nie powiedzie
-2. **GREEN ✅** - Napisz minimalną implementację
-3. **REFACTOR 🔄** - Popraw kod zachowując testy
+1. **RED ❌** - Write a test that will fail
+2. **GREEN ✅** - Write minimal implementation
+3. **REFACTOR 🔄** - Improve code while keeping tests passing
 
 ```bash
-# Sprawdź status TDD - niektóre testy są RED (to jest OK!)
+# Check TDD status - some tests are RED (that's OK!)
 npm run test:run
 ```
 
-## 🛠️ Dostępne Komendy
+## 🛠️ Available Commands
 
 ### Development
 
 ```bash
-npm run dev          # Serwer deweloperski (port 5173)
-npm run build        # Build produkcyjny
-npm run preview      # Preview buildu
+npm run dev          # Development server (port 5173)
+npm run build        # Production build
+npm run preview      # Preview build
 ```
 
-### Testy
+### Tests
 
 ```bash
 npm run test         # Unit tests (watch mode)
 npm run test:run     # Unit tests (single run)
 npm run test:ui      # Unit tests (UI mode)
-npm run test:coverage # Z pokryciem kodu
+npm run test:coverage # With code coverage
 
 npm run test:e2e     # E2E tests (Playwright)
 npm run test:e2e:ui  # E2E UI mode
@@ -84,7 +84,7 @@ npm run test:e2e:ui  # E2E UI mode
 
 ```bash
 npm run lint         # TypeScript check
-npm run lint:fix     # Formatowanie kodu
+npm run lint:fix     # Code formatting
 ```
 
 ## 🔧 Stack Technologiczny
@@ -109,118 +109,118 @@ npm run lint:fix     # Formatowanie kodu
 - **Husky** - Git hooks
 - **lint-staged** - Pre-commit linting
 
-## 📁 Struktura Projektu
+## 📁 Project Structure
 
 ```
 src/
-├── components/           # Komponenty Vue
-│   ├── __tests__/       # Testy komponentów
-│   ├── NoteEditor.vue   # Formularz tworzenia notatek
-│   └── NoteList.vue     # Lista wyświetlająca notatki
-├── stores/              # Store Pinia
-│   ├── __tests__/       # Testy store'a
-│   └── notes.store.ts   # Store zarządzający notatkami
-├── lib/                 # Warstwa bazy danych
-│   ├── __tests__/       # Testy bazy danych
+├── components/           # Vue components
+│   ├── __tests__/       # Component tests
+│   ├── NoteEditor.vue   # Note creation form
+│   └── NoteList.vue     # Note list display
+├── stores/              # Pinia store
+│   ├── __tests__/       # Store tests
+│   └── notes.store.ts   # Notes management store
+├── lib/                 # Database layer
+│   ├── __tests__/       # Database tests
 │   └── db.ts           # IndexedDB wrapper
-├── views/               # Komponenty stron
-│   └── HomeView.vue     # Główna strona aplikacji
-├── router/              # Konfiguracja routingu
-│   └── index.js         # Definicje tras
-├── assets/              # Statyczne assety
-└── __tests__/           # Testy główne
+├── views/               # Page components
+│   └── HomeView.vue     # Main application page
+├── router/              # Routing configuration
+│   └── index.js         # Route definitions
+├── assets/              # Static assets
+└── __tests__/           # Main tests
 
-docs/                    # Dokumentacja
-├── tdd-ci-setup.md     # Przewodnik TDD + CI
-└── branch-protection-setup.md # Konfiguracja GitHub
+docs/                    # Documentation
+├── tdd-ci-setup.md     # TDD + CI guide
+└── branch-protection-setup.md # GitHub configuration
 ```
 
 ## 🔄 CI/CD Pipeline
 
-### Automatyczne Sprawdzenia
+### Automatic Checks
 
-Każdy PR przechodzi przez:
+Every PR goes through:
 
 - ✅ TypeScript type checking
 - ✅ Unit tests (Vitest)
 - ✅ Build verification
-- ✅ E2E tests (opcjonalnie)
+- ✅ E2E tests (optional)
 - ✅ Code formatting
 
 ### Branch Protection
 
-Main branch jest chroniony i wymaga:
+Main branch is protected and requires:
 
-- ✅ Przejścia wszystkich testów
-- ✅ Approval od innego developera
-- ✅ Aktualnej wersji branch'a
+- ✅ All tests passing
+- ✅ Approval from another developer
+- ✅ Up-to-date branch version
 
 ## 🪝 Pre-commit Hooks
 
-Przed każdym commitem automatycznie:
+Before each commit automatically:
 
-1. Formatuje kod (Prettier)
-2. Sprawdza typy (TypeScript)
-3. Uruchamia testy jednostkowe
+1. Formats code (Prettier)
+2. Checks types (TypeScript)
+3. Runs unit tests
 
-## 📝 Konwencje
+## 📝 Conventions
 
 ### Commit Messages
 
 ```bash
-feat(component): dodaj nową funkcjonalność
-fix(ui): napraw bug w komponencie
-test(utils): dodaj testy dla funkcji
-docs(readme): zaktualizuj dokumentację
+feat(component): add new feature
+fix(ui): fix bug in component
+test(utils): add tests for function
+docs(readme): update documentation
 ```
 
-### Testy
+### Tests
 
 - Unit tests: `*.test.ts`
 - E2E tests: `*.spec.ts`
-- Test descriptions: "powinien [oczekiwane zachowanie]"
+- Test descriptions: "should [expected behavior]"
 
-## 🎯 Przykład TDD w Praktyce
+## 🎯 TDD Example in Practice
 
-1. **Napisz test** (plik już istnieje):
+1. **Write test** (file already exists):
 
    ```bash
    # src/utils/__tests__/noteUtils.test.ts
-   # Testy dla funkcji formatNoteTitle, validateNoteData, etc.
+   # Tests for formatNoteTitle, validateNoteData functions, etc.
    ```
 
-2. **Uruchom test** (RED):
+2. **Run test** (RED):
 
    ```bash
    npm run test:run
    # ❌ Error: Cannot resolve import "../noteUtils"
    ```
 
-3. **Napisz implementację**:
+3. **Write implementation**:
 
    ```typescript
    // src/utils/noteUtils.ts
    export function formatNoteTitle(title: string): string {
-     // Twoja implementacja
+     // Your implementation
    }
    ```
 
-4. **Uruchom test** (GREEN):
+4. **Run test** (GREEN):
    ```bash
    npm run test:run
    # ✅ All tests passed
    ```
 
-## 📚 Dokumentacja
+## 📚 Documentation
 
 - [TDD + CI Setup Guide](./docs/tdd-ci-setup.md)
 - [Branch Protection Setup](./docs/branch-protection-setup.md)
 
 ## 🚀 Deployment
 
-Projekt automatycznie deployuje się na Vercel po merge do `main` branch.
+Project automatically deploys to Vercel after merge to `main` branch.
 
-Wymagane zmienne środowiskowe w GitHub Secrets:
+Required environment variables in GitHub Secrets:
 
 - `VERCEL_TOKEN`
 - `ORG_ID`
@@ -228,11 +228,11 @@ Wymagane zmienne środowiskowe w GitHub Secrets:
 
 ## 🤝 Contributing
 
-1. Stwórz feature branch: `git checkout -b feature/nazwa`
-2. Napisz testy (TDD approach)
-3. Implementuj funkcjonalność
-4. Upewnij się że wszystkie testy przechodzą
-5. Stwórz Pull Request
+1. Create feature branch: `git checkout -b feature/name`
+2. Write tests (TDD approach)
+3. Implement functionality
+4. Make sure all tests pass
+5. Create Pull Request
 
 ---
 

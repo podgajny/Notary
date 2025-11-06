@@ -10,7 +10,7 @@ describe("NoteEditor", () => {
     vi.clearAllMocks();
   });
 
-  it("powinien renderować formularz z polami tytułu i treści", () => {
+  it("should render form with title and body fields", () => {
     // Act
     const wrapper = mount(NoteEditor);
 
@@ -21,7 +21,7 @@ describe("NoteEditor", () => {
     expect(wrapper.find('button[type="submit"]').exists()).toBe(true);
   });
 
-  it("powinien mieć odpowiednie placeholdery w polach", () => {
+  it("should have appropriate placeholders in fields", () => {
     // Act
     const wrapper = mount(NoteEditor);
 
@@ -34,7 +34,7 @@ describe("NoteEditor", () => {
     );
   });
 
-  it("powinien wyświetlać błąd gdy tytuł jest pusty", async () => {
+  it("should display error when title is empty", async () => {
     // Arrange
     const wrapper = mount(NoteEditor);
 
@@ -46,7 +46,7 @@ describe("NoteEditor", () => {
     expect(mockSaveNote).not.toHaveBeenCalled();
   });
 
-  it("powinien wyświetlać błąd gdy tytuł zawiera tylko spacje", async () => {
+  it("should display error when title contains only spaces", async () => {
     // Arrange
     const wrapper = mount(NoteEditor);
     const titleInput = wrapper.find('input[type="text"]');
@@ -60,7 +60,7 @@ describe("NoteEditor", () => {
     expect(mockSaveNote).not.toHaveBeenCalled();
   });
 
-  it("powinien mieć włączony przycisk Save gdy tytuł jest pusty", async () => {
+  it("should have Save button enabled when title is empty", async () => {
     // Arrange
     const wrapper = mount(NoteEditor);
 
@@ -73,7 +73,7 @@ describe("NoteEditor", () => {
     ).toBeUndefined();
   });
 
-  it("powinien włączyć przycisk Save gdy tytuł jest wypełniony", async () => {
+  it("should enable Save button when title is filled", async () => {
     // Arrange
     const wrapper = mount(NoteEditor);
 
@@ -86,7 +86,7 @@ describe("NoteEditor", () => {
     ).toBeUndefined();
   });
 
-  it("powinien wywołać saveNote z prawidłowymi danymi", async () => {
+  it("should call saveNote with valid data", async () => {
     // Arrange
     const wrapper = mount(NoteEditor, {
       props: {
@@ -106,7 +106,7 @@ describe("NoteEditor", () => {
     });
   });
 
-  it("powinien przyciąć tytuł przed wysłaniem", async () => {
+  it("should trim title before submitting", async () => {
     // Arrange
     const wrapper = mount(NoteEditor, {
       props: {
@@ -126,7 +126,7 @@ describe("NoteEditor", () => {
     });
   });
 
-  it("powinien wyłączyć przycisk podczas zapisywania", async () => {
+  it("should disable button during saving", async () => {
     // Arrange
     let resolvePromise: (value: any) => void;
     const promise = new Promise((resolve) => {
@@ -163,7 +163,7 @@ describe("NoteEditor", () => {
     expect(disabledAttr === undefined || disabledAttr === "").toBe(true);
   });
 
-  it("powinien wyczyścić formularz po zapisaniu", async () => {
+  it("should clear form after saving", async () => {
     // Arrange
     mockSaveNote.mockResolvedValue(undefined);
     const wrapper = mount(NoteEditor, {
@@ -187,7 +187,7 @@ describe("NoteEditor", () => {
     ).toBe("");
   });
 
-  it("powinien wyświetlać błąd gdy zapisanie się nie powiedzie", async () => {
+  it("should display error when save fails", async () => {
     // Arrange
     const error = new NoteStoreError(
       "STORAGE_WRITE_FAILED",
@@ -210,7 +210,7 @@ describe("NoteEditor", () => {
     );
   });
 
-  it("powinien wyświetlać błąd gdy tytuł jest wymagany", async () => {
+  it("should display error when title is required", async () => {
     // Arrange
     const error = new NoteStoreError("TITLE_REQUIRED", "Title is required");
     mockSaveNote.mockRejectedValue(error);
@@ -228,7 +228,7 @@ describe("NoteEditor", () => {
     expect(wrapper.find(".text-red-600").text()).toBe("Title is required");
   });
 
-  it("powinien wyczyścić błąd gdy użytkownik zacznie pisać w tytule", async () => {
+  it("should clear error when user starts typing in title", async () => {
     // Arrange
     const wrapper = mount(NoteEditor);
 
@@ -243,7 +243,7 @@ describe("NoteEditor", () => {
     expect(wrapper.find(".text-red-600").exists()).toBe(false);
   });
 
-  it("powinien nie wyświetlać błędu walidacji przy załadowaniu formularza", () => {
+  it("should not display validation error on form load", () => {
     // Act
     const wrapper = mount(NoteEditor);
 
@@ -251,7 +251,7 @@ describe("NoteEditor", () => {
     expect(wrapper.find(".text-red-600").exists()).toBe(false);
   });
 
-  it("powinien mieć referencję do pola tytułu", () => {
+  it("should have reference to title field", () => {
     // Arrange
     const wrapper = mount(NoteEditor);
 
@@ -259,7 +259,7 @@ describe("NoteEditor", () => {
     expect(wrapper.vm.$refs.titleInputRef).toBeDefined();
   });
 
-  it("powinien mieć odpowiednie etykiety dla dostępności", () => {
+  it("should have appropriate labels for accessibility", () => {
     // Act
     const wrapper = mount(NoteEditor);
 
@@ -271,7 +271,7 @@ describe("NoteEditor", () => {
     expect(bodyLabel.text()).toBe("Body");
   });
 
-  it("powinien mieć odpowiednie atrybuty dla dostępności", () => {
+  it("should have appropriate attributes for accessibility", () => {
     // Act
     const wrapper = mount(NoteEditor);
 

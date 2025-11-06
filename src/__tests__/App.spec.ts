@@ -39,7 +39,7 @@ describe("App Integration", () => {
     });
   });
 
-  it("powinien renderować RouterView", () => {
+  it("should render RouterView", () => {
     // Act
     const wrapper = mount(App, {
       global: {
@@ -51,7 +51,7 @@ describe("App Integration", () => {
     expect(wrapper.findComponent({ name: "RouterView" }).exists()).toBe(true);
   });
 
-  it("powinien wyświetlać HomeView na głównej stronie", async () => {
+  it("should display HomeView on main page", async () => {
     // Act
     const wrapper = mount(App, {
       global: {
@@ -67,7 +67,7 @@ describe("App Integration", () => {
     expect(wrapper.find("h1").text()).toBe("Notary");
   });
 
-  it("powinien zawierać NoteEditor i NoteList na stronie głównej", async () => {
+  it("should contain NoteEditor and NoteList on main page", async () => {
     // Act
     const wrapper = mount(App, {
       global: {
@@ -84,7 +84,7 @@ describe("App Integration", () => {
     expect(wrapper.findComponent({ name: "NoteList" }).exists()).toBe(true);
   });
 
-  it("powinien mieć odpowiednią strukturę HTML", async () => {
+  it("should have correct HTML structure", async () => {
     // Act
     const wrapper = mount(App, {
       global: {

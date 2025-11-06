@@ -39,7 +39,7 @@ describe("App", () => {
     });
   });
 
-  it("powinien renderować się bez błędów", () => {
+  it("should render without errors", () => {
     const wrapper = mount(App, {
       global: {
         plugins: [pinia, router],
@@ -48,20 +48,20 @@ describe("App", () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it("powinien mieć odpowiednią strukturę HTML", () => {
+  it("should have correct HTML structure", () => {
     const wrapper = mount(App, {
       global: {
         plugins: [pinia, router],
       },
     });
 
-    // Sprawdź czy główny div ma id="app"
+    // Check if main div has id="app"
     expect(wrapper.attributes("id")).toBe("app");
     expect(wrapper.findComponent({ name: "RouterView" }).exists()).toBe(true);
   });
 
-  // Test snapshot - sprawdza czy struktura się nie zmieniła
-  it("powinien pasować do snapshot", () => {
+  // Test snapshot - checks if structure hasn't changed
+  it("should match snapshot", () => {
     const wrapper = mount(App, {
       global: {
         plugins: [pinia, router],
