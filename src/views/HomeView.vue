@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { RouterLink } from "vue-router";
 import NoteEditor from "../components/NoteEditor.vue";
 import NoteList from "../components/NoteList.vue";
 import NoteDetailDialog from "../components/NoteDetailDialog.vue";
@@ -52,7 +53,15 @@ onMounted(() => {
   <main class="min-h-screen bg-slate-100 py-10">
     <div class="mx-auto flex max-w-5xl flex-col gap-8 px-6">
       <header>
-        <h1 class="text-3xl font-semibold text-slate-900">Notary</h1>
+        <div class="flex items-center justify-between">
+          <h1 class="text-3xl font-semibold text-slate-900">Notary</h1>
+          <RouterLink
+            to="/chat"
+            class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+          >
+            Chat
+          </RouterLink>
+        </div>
         <p class="mt-2 text-slate-600">
           Lightweight notes app, starting with local-first creation. This page
           now shows the editor and list scaffolds we will flesh out next.
