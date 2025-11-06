@@ -11,7 +11,7 @@ const props = withDefaults(
   {
     isLoading: false,
     loadError: "",
-  },
+  }
 );
 
 const emit = defineEmits<{
@@ -19,7 +19,7 @@ const emit = defineEmits<{
 }>();
 
 const showEmptyState = computed(
-  () => !props.isLoading && !props.loadError && props.notes.length === 0,
+  () => !props.isLoading && !props.loadError && props.notes.length === 0
 );
 
 const formatUpdatedAt = (timestamp: number) =>
@@ -65,7 +65,7 @@ const handleNoteClick = (note: Note) => {
         </header>
         <p
           v-if="note.body"
-          class="mt-2 break-words line-clamp-5 text-sm text-slate-600"
+          class="mt-2 line-clamp-5 break-words text-sm text-slate-600"
         >
           {{ note.body }}
         </p>

@@ -46,7 +46,7 @@ const handleOpenChange = (open: boolean) => {
       <div class="space-y-5">
         <div>
           <label class="block text-sm font-medium text-slate-700">Body</label>
-          <div class="mt-1 break-words whitespace-pre-wrap text-slate-900">
+          <div class="mt-1 whitespace-pre-wrap break-words text-slate-900">
             {{ note.body }}
           </div>
         </div>

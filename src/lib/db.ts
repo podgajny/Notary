@@ -35,7 +35,7 @@ const getIndexedDB = (): IDBFactory => {
   if (!idb) {
     throw new DbError(
       "DB_UNAVAILABLE",
-      "IndexedDB is not supported in this environment",
+      "IndexedDB is not supported in this environment"
     );
   }
 
@@ -64,8 +64,8 @@ const openDatabase = async (): Promise<IDBDatabase> => {
       reject(
         new DbError(
           "DB_OPEN_FAILED",
-          request.error?.message ?? "Failed to open IndexedDB",
-        ),
+          request.error?.message ?? "Failed to open IndexedDB"
+        )
       );
     };
   });
@@ -74,7 +74,7 @@ const openDatabase = async (): Promise<IDBDatabase> => {
 const runTransaction = async <T>(
   mode: IDBTransactionMode,
   operation: (store: IDBObjectStore) => IDBRequest<T>,
-  errorCode: DbErrorCode,
+  errorCode: DbErrorCode
 ): Promise<T> => {
   const db = await openDatabase();
 
@@ -90,8 +90,8 @@ const runTransaction = async <T>(
       reject(
         new DbError(
           errorCode,
-          (error as Error)?.message ?? "IndexedDB operation failed",
-        ),
+          (error as Error)?.message ?? "IndexedDB operation failed"
+        )
       );
       transaction.abort();
       return;
@@ -109,8 +109,8 @@ const runTransaction = async <T>(
       reject(
         new DbError(
           errorCode,
-          domException?.message ?? "IndexedDB operation failed",
-        ),
+          domException?.message ?? "IndexedDB operation failed"
+        )
       );
     };
 
@@ -134,7 +134,7 @@ export const getNotes = async (): Promise<StoredNote[]> => {
     const result = await runTransaction(
       "readonly",
       (store) => store.get(NOTES_KEY),
-      "DB_READ_FAILED",
+      "DB_READ_FAILED"
     );
 
     if (typeof result === "string") {
@@ -161,7 +161,7 @@ export const getNotes = async (): Promise<StoredNote[]> => {
 
     throw new DbError(
       "DB_READ_FAILED",
-      (error as Error)?.message ?? "Failed to read notes from IndexedDB",
+      (error as Error)?.message ?? "Failed to read notes from IndexedDB"
     );
   }
 };
@@ -173,7 +173,7 @@ export const setNotes = async (notes: StoredNote[]): Promise<void> => {
     await runTransaction(
       "readwrite",
       (store) => store.put(serialised, NOTES_KEY),
-      "DB_WRITE_FAILED",
+      "DB_WRITE_FAILED"
     );
   } catch (error) {
     if (error instanceof DbError) {
@@ -182,7 +182,7 @@ export const setNotes = async (notes: StoredNote[]): Promise<void> => {
 
     throw new DbError(
       "DB_WRITE_FAILED",
-      (error as Error)?.message ?? "Failed to persist notes to IndexedDB",
+      (error as Error)?.message ?? "Failed to persist notes to IndexedDB"
     );
   }
 };
@@ -192,7 +192,7 @@ export const clearNotes = async (): Promise<void> => {
     await runTransaction(
       "readwrite",
       (store) => store.delete(NOTES_KEY),
-      "DB_WRITE_FAILED",
+      "DB_WRITE_FAILED"
     );
   } catch (error) {
     if (error instanceof DbError) {
@@ -201,7 +201,7 @@ export const clearNotes = async (): Promise<void> => {
 
     throw new DbError(
       "DB_WRITE_FAILED",
-      (error as Error)?.message ?? "Failed to clear notes from IndexedDB",
+      (error as Error)?.message ?? "Failed to clear notes from IndexedDB"
     );
   }
 };
