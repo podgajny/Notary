@@ -1,123 +1,123 @@
 # GitHub Branch Protection Setup
 
-## 🛡️ Konfiguracja Branch Protection Rules
+## 🛡️ Branch Protection Rules Configuration
 
-Aby zapewnić jakość kodu i wymusić przejście testów przed mergem, skonfiguruj Branch Protection Rules w GitHub.
+To ensure code quality and enforce test passing before merge, configure Branch Protection Rules in GitHub.
 
-## 📋 Kroki Konfiguracji
+## 📋 Configuration Steps
 
-### 1. Przejdź do Settings Repository
+### 1. Go to Repository Settings
 
-1. Otwórz swoje repozytorium na GitHub
-2. Kliknij **Settings** (zakładka obok **Code**)
-3. W lewym menu wybierz **Branches**
+1. Open your repository on GitHub
+2. Click **Settings** (tab next to **Code**)
+3. In the left menu select **Branches**
 
-### 2. Dodaj Branch Protection Rule
+### 2. Add Branch Protection Rule
 
-1. Kliknij **Add rule**
-2. W polu **Branch name pattern** wpisz: `main`
+1. Click **Add rule**
+2. In the **Branch name pattern** field enter: `main`
 
-### 3. Skonfiguruj Wymagania
+### 3. Configure Requirements
 
-Zaznacz następujące opcje:
+Check the following options:
 
 #### ✅ Require a pull request before merging
 
-- **Require approvals**: 1 (można zwiększyć dla większych zespołów)
+- **Require approvals**: 1 (can be increased for larger teams)
 - **Dismiss stale PR approvals when new commits are pushed**: ✅
-- **Require review from code owners**: ✅ (jeśli masz CODEOWNERS file)
+- **Require review from code owners**: ✅ (if you have CODEOWNERS file)
 
 #### ✅ Require status checks to pass before merging
 
 - **Require branches to be up to date before merging**: ✅
 
-Po pierwszym uruchomieniu CI, dodaj wymagane status checks:
+After first CI run, add required status checks:
 
-- `validate` (z PR Validation workflow)
-- `test` (z głównego CI workflow)
-- `e2e-test` (z głównego CI workflow)
+- `validate` (from PR Validation workflow)
+- `test` (from main CI workflow)
+- `e2e-test` (from main CI workflow)
 
 #### ✅ Require conversation resolution before merging
 
-Wymusza rozwiązanie wszystkich komentarzy w PR.
+Enforces resolution of all comments in PR.
 
-#### ✅ Require signed commits (opcjonalnie)
+#### ✅ Require signed commits (optional)
 
-Dla większego bezpieczeństwa.
+For greater security.
 
 #### ✅ Require linear history
 
-Wymusza rebase zamiast merge commits.
+Enforces rebase instead of merge commits.
 
-### 4. Dodatkowe Opcje
+### 4. Additional Options
 
 #### ✅ Include administrators
 
-Zasady dotyczą również adminów repozytorium.
+Rules also apply to repository administrators.
 
-#### ✅ Allow force pushes → **Everyone** (WYŁĄCZ)
+#### ✅ Allow force pushes → **Everyone** (DISABLE)
 
-Blokuje force push na protected branch.
+Blocks force push on protected branch.
 
-#### ✅ Allow deletions (WYŁĄCZ)
+#### ✅ Allow deletions (DISABLE)
 
-Uniemożliwia przypadkowe usunięcie branch'a.
+Prevents accidental branch deletion.
 
-## 🔄 Workflow po Konfiguracji
+## 🔄 Workflow After Configuration
 
-### Dla Developera
+### For Developer
 
-1. **Stwórz branch z feature**
+1. **Create feature branch**
 
    ```bash
    git checkout -b feature/new-feature
    ```
 
-2. **Napisz testy (TDD)**
+2. **Write tests (TDD)**
 
    ```bash
    npm run test
    ```
 
-3. **Napisz kod**
+3. **Write code**
 
    ```bash
-   # Implementuj funkcjonalność
+   # Implement functionality
    ```
 
-4. **Commit z prawidłowym formatem**
+4. **Commit with correct format**
 
    ```bash
-   git commit -m "feat(component): dodaj nową funkcjonalność"
+   git commit -m "feat(component): add new feature"
    ```
 
-5. **Push i stwórz PR**
+5. **Push and create PR**
 
    ```bash
    git push origin feature/new-feature
    ```
 
-6. **Czekaj na CI i review**
-   - Status checks muszą być GREEN ✅
-   - PR musi być zaapprowane przez innego developera
+6. **Wait for CI and review**
+   - Status checks must be GREEN ✅
+   - PR must be approved by another developer
 
-### Dla Reviewera
+### For Reviewer
 
 1. **Code Review**
-   - Sprawdź logikę biznesową
-   - Sprawdź testy
-   - Sprawdź dokumentację
+   - Check business logic
+   - Check tests
+   - Check documentation
 
-2. **Sprawdź CI Status**
-   - Wszystkie testy przechodzą ✅
-   - Build się udał ✅
-   - Nie ma konfliktów ✅
+2. **Check CI Status**
+   - All tests passing ✅
+   - Build succeeded ✅
+   - No conflicts ✅
 
-3. **Approve lub Request Changes**
+3. **Approve or Request Changes**
 
-## ⚠️ Co się stanie jeśli...
+## ⚠️ What happens if...
 
-### Testy nie przechodzą
+### Tests don't pass
 
 ```
 ❌ Some checks were not successful
@@ -126,24 +126,24 @@ Uniemożliwia przypadkowe usunięcie branch'a.
 PR Validation / validate — The check suite has failed
 ```
 
-**Rozwiązanie**: Napraw testy przed mergem.
+**Solution**: Fix tests before merge.
 
-### Brak approvals
+### No approvals
 
 ```
 ❌ Review required
 This branch requires approval from 1 reviewer
 ```
 
-**Rozwiązanie**: Poproś kolegę o review.
+**Solution**: Ask a colleague for review.
 
-### Branch nie jest up-to-date
+### Branch is not up-to-date
 
 ```
 ❌ This branch is out-of-date with the base branch
 ```
 
-**Rozwiązanie**:
+**Solution**:
 
 ```bash
 git checkout main
@@ -153,29 +153,29 @@ git rebase main
 git push --force-with-lease
 ```
 
-## 🚫 Status Checks - Wymagane
+## 🚫 Status Checks - Required
 
-Po pierwszym uruchomieniu CI, dodaj te status checks w GitHub:
+After first CI run, add these status checks in GitHub:
 
 ### PR Validation Workflow
 
-- `validate` - sprawdza testy, linting, build
+- `validate` - checks tests, linting, build
 
 ### Main CI Workflow
 
-- `test` - testy jednostkowe
-- `e2e-test` - testy E2E (opcjonalnie)
+- `test` - unit tests
+- `e2e-test` - E2E tests (optional)
 
-### Jak dodać Status Checks
+### How to Add Status Checks
 
-1. Po pierwszym PR z CI, GitHub pokaże dostępne checks
-2. W Branch Protection Rules → **Require status checks**
-3. Wyszukaj i dodaj wymagane checks
-4. Zaznacz **Require branches to be up to date**
+1. After first PR with CI, GitHub will show available checks
+2. In Branch Protection Rules → **Require status checks**
+3. Search and add required checks
+4. Check **Require branches to be up to date**
 
-## 📝 CODEOWNERS (Opcjonalnie)
+## 📝 CODEOWNERS (Optional)
 
-Stwórz `.github/CODEOWNERS` dla automatycznych review assignments:
+Create `.github/CODEOWNERS` for automatic review assignments:
 
 ```
 # Global owners
@@ -199,25 +199,25 @@ docs/ @tech-writers
 
 ## 🎯 Best Practices
 
-### 1. Małe, Atomiczne PR
+### 1. Small, Atomic PRs
 
-- Jeden PR = jedna funkcjonalność
-- Maksymalnie 400 linii kodu
-- Jasny tytuł i opis
+- One PR = one feature
+- Maximum 400 lines of code
+- Clear title and description
 
-### 2. Szybkie Review
+### 2. Quick Review
 
-- Review w ciągu 24h
-- Konstruktywne komentarze
-- Approve gdy wszystko OK
+- Review within 24h
+- Constructive comments
+- Approve when everything is OK
 
-### 3. Aktualizuj Branch Protection
+### 3. Update Branch Protection
 
-- Dodawaj nowe status checks gdy potrzeba
-- Dostosuj liczbę reviewerów do zespołu
-- Regularnie przeglądaj zasady
+- Add new status checks when needed
+- Adjust number of reviewers to team size
+- Regularly review rules
 
-## 🔧 Przykład Konfiguracji
+## 🔧 Configuration Example
 
 ```json
 {
@@ -245,4 +245,4 @@ docs/ @tech-writers
 
 ---
 
-**Pamiętaj**: Branch Protection to nie przeszkoda, to gwarancja jakości! 🛡️
+**Remember**: Branch Protection is not an obstacle, it's a quality guarantee! 🛡️

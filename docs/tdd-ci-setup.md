@@ -1,42 +1,42 @@
 # TDD + CI Setup Guide
 
-## 🎯 Cel
+## 🎯 Goal
 
-Ten dokument opisuje jak pracować z Test-Driven Development (TDD) i Continuous Integration (CI) w naszym projekcie Vue 3.
+This document describes how to work with Test-Driven Development (TDD) and Continuous Integration (CI) in our Vue 3 project.
 
 ## 🔄 TDD Workflow - Red, Green, Refactor
 
-### 1. RED ❌ - Napisz test, który się nie powiedzie
+### 1. RED ❌ - Write a test that will fail
 
 ```bash
-# Najpierw napisz test w odpowiednim katalogu
+# First write a test in the appropriate directory
 # src/components/__tests__/NomeComponent.test.ts
 # src/utils/__tests__/someUtils.test.ts
 
-# Uruchom testy - powinny być RED (nieudane)
+# Run tests - they should be RED (failing)
 npm run test
 ```
 
-### 2. GREEN ✅ - Napisz minimalną implementację
+### 2. GREEN ✅ - Write minimal implementation
 
 ```bash
-# Napisz kod, który sprawi że test przejdzie
-# Nie przejmuj się jakością - cel to GREEN
+# Write code that will make the test pass
+# Don't worry about quality - goal is GREEN
 
-# Uruchom testy ponownie
+# Run tests again
 npm run test
 ```
 
-### 3. REFACTOR 🔄 - Popraw kod zachowując testy GREEN
+### 3. REFACTOR 🔄 - Improve code while keeping tests GREEN
 
 ```bash
-# Refaktoryzuj kod bez zmiany funkcjonalności
-# Testy powinny nadal przechodzić
+# Refactor code without changing functionality
+# Tests should still pass
 
 npm run test
 ```
 
-## 🧪 Struktura Testów
+## 🧪 Test Structure
 
 ```
 src/
@@ -58,15 +58,15 @@ tests/
     └── another-feature.spec.ts
 ```
 
-## 📝 Konwencje Testów
+## 📝 Test Conventions
 
-### Nazewnictwo
+### Naming
 
-- Pliki testów: `*.test.ts` (unit) lub `*.spec.ts` (E2E)
-- Describe blocks: nazwa komponentu/funkcji
-- Test cases: "powinien [oczekiwane zachowanie]"
+- Test files: `*.test.ts` (unit) or `*.spec.ts` (E2E)
+- Describe blocks: component/function name
+- Test cases: "should [expected behavior]"
 
-### Przykład testu jednostkowego
+### Unit test example
 
 ```typescript
 import { describe, it, expect } from "vitest";
@@ -74,7 +74,7 @@ import { mount } from "@vue/test-utils";
 import MyComponent from "../MyComponent.vue";
 
 describe("MyComponent", () => {
-  it("powinien renderować tytuł", () => {
+  it("should render title", () => {
     const wrapper = mount(MyComponent, {
       props: { title: "Test Title" },
     });
@@ -84,54 +84,54 @@ describe("MyComponent", () => {
 });
 ```
 
-## 🚀 Dostępne Komendy
+## 🚀 Available Commands
 
-### Testy Jednostkowe (Vitest)
+### Unit Tests (Vitest)
 
 ```bash
-npm run test          # Watch mode - uruchamia się automatycznie
-npm run test:run      # Single run - do CI
-npm run test:ui       # UI mode - wizualny interface
-npm run test:coverage # Z pokryciem kodu
+npm run test          # Watch mode - runs automatically
+npm run test:run      # Single run - for CI
+npm run test:ui       # UI mode - visual interface
+npm run test:coverage # With code coverage
 ```
 
-### Testy E2E (Playwright)
+### E2E Tests (Playwright)
 
 ```bash
-npm run test:e2e        # Uruchom wszystkie testy E2E
-npm run test:e2e:ui     # UI mode dla E2E
-npm run test:e2e:report # Pokaż raport z testów
+npm run test:e2e        # Run all E2E tests
+npm run test:e2e:ui     # UI mode for E2E
+npm run test:e2e:report # Show test report
 ```
 
-### Linting i Formatowanie
+### Linting and Formatting
 
 ```bash
-npm run lint          # Sprawdź typy TypeScript
-npm run lint:fix      # Popraw formatowanie
+npm run lint          # Check TypeScript types
+npm run lint:fix      # Fix formatting
 ```
 
 ## 🔄 CI/CD Pipeline
 
-### Workflow na GitHub Actions
+### GitHub Actions Workflow
 
-1. **PR Validation** - uruchamia się przy każdym PR
+1. **PR Validation** - runs on every PR
    - Type checking
    - Unit tests
    - Build check
-   - E2E tests (opcjonalnie)
+   - E2E tests (optional)
 
-2. **Main CI/CD** - uruchamia się przy push do main/develop
-   - Wszystkie testy
+2. **Main CI/CD** - runs on push to main/develop
+   - All tests
    - Build
-   - Deploy (tylko main branch)
+   - Deploy (main branch only)
 
-### Konfiguracja Branch Protection
+### Branch Protection Configuration
 
-W ustawieniach repozytorium GitHub ustaw:
+In GitHub repository settings configure:
 
 1. **Settings** → **Branches** → **Add rule**
 2. **Branch name pattern**: `main`
-3. Zaznacz:
+3. Check:
    - ✅ Require status checks to pass
    - ✅ Require branches to be up to date
    - ✅ PR Validation / validate
@@ -139,32 +139,32 @@ W ustawieniach repozytorium GitHub ustaw:
 
 ## 🪝 Pre-commit Hooks
 
-### Co się dzieje przed commitem
+### What happens before commit
 
 ```bash
-# Automatycznie uruchamiają się:
-1. Prettier (formatowanie kodu)
+# Automatically runs:
+1. Prettier (code formatting)
 2. TypeScript check
 3. Unit tests
 
-# Jeśli cokolwiek się nie powiedzie - commit zostanie odrzucony
+# If anything fails - commit will be rejected
 ```
 
 ### Format Commit Messages
 
-Używamy Conventional Commits:
+We use Conventional Commits:
 
 ```bash
-feat(auth): dodaj logowanie użytkownika
-fix(ui): napraw responsywność na mobile
-docs(readme): zaktualizuj instrukcje
-test(utils): dodaj testy dla formatowania
-chore(deps): zaktualizuj zależności
+feat(auth): add user login
+fix(ui): fix mobile responsiveness
+docs(readme): update instructions
+test(utils): add tests for formatting
+chore(deps): update dependencies
 ```
 
-## 🎯 TDD w Praktyce - Przykład
+## 🎯 TDD in Practice - Example
 
-### Krok 1: Napisz test (RED)
+### Step 1: Write test (RED)
 
 ```typescript
 // src/utils/__tests__/validator.test.ts
@@ -172,24 +172,24 @@ import { describe, it, expect } from "vitest";
 import { validateEmail } from "../validator";
 
 describe("validateEmail", () => {
-  it("powinien zaakceptować prawidłowy email", () => {
+  it("should accept valid email", () => {
     expect(validateEmail("test@example.com")).toBe(true);
   });
 
-  it("powinien odrzucić nieprawidłowy email", () => {
+  it("should reject invalid email", () => {
     expect(validateEmail("invalid-email")).toBe(false);
   });
 });
 ```
 
-### Krok 2: Uruchom test (RED)
+### Step 2: Run test (RED)
 
 ```bash
 npm run test
 # ❌ Error: Cannot resolve import "../validator"
 ```
 
-### Krok 3: Napisz minimalną implementację (GREEN)
+### Step 3: Write minimal implementation (GREEN)
 
 ```typescript
 // src/utils/validator.ts
@@ -198,14 +198,14 @@ export function validateEmail(email: string): boolean {
 }
 ```
 
-### Krok 4: Uruchom test (GREEN)
+### Step 4: Run test (GREEN)
 
 ```bash
 npm run test
 # ✅ All tests passed
 ```
 
-### Krok 5: Refaktoryzuj (GREEN)
+### Step 5: Refactor (GREEN)
 
 ```typescript
 // src/utils/validator.ts
@@ -215,40 +215,40 @@ export function validateEmail(email: string): boolean {
 }
 ```
 
-## 📋 Checklist przed PR
+## 📋 Pre-PR Checklist
 
-- [ ] Wszystkie testy przechodzą lokalnie (`npm run test:run`)
-- [ ] Kod jest sformatowany (`npm run lint:fix`)
-- [ ] Dodano testy dla nowej funkcjonalności
-- [ ] E2E testy przechodzą (jeśli dotyczy)
-- [ ] Commit messages w prawidłowym formacie
-- [ ] PR ma opisową nazwę i opis
+- [ ] All tests pass locally (`npm run test:run`)
+- [ ] Code is formatted (`npm run lint:fix`)
+- [ ] Tests added for new functionality
+- [ ] E2E tests pass (if applicable)
+- [ ] Commit messages in correct format
+- [ ] PR has descriptive name and description
 
 ## 🐛 Troubleshooting
 
 ### "cleanup is not a function"
 
 ```bash
-# Usuń node_modules i zainstaluj ponownie
+# Remove node_modules and reinstall
 rm -rf node_modules package-lock.json
 npm install
 ```
 
-### Testy E2E nie działają
+### E2E tests not working
 
 ```bash
-# Reinstaluj Playwright browsers
+# Reinstall Playwright browsers
 npx playwright install
 ```
 
-### Pre-commit hook nie działa
+### Pre-commit hook not working
 
 ```bash
-# Reinstaluj husky
+# Reinstall husky
 npm run prepare
 ```
 
-## 📚 Dodatkowe Zasoby
+## 📚 Additional Resources
 
 - [Vitest Documentation](https://vitest.dev/)
 - [Vue Test Utils](https://test-utils.vuejs.org/)
@@ -257,4 +257,4 @@ npm run prepare
 
 ---
 
-**Pamiętaj**: TDD to nie tylko pisanie testów - to sposób myślenia o kodzie. Zacznij od określenia czego oczekujesz, a potem napisz kod, który to spełni.
+**Remember**: TDD is not just writing tests - it's a way of thinking about code. Start by defining what you expect, then write code that fulfills it.

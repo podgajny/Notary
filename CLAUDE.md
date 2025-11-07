@@ -41,7 +41,7 @@ npm run lint:fix     # Code formatting with Prettier
 ### Test Strategy
 
 - **Unit tests**: Located in `__tests__/` directories alongside components
-- **Test naming**: Use Polish descriptions starting with "powinien" (should)
+- **Test naming**: Use English descriptions starting with "should"
 - **Snapshot tests**: Included to track component structure changes
 - **TDD approach**: Write failing tests first, then implement features
 
@@ -105,7 +105,7 @@ npm run lint:fix     # Code formatting with Prettier
 
 ### Code Quality Standards
 
-- Comments in Polish (as per .cursorrules)
+- Comments in English (as per .cursorrules)
 - No arbitrary Tailwind values without TODO justification
 - Extract repeated class combinations into components or @apply
 - Maintain accessibility with focus-visible states and aria attributes

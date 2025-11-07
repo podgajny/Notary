@@ -29,7 +29,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
   });
 
   describe("NoteStoreError", () => {
-    it("powinien utworzyć błąd z odpowiednim kodem i wiadomością", () => {
+    it("should create error with appropriate code and message", () => {
       // Act
       const error = new NoteStoreError("TITLE_REQUIRED", "Title is required");
 
@@ -40,7 +40,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(error).toBeInstanceOf(Error);
     });
 
-    it("powinien obsługiwać wszystkie typy kodów błędów", () => {
+    it("should handle all error code types", () => {
       // Test all error codes
       const errorCodes = [
         "TITLE_REQUIRED",
@@ -57,7 +57,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
   });
 
   describe("fetchNotes", () => {
-    it("powinien załadować notatki z bazy danych", async () => {
+    it("should load notes from database", async () => {
       // Arrange
       const mockNotes = [
         {
@@ -95,7 +95,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(store.isLoading).toBe(false);
     });
 
-    it("powinien ustawić isLoading na true podczas ładowania", async () => {
+    it("should set isLoading to true during loading", async () => {
       // Arrange
       let resolvePromise: (value: any) => void;
       const promise = new Promise<any[]>((resolve) => {
@@ -118,7 +118,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(store.isLoading).toBe(false);
     });
 
-    it("powinien rzucić NoteStoreError gdy odczyt z bazy się nie powiedzie", async () => {
+    it("should throw NoteStoreError when database read fails", async () => {
       // Arrange
       const dbError = new DbError("DB_READ_FAILED", "Database read failed");
       vi.mocked(getNotes).mockRejectedValue(dbError);
@@ -131,7 +131,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(store.isLoading).toBe(false);
     });
 
-    it("powinien rzucić NoteStoreError gdy baza danych nie jest dostępna", async () => {
+    it("should throw NoteStoreError when database is not available", async () => {
       // Arrange
       const dbError = new DbError("DB_UNAVAILABLE", "IndexedDB not available");
       vi.mocked(getNotes).mockRejectedValue(dbError);
@@ -147,7 +147,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
   });
 
   describe("createNote", () => {
-    it("powinien utworzyć nową notatkę z prawidłowymi danymi", async () => {
+    it("should create new note with valid data", async () => {
       // Arrange
       const input: CreateNoteInput = {
         title: "Test Note",
@@ -178,7 +178,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(setNotes).toHaveBeenCalledWith([result]);
     });
 
-    it("powinien przyciąć tytuł i utworzyć notatkę", async () => {
+    it("should trim title and create note", async () => {
       // Arrange
       const input: CreateNoteInput = {
         title: "  Test Note  ",
@@ -196,7 +196,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(setNotes).toHaveBeenCalledWith([result]);
     });
 
-    it("powinien rzucić błąd gdy tytuł jest pusty", async () => {
+    it("should throw error when title is empty", async () => {
       // Arrange
       const input: CreateNoteInput = {
         title: "",
@@ -213,7 +213,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(store.notes).toHaveLength(0);
     });
 
-    it("powinien rzucić błąd gdy tytuł zawiera tylko spacje", async () => {
+    it("should throw error when title contains only spaces", async () => {
       // Arrange
       const input: CreateNoteInput = {
         title: "   ",
@@ -229,7 +229,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       );
     });
 
-    it("powinien cofnąć zmiany w store gdy zapis do bazy się nie powiedzie", async () => {
+    it("should revert changes in store when database write fails", async () => {
       // Arrange
       const input: CreateNoteInput = {
         title: "Test Note",
@@ -250,7 +250,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(store.notes).toHaveLength(0);
     });
 
-    it("powinien dodać nową notatkę na początku listy", async () => {
+    it("should add new note at the beginning of list", async () => {
       // Arrange
       const existingNote = {
         id: "existing",
@@ -283,7 +283,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
   });
 
   describe("generateNoteId", () => {
-    it("powinien generować unikalne ID dla notatek", async () => {
+    it("should generate unique IDs for notes", async () => {
       // Arrange
       const input: CreateNoteInput = {
         title: "Test Note",

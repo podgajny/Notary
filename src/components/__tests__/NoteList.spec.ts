@@ -15,7 +15,7 @@ describe("NoteList", () => {
     ...overrides,
   });
 
-  it('powinien renderować sekcję z tytułem "Notes"', () => {
+  it('should render section with title "Notes"', () => {
     // Act
     const wrapper = mount(NoteList, {
       props: {
@@ -28,7 +28,7 @@ describe("NoteList", () => {
     expect(wrapper.find("section").exists()).toBe(true);
   });
 
-  it("powinien wyświetlać stan ładowania", () => {
+  it("should display loading state", () => {
     // Act
     const wrapper = mount(NoteList, {
       props: {
@@ -41,7 +41,7 @@ describe("NoteList", () => {
     expect(wrapper.find(".text-slate-500").text()).toBe("Loading notes…");
   });
 
-  it("powinien wyświetlać błąd ładowania", () => {
+  it("should display loading error", () => {
     // Arrange
     const errorMessage = "Could not load notes";
 
@@ -57,7 +57,7 @@ describe("NoteList", () => {
     expect(wrapper.find(".text-red-600").text()).toBe(errorMessage);
   });
 
-  it("powinien wyświetlać pusty stan gdy nie ma notatek", () => {
+  it("should display empty state when there are no notes", () => {
     // Act
     const wrapper = mount(NoteList, {
       props: {
@@ -73,7 +73,7 @@ describe("NoteList", () => {
     );
   });
 
-  it("powinien renderować listę notatek", () => {
+  it("should render list of notes", () => {
     // Arrange
     const notes = [
       createMockNote({ id: "1", title: "First Note", body: "First body" }),
@@ -95,7 +95,7 @@ describe("NoteList", () => {
     expect(listItems[1].find(".text-base").text()).toBe("Second Note");
   });
 
-  it("powinien wyświetlać tytuł i treść notatki", () => {
+  it("should display note title and body", () => {
     // Arrange
     const note = createMockNote({
       title: "My Test Note",
@@ -117,8 +117,8 @@ describe("NoteList", () => {
     );
   });
 
-  it("powinien wyświetlać maksymalnie 5 linii tekstu dla długich notatek", () => {
-    // Arrange - tworzenie notatki z długą treścią (200+ słów, która na pewno przekroczy 5 linii)
+  it("should display maximum 5 lines of text for long notes", () => {
+    // Arrange - creating note with long content (200+ words, which will definitely exceed 5 lines)
     const longBody =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.";
 
@@ -134,14 +134,14 @@ describe("NoteList", () => {
       },
     });
 
-    // Assert - sprawdzenie czy element ma klasę line-clamp
+    // Assert - check if element has line-clamp class
     const bodyElement = wrapper.find(".text-slate-600");
     expect(bodyElement.classes()).toContain("line-clamp-5");
     expect(bodyElement.classes()).toContain("break-words");
   });
 
-  it("powinien mieć break-words dla krótkiej notatki", () => {
-    // Arrange - krótka notatka (20-30 słów, 1-2 linie)
+  it("should have break-words for short note", () => {
+    // Arrange - short note (20-30 words, 1-2 lines)
     const shortBody =
       "This is a short note with just a few words that should display normally without any truncation issues.";
 
@@ -157,14 +157,14 @@ describe("NoteList", () => {
       },
     });
 
-    // Assert - nawet krótkie notatki powinny mieć obie klasy
+    // Assert - even short notes should have both classes
     const bodyElement = wrapper.find(".text-slate-600");
     expect(bodyElement.classes()).toContain("line-clamp-5");
     expect(bodyElement.classes()).toContain("break-words");
   });
 
-  it("powinien łamać bardzo długie nierozdzielne ciągi znaków", () => {
-    // Arrange - notatka z bardzo długim słowem bez spacji (symulacja buga z "Dłuuuuuuu...")
+  it("should break very long unbreakable character sequences", () => {
+    // Arrange - note with very long word without spaces (simulating bug with "Dłuuuuuuu...")
     const unbreakableString = "Dł" + "u".repeat(500) + "ga notatka";
 
     const note = createMockNote({
@@ -179,13 +179,13 @@ describe("NoteList", () => {
       },
     });
 
-    // Assert - break-words musi być obecny, aby zapobiec poziomemu przepełnieniu
+    // Assert - break-words must be present to prevent horizontal overflow
     const bodyElement = wrapper.find(".text-slate-600");
     expect(bodyElement.classes()).toContain("break-words");
     expect(bodyElement.classes()).toContain("line-clamp-5");
   });
 
-  it("powinien wyświetlać pełną treść gdy jest krótka", () => {
+  it("should display full content when it is short", () => {
     // Arrange
     const shortBody = "Short body";
     const note = createMockNote({
@@ -204,7 +204,7 @@ describe("NoteList", () => {
     expect(wrapper.find(".text-slate-600").text()).toBe("Short body");
   });
 
-  it('powinien wyświetlać "No body text yet" gdy treść jest pusta', () => {
+  it('should display "No body text yet" when content is empty', () => {
     // Arrange
     const note = createMockNote({
       title: "Empty Note",
@@ -222,7 +222,7 @@ describe("NoteList", () => {
     expect(wrapper.find(".text-slate-400").text()).toBe("No body text yet.");
   });
 
-  it("powinien formatować timestamp w czytelny sposób", () => {
+  it("should format timestamp in readable way", () => {
     // Arrange
     const timestamp = new Date("2024-01-15T14:30:00Z").getTime();
     const note = createMockNote({
@@ -244,7 +244,7 @@ describe("NoteList", () => {
     expect(timeElement.text()).toContain("2024");
   });
 
-  it("powinien mieć odpowiednie atrybuty dla dostępności", () => {
+  it("should have appropriate attributes for accessibility", () => {
     // Arrange
     const note = createMockNote();
 
@@ -261,7 +261,7 @@ describe("NoteList", () => {
     expect(timeElement.attributes("class")).toContain("text-xs");
   });
 
-  it("powinien renderować notatki w odpowiedniej kolejności", () => {
+  it("should render notes in correct order", () => {
     // Arrange
     const now = Date.now();
     const notes = [
@@ -282,7 +282,7 @@ describe("NoteList", () => {
     expect(listItems[1].find(".text-base").text()).toBe("Newer Note");
   });
 
-  it("powinien mieć odpowiednie klasy CSS dla stylowania", () => {
+  it("should have appropriate CSS classes for styling", () => {
     // Arrange
     const note = createMockNote();
 
@@ -307,7 +307,7 @@ describe("NoteList", () => {
     expect(listItem.classes()).toContain("p-4");
   });
 
-  it("powinien obsługiwać domyślne wartości props", () => {
+  it("should handle default prop values", () => {
     // Act
     const wrapper = mount(NoteList, {
       props: {
@@ -320,7 +320,7 @@ describe("NoteList", () => {
     expect(wrapper.props("loadError")).toBe("");
   });
 
-  it("powinien wyświetlać stan ładowania zamiast pustego stanu", () => {
+  it("should display loading state instead of empty state", () => {
     // Act
     const wrapper = mount(NoteList, {
       props: {
@@ -335,7 +335,7 @@ describe("NoteList", () => {
     expect(wrapper.find(".text-slate-600").exists()).toBe(false);
   });
 
-  it("powinien wyświetlać błąd zamiast pustego stanu", () => {
+  it("should display error instead of empty state", () => {
     // Act
     const wrapper = mount(NoteList, {
       props: {
@@ -350,7 +350,7 @@ describe("NoteList", () => {
     expect(wrapper.find(".text-slate-600").exists()).toBe(false);
   });
 
-  it("powinien emitować zdarzenie 'note-clicked' z obiektem notatki gdy użytkownik kliknie notatkę", async () => {
+  it("should emit 'note-clicked' event with note object when user clicks note", async () => {
     // Arrange
     const note = createMockNote({
       id: "test-123",
@@ -373,7 +373,7 @@ describe("NoteList", () => {
     expect(wrapper.emitted("note-clicked")?.[0]).toEqual([note]);
   });
 
-  it("powinien dodać cursor-pointer do elementów notatek", () => {
+  it("should add cursor-pointer to note elements", () => {
     // Arrange
     const note = createMockNote();
 
@@ -389,7 +389,7 @@ describe("NoteList", () => {
     expect(listItem.classes()).toContain("cursor-pointer");
   });
 
-  it("powinien wyświetlić hover effect na notatkach", () => {
+  it("should display hover effect on notes", () => {
     // Arrange
     const note = createMockNote();
 
@@ -402,7 +402,7 @@ describe("NoteList", () => {
 
     // Assert
     const listItem = wrapper.find("li");
-    // Sprawdzamy, czy są klasy hover - używamy regex/zawiera
+    // Check if hover classes are present - using regex/contains
     const hasHoverClass =
       listItem.classes().some((cls) => cls.includes("hover:")) ||
       listItem.attributes("class")?.includes("hover:");
