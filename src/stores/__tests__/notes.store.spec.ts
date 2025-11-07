@@ -141,7 +141,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       // Act & Assert
       await expect(store.fetchNotes()).rejects.toThrow(NoteStoreError);
       await expect(store.fetchNotes()).rejects.toThrow(
-        "IndexedDB is not available in this browser",
+        "IndexedDB is not available in this browser"
       );
     });
   });
@@ -208,7 +208,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       // Act & Assert
       await expect(store.createNote(input)).rejects.toThrow(NoteStoreError);
       await expect(store.createNote(input)).rejects.toThrow(
-        "Title is required",
+        "Title is required"
       );
       expect(store.notes).toHaveLength(0);
     });
@@ -225,7 +225,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       // Act & Assert
       await expect(store.createNote(input)).rejects.toThrow(NoteStoreError);
       await expect(store.createNote(input)).rejects.toThrow(
-        "Title is required",
+        "Title is required"
       );
     });
 
@@ -243,7 +243,7 @@ describe("notes.store.ts - Pinia store for notes", () => {
       // Act & Assert
       await expect(store.createNote(input)).rejects.toThrow(NoteStoreError);
       await expect(store.createNote(input)).rejects.toThrow(
-        "Could not save. Try again.",
+        "Could not save. Try again."
       );
 
       // Store should be reverted to previous state

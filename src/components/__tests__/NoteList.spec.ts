@@ -69,7 +69,7 @@ describe("NoteList", () => {
 
     // Assert
     expect(wrapper.find(".text-slate-600").text()).toBe(
-      "No notes yet. Once you save a note it will appear here.",
+      "No notes yet. Once you save a note it will appear here."
     );
   });
 
@@ -113,7 +113,7 @@ describe("NoteList", () => {
     const listItem = wrapper.find("li");
     expect(listItem.find(".text-base").text()).toBe("My Test Note");
     expect(listItem.find(".text-slate-600").text()).toBe(
-      "This is the body content of the note",
+      "This is the body content of the note"
     );
   });
 

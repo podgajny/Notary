@@ -27,10 +27,10 @@ describe("NoteEditor", () => {
 
     // Assert
     expect(wrapper.find('input[type="text"]').attributes("placeholder")).toBe(
-      "Title",
+      "Title"
     );
     expect(wrapper.find("textarea").attributes("placeholder")).toBe(
-      "Write your note...",
+      "Write your note..."
     );
   });
 
@@ -69,7 +69,7 @@ describe("NoteEditor", () => {
 
     // Assert
     expect(
-      wrapper.find('button[type="submit"]').attributes("disabled"),
+      wrapper.find('button[type="submit"]').attributes("disabled")
     ).toBeUndefined();
   });
 
@@ -82,7 +82,7 @@ describe("NoteEditor", () => {
 
     // Assert
     expect(
-      wrapper.find('button[type="submit"]').attributes("disabled"),
+      wrapper.find('button[type="submit"]').attributes("disabled")
     ).toBeUndefined();
   });
 
@@ -149,7 +149,7 @@ describe("NoteEditor", () => {
 
     // Assert - should be disabled during save
     expect(
-      wrapper.find('button[type="submit"]').attributes("disabled"),
+      wrapper.find('button[type="submit"]').attributes("disabled")
     ).toBeDefined();
 
     // Complete the save
@@ -180,10 +180,10 @@ describe("NoteEditor", () => {
 
     // Assert - form should be cleared
     expect(
-      (wrapper.find('input[type="text"]').element as HTMLInputElement).value,
+      (wrapper.find('input[type="text"]').element as HTMLInputElement).value
     ).toBe("");
     expect(
-      (wrapper.find("textarea").element as HTMLTextAreaElement).value,
+      (wrapper.find("textarea").element as HTMLTextAreaElement).value
     ).toBe("");
   });
 
@@ -191,7 +191,7 @@ describe("NoteEditor", () => {
     // Arrange
     const error = new NoteStoreError(
       "STORAGE_WRITE_FAILED",
-      "Could not save. Try again.",
+      "Could not save. Try again."
     );
     mockSaveNote.mockRejectedValue(error);
     const wrapper = mount(NoteEditor, {
@@ -206,7 +206,7 @@ describe("NoteEditor", () => {
 
     // Assert
     expect(wrapper.find(".text-red-600").text()).toBe(
-      "Could not save. Try again.",
+      "Could not save. Try again."
     );
   });
 

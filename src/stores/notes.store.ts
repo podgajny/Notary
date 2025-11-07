@@ -35,7 +35,7 @@ const sortNotesByUpdatedAtDesc = (notes: StoredNote[]): Note[] => {
 
 const mapDbErrorToStoreError = (
   error: DbError,
-  defaultCode: NoteStoreError["code"],
+  defaultCode: NoteStoreError["code"]
 ) => {
   if (error.code === "DB_READ_FAILED" || error.code === "DB_OPEN_FAILED") {
     return new NoteStoreError("STORAGE_READ_FAILED", "Could not load notes");
@@ -44,14 +44,14 @@ const mapDbErrorToStoreError = (
   if (error.code === "DB_WRITE_FAILED") {
     return new NoteStoreError(
       "STORAGE_WRITE_FAILED",
-      "Could not save. Try again.",
+      "Could not save. Try again."
     );
   }
 
   if (error.code === "DB_UNAVAILABLE") {
     return new NoteStoreError(
       defaultCode,
-      "IndexedDB is not available in this browser",
+      "IndexedDB is not available in this browser"
     );
   }
 

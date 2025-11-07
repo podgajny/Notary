@@ -29,6 +29,21 @@ npm run lint:fix     # Code formatting with Prettier
 
 **Important**: Always run `npm run lint` and `npm run test:run` after making changes. These commands are enforced by CI/CD pipeline.
 
+### Code Formatting (Prettier)
+
+- **Purpose**: Automatically formats code to ensure consistent style across the project
+- **Configuration**: Uses `.prettierrc.json` with explicit settings (double quotes, semicolons, 2-space indentation, trailing commas)
+- **Plugin**: `prettier-plugin-tailwindcss` automatically sorts Tailwind CSS classes in recommended order
+- **When it runs**:
+  - Manually: `npm run lint:fix` formats all files in `src/`
+  - Automatically: Before every commit via `lint-staged` (only on staged files)
+- **Important for LLMs**:
+  - **DO NOT** make purely stylistic changes (e.g., single vs. double quotes) unless correcting a Prettier violation
+  - Prettier will normalize formatting on commit anyway
+  - Preserve existing formatting style when modifying code
+  - If you see inconsistent quotes/styles, assume Prettier will fix it
+  - Trust the Prettier process - don't manually fix formatting issues
+
 ## Architecture & Code Structure
 
 ### Component Architecture
@@ -45,11 +60,18 @@ npm run lint:fix     # Code formatting with Prettier
 - **Snapshot tests**: Included to track component structure changes
 - **TDD approach**: Write failing tests first, then implement features
 
-### TypeScript Configuration
+### TypeScript Type Checking
 
-- Strict mode enabled with `noUnusedLocals` and `noUnusedParameters`
-- Path alias `@/*` maps to `./src/*`
-- Vue 3 specific configuration with JSX preserve mode
+- **Tool**: `vue-tsc` (Vue TypeScript compiler), NOT ESLint
+- **Command**: `npm run lint` runs `vue-tsc --noEmit`
+- **Purpose**: Checks TypeScript types without emitting files
+- **When it runs**:
+  - Manually: `npm run lint`
+  - In CI/CD: Before every PR merge
+- **Configuration**:
+  - Strict mode enabled with `noUnusedLocals` and `noUnusedParameters`
+  - Path alias `@/*` maps to `./src/*`
+  - Vue 3 specific configuration with JSX preserve mode
 
 ### Styling System (from .cursorrules)
 
@@ -79,8 +101,16 @@ npm run lint:fix     # Code formatting with Prettier
 
 ### Git Hooks (Husky)
 
-- **Pre-commit**: Prettier formatting via lint-staged
+- **What is Husky**: Tool that enables Git hooks (scripts that run at specific Git events)
+- **Pre-commit hook**: Automatically runs `lint-staged` before every commit
+- **How it works**:
+  1. Developer runs `git commit`
+  2. Husky intercepts and runs pre-commit hook
+  3. `lint-staged` formats staged files with Prettier
+  4. If formatting changes files, they're re-staged
+  5. Commit proceeds with formatted code
 - **Files processed**: `*.{vue,ts,js,json,md}`
+- **Setup**: Husky is initialized via `npm run prepare` (runs automatically after `npm install`)
 
 ### Branch Protection
 
@@ -127,3 +157,29 @@ src/
 ├── views/              # Page-level components
 └── main.js            # Application entry point
 ```
+
+## Important Notes for LLMs
+
+### Formatting
+
+- **DO NOT** change quote styles (`'` ↔ `"`) unless explicitly asked
+- **DO NOT** add/remove semicolons unless fixing a Prettier error
+- Prettier will normalize formatting on commit - trust the process
+- If you see inconsistent formatting, it will be fixed by Prettier automatically
+- When generating new code, match the existing file's style
+- If unsure about style, use Prettier defaults (double quotes, semicolons)
+- Always assume `npm run lint:fix` will be run before commit
+
+### Code Generation
+
+- When generating new code, match the existing file's style
+- If unsure about style, use Prettier defaults (double quotes, semicolons)
+- Always assume `npm run lint:fix` will be run before commit
+- Don't spend tokens on formatting - Prettier handles it
+
+### Testing
+
+- Write tests in English with "should" prefix (e.g., "should render correctly")
+- Follow TDD: RED → GREEN → REFACTOR
+- Tests should be in `__tests__/` directories alongside source files
+- Use descriptive test names that explain expected behavior

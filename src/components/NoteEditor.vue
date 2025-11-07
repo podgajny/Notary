@@ -20,7 +20,7 @@ const props = withDefaults(
   }>(),
   {
     saveNote: async () => {},
-  },
+  }
 );
 
 const title = ref("");
