@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   computed,
-  defineExpose,
   nextTick,
   onBeforeUnmount,
   onMounted,
