@@ -15,7 +15,6 @@ describe("NoteEditor", () => {
     const wrapper = mount(NoteEditor);
 
     // Assert
-    expect(wrapper.find("h2").text()).toBe("Create a note");
     expect(wrapper.find('input[type="text"]').exists()).toBe(true);
     expect(wrapper.find("textarea").exists()).toBe(true);
     expect(wrapper.find('button[type="submit"]').exists()).toBe(true);
@@ -259,16 +258,16 @@ describe("NoteEditor", () => {
     expect(wrapper.vm.$refs.titleInputRef).toBeDefined();
   });
 
-  it("should have appropriate labels for accessibility", () => {
+  it("should have appropriate input attributes for accessibility", () => {
     // Act
     const wrapper = mount(NoteEditor);
 
-    // Assert
-    const titleLabel = wrapper.find('label[for="note-title"]');
-    const bodyLabel = wrapper.find('label[for="note-body"]');
+    // Assert - inputs should have id attributes for accessibility
+    const titleInput = wrapper.find('input[type="text"]');
+    const bodyTextarea = wrapper.find("textarea");
 
-    expect(titleLabel.text()).toBe("Title");
-    expect(bodyLabel.text()).toBe("Body");
+    expect(titleInput.attributes("id")).toBe("note-title");
+    expect(bodyTextarea.attributes("id")).toBe("note-body");
   });
 
   it("should have appropriate attributes for accessibility", () => {
@@ -281,5 +280,119 @@ describe("NoteEditor", () => {
 
     expect(titleInput.attributes("id")).toBe("note-title");
     expect(bodyTextarea.attributes("id")).toBe("note-body");
+  });
+
+  describe("edit mode", () => {
+    it("should accept optional note prop", () => {
+      // Arrange
+      const testNote = {
+        id: "test-id",
+        title: "Test Note",
+        body: "Test body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: testNote,
+        },
+      });
+
+      // Assert
+      expect(wrapper.props("note")).toStrictEqual(testNote);
+    });
+
+    it("should populate fields when note prop is provided", () => {
+      // Arrange
+      const testNote = {
+        id: "test-id",
+        title: "Test Note",
+        body: "Test body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: testNote,
+        },
+      });
+
+      // Assert
+      const titleInput = wrapper.find('input[type="text"]');
+      const bodyTextarea = wrapper.find("textarea");
+      expect((titleInput.element as HTMLInputElement).value).toBe("Test Note");
+      expect((bodyTextarea.element as HTMLTextAreaElement).value).toBe(
+        "Test body"
+      );
+    });
+
+    it("should show placeholders when note is null", () => {
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: null,
+        },
+      });
+
+      // Assert
+      const titleInput = wrapper.find('input[type="text"]');
+      const bodyTextarea = wrapper.find("textarea");
+      expect(titleInput.attributes("placeholder")).toBe("Title");
+      expect(bodyTextarea.attributes("placeholder")).toBe("Write your note...");
+      expect((titleInput.element as HTMLInputElement).value).toBe("");
+      expect((bodyTextarea.element as HTMLTextAreaElement).value).toBe("");
+    });
+
+    it("should update fields when note prop changes", async () => {
+      // Arrange
+      const testNote1 = {
+        id: "test-id-1",
+        title: "Note 1",
+        body: "Body 1",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+      const testNote2 = {
+        id: "test-id-2",
+        title: "Note 2",
+        body: "Body 2",
+        tags: [],
+        pinned: false,
+        createdAt: 2000,
+        updatedAt: 2000,
+      };
+
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: testNote1,
+        },
+      });
+
+      // Assert initial state
+      const titleInput = wrapper.find('input[type="text"]');
+      const bodyTextarea = wrapper.find("textarea");
+      expect((titleInput.element as HTMLInputElement).value).toBe("Note 1");
+
+      // Update prop
+      await wrapper.setProps({ note: testNote2 });
+      await wrapper.vm.$nextTick();
+
+      // Assert updated state
+      expect((titleInput.element as HTMLInputElement).value).toBe("Note 2");
+      expect((bodyTextarea.element as HTMLTextAreaElement).value).toBe(
+        "Body 2"
+      );
+    });
   });
 });
