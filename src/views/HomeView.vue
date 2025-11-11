@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import NoteEditor from "../components/NoteEditor.vue";
 import NoteList from "../components/NoteList.vue";
 import {
@@ -12,6 +12,7 @@ const notesStore = useNotesStore();
 const loadErrorMessage = ref("");
 const currentNote = ref<Note | null>(null);
 const isSidebarCollapsed = ref(false);
+const noteEditorRef = ref<InstanceType<typeof NoteEditor> | null>(null);
 
 // Load sidebar state from localStorage on mount
 onMounted(() => {
@@ -80,6 +81,16 @@ const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
   localStorage.setItem("sidebarCollapsed", isSidebarCollapsed.value.toString());
 };
+
+const handleSaveClick = async () => {
+  if (noteEditorRef.value) {
+    await noteEditorRef.value.submit();
+  }
+};
+
+const isSaving = computed(() => {
+  return noteEditorRef.value?.isSaving ?? false;
+});
 </script>
 
 <template>
@@ -121,13 +132,13 @@ const toggleSidebar = () => {
     <button
       v-if="isSidebarCollapsed"
       type="button"
-      class="absolute left-0 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-r-md border border-l-0 border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50"
+      class="absolute left-0 top-4 z-10 flex h-6 w-6 items-center justify-center rounded-r-md border border-l-0 border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50"
       aria-label="Expand sidebar"
       @click="toggleSidebar"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-4 w-4"
+        class="h-3.5 w-3.5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -141,7 +152,7 @@ const toggleSidebar = () => {
       </svg>
     </button>
     <section class="flex flex-1 flex-col bg-slate-100">
-      <div class="px-6 pt-6">
+      <div class="flex items-center gap-2 px-6 pt-6">
         <button
           type="button"
           class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
@@ -149,9 +160,22 @@ const toggleSidebar = () => {
         >
           New Note
         </button>
+        <button
+          type="button"
+          class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+          :disabled="isSaving"
+          @click="handleSaveClick"
+        >
+          <span v-if="isSaving">Saving…</span>
+          <span v-else>Save</span>
+        </button>
       </div>
-      <div class="flex-1 overflow-y-auto px-6 pb-6">
-        <NoteEditor :note="currentNote" :save-note="handleSave" />
+      <div class="mt-6 flex-1 overflow-y-auto px-6 pb-6">
+        <NoteEditor
+          ref="noteEditorRef"
+          :note="currentNote"
+          :save-note="handleSave"
+        />
       </div>
     </section>
   </main>

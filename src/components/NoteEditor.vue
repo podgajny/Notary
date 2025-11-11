@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   computed,
+  defineExpose,
   nextTick,
   onBeforeUnmount,
   onMounted,
@@ -40,7 +41,6 @@ const SAVE_SUCCESS_COPY = "Note saved";
 const SAVE_FAILED_COPY = "Could not save. Try again.";
 
 const isTitleEmpty = computed(() => title.value.trim().length === 0);
-const isSaveDisabled = computed(() => isSaving.value);
 
 const focusTitleInput = () => {
   titleInputRef.value?.focus();
@@ -169,6 +169,12 @@ onBeforeUnmount(() => {
     window.clearTimeout(successTimeoutId);
   }
 });
+
+// Expose submit method and isSaving state for parent component
+defineExpose({
+  submit,
+  isSaving,
+});
 </script>
 
 <template>
@@ -200,15 +206,6 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="flex items-center gap-3">
-      <button
-        type="submit"
-        class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
-        :disabled="isSaveDisabled"
-      >
-        <span v-if="isSaving">Saving…</span>
-        <span v-else>Save</span>
-      </button>
-
       <p v-if="successMessage" class="text-sm text-green-600">
         {{ successMessage }}
       </p>

@@ -404,6 +404,68 @@ describe("NoteList", () => {
     expect(hasHoverClass).toBe(true);
   });
 
+  describe("header area", () => {
+    it("should render a header section at the top", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      expect(header.exists()).toBe(true);
+    });
+
+    it("should contain a dummy button in the header", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      const dummyButton = header.find("button");
+      expect(dummyButton.exists()).toBe(true);
+      expect(dummyButton.text()).toBe("Dummy");
+    });
+
+    it("should have dummy button taking approximately 1/4 of header width", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      const dummyButton = header.find("button");
+      // Check for w-1/4 class or similar width class
+      const hasQuarterWidth =
+        dummyButton.classes().includes("w-1/4") ||
+        dummyButton.attributes("class")?.includes("w-1/4");
+      expect(hasQuarterWidth).toBe(true);
+    });
+
+    it("should have header visible when component is rendered", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      expect(header.exists()).toBe(true);
+      expect(header.isVisible()).toBe(true);
+    });
+  });
+
   describe("sidebar styling", () => {
     it("should not render section wrapper", () => {
       // Act
