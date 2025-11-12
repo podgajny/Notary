@@ -316,4 +316,173 @@ describe("HomeView", () => {
     expect(saveButton).toBeDefined();
     expect(saveButton?.exists()).toBe(true);
   });
+
+  describe("tool sidebar", () => {
+    beforeEach(() => {
+      // Clear localStorage before each test
+      localStorage.clear();
+    });
+
+    it("should render tool sidebar in layout", () => {
+      // Act
+      const wrapper = mount(HomeView);
+
+      // Assert - should have two aside elements (left sidebar and tool sidebar)
+      const sidebars = wrapper.findAll("aside");
+      expect(sidebars.length).toBe(2);
+    });
+
+    it("should render ToolSidebar component in right sidebar", () => {
+      // Act
+      const wrapper = mount(HomeView);
+
+      // Assert
+      const toolSidebar = wrapper.findComponent({ name: "ToolSidebar" });
+      expect(toolSidebar.exists()).toBe(true);
+    });
+
+    it("should default to tool sidebar expanded", () => {
+      // Act
+      const wrapper = mount(HomeView);
+
+      // Assert - tool sidebar should be visible (not collapsed)
+      const sidebars = wrapper.findAll("aside");
+      const toolSidebar = sidebars[1]; // Second aside is the tool sidebar
+      expect(toolSidebar.classes()).not.toContain("w-0");
+      expect(toolSidebar.classes()).not.toContain("hidden");
+    });
+
+    it("should have tool sidebar with w-96 width when expanded", () => {
+      // Act
+      const wrapper = mount(HomeView);
+
+      // Assert
+      const sidebars = wrapper.findAll("aside");
+      const toolSidebar = sidebars[1]; // Second aside is the tool sidebar
+      expect(toolSidebar.classes()).toContain("w-96");
+    });
+
+    it("should have tool sidebar with border-l styling", () => {
+      // Act
+      const wrapper = mount(HomeView);
+
+      // Assert
+      const sidebars = wrapper.findAll("aside");
+      const toolSidebar = sidebars[1]; // Second aside is the tool sidebar
+      expect(toolSidebar.classes()).toContain("border-l");
+    });
+
+    it("should have tool sidebar toggle button when expanded", () => {
+      // Act
+      const wrapper = mount(HomeView);
+
+      // Assert - should have toggle button for tool sidebar
+      const sidebars = wrapper.findAll("aside");
+      const toolSidebar = sidebars[1];
+      const toggleButton = toolSidebar.find(
+        'button[aria-label*="Collapse tool sidebar"]'
+      );
+      expect(toggleButton.exists()).toBe(true);
+    });
+
+    it("should toggle tool sidebar collapse state when toggle button clicked", async () => {
+      // Act
+      const wrapper = mount(HomeView);
+      const sidebars = wrapper.findAll("aside");
+      const toolSidebar = sidebars[1];
+      const initialClasses = toolSidebar.classes();
+
+      // Find toggle button in tool sidebar
+      const toggleButton = toolSidebar.find(
+        'button[aria-label*="Collapse tool sidebar"]'
+      );
+      expect(toggleButton.exists()).toBe(true);
+
+      // Click toggle
+      await toggleButton.trigger("click");
+      await wrapper.vm.$nextTick();
+
+      // Assert - tool sidebar classes should change
+      const afterClasses = wrapper.findAll("aside")[1].classes();
+      expect(afterClasses).not.toEqual(initialClasses);
+    });
+
+    it("should toggle tool sidebar independently from left sidebar", async () => {
+      // Arrange
+      const wrapper = mount(HomeView);
+      const sidebars = wrapper.findAll("aside");
+      const leftSidebar = sidebars[0];
+
+      // Act - collapse left sidebar
+      const leftToggleButton = leftSidebar.find(
+        'button[aria-label*="Collapse sidebar"]'
+      );
+      await leftToggleButton.trigger("click");
+      await wrapper.vm.$nextTick();
+
+      // Assert - tool sidebar should still be expanded
+      const toolSidebarAfter = wrapper.findAll("aside")[1];
+      expect(toolSidebarAfter.classes()).toContain("w-96");
+
+      // Act - collapse tool sidebar
+      const toolToggleButton = toolSidebarAfter.find(
+        'button[aria-label*="Collapse tool sidebar"]'
+      );
+      await toolToggleButton.trigger("click");
+      await wrapper.vm.$nextTick();
+
+      // Assert - tool sidebar should be collapsed, left sidebar should remain collapsed
+      const finalToolSidebar = wrapper.findAll("aside")[1];
+      expect(finalToolSidebar.classes()).toContain("w-0");
+      const finalLeftSidebar = wrapper.findAll("aside")[0];
+      expect(finalLeftSidebar.classes()).toContain("w-0");
+    });
+
+    it("should persist tool sidebar state in localStorage", async () => {
+      // Arrange
+      const wrapper = mount(HomeView);
+      const sidebars = wrapper.findAll("aside");
+      const toolSidebar = sidebars[1];
+
+      // Act - toggle tool sidebar
+      const toggleButton = toolSidebar.find(
+        'button[aria-label*="Collapse tool sidebar"]'
+      );
+      await toggleButton.trigger("click");
+      await wrapper.vm.$nextTick();
+
+      // Assert - localStorage should have tool sidebar state
+      const savedState = localStorage.getItem("toolSidebarCollapsed");
+      expect(savedState).toBe("true");
+    });
+
+    it("should load tool sidebar state from localStorage on mount", async () => {
+      // Arrange
+      localStorage.setItem("toolSidebarCollapsed", "true");
+
+      // Act
+      const wrapper = mount(HomeView);
+      await wrapper.vm.$nextTick();
+
+      // Assert - tool sidebar should be collapsed
+      const sidebars = wrapper.findAll("aside");
+      const toolSidebar = sidebars[1];
+      expect(toolSidebar.classes()).toContain("w-0");
+    });
+
+    it("should have tool sidebar expand button when collapsed", async () => {
+      // Arrange
+      localStorage.setItem("toolSidebarCollapsed", "true");
+
+      // Act
+      const wrapper = mount(HomeView);
+      await wrapper.vm.$nextTick();
+
+      // Assert - should have expand button for tool sidebar
+      const expandButton = wrapper.find(
+        'button[aria-label*="Expand tool sidebar"]'
+      );
+      expect(expandButton.exists()).toBe(true);
+    });
+  });
 });
