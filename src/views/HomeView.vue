@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import NoteEditor from "../components/NoteEditor.vue";
 import NoteList from "../components/NoteList.vue";
 import ToolSidebar from "../components/ToolSidebar.vue";
@@ -8,8 +8,10 @@ import {
   useNotesStore,
   type Note,
 } from "../stores/notes.store";
+import { useChatStore } from "../stores/chat.store";
 
 const notesStore = useNotesStore();
+const chatStore = useChatStore();
 const loadErrorMessage = ref("");
 const currentNote = ref<Note | null>(null);
 const isSidebarCollapsed = ref(false);
@@ -105,6 +107,32 @@ const handleSaveClick = async () => {
 const isSaving = computed(() => {
   return noteEditorRef.value?.isSaving ?? false;
 });
+
+const handleNoteSelected = (noteId: string) => {
+  chatStore.addNoteToContext(noteId);
+};
+
+const handleNoteDeselected = (noteId: string) => {
+  chatStore.removeNoteFromContext(noteId);
+};
+
+// Watch for note deletions and auto-remove from context
+watch(
+  () => notesStore.notes.map((n) => n.id),
+  (currentNoteIds) => {
+    const selectedIds = chatStore.selectedNoteIds.filter((id) =>
+      currentNoteIds.includes(id)
+    );
+    if (selectedIds.length !== chatStore.selectedNoteIds.length) {
+      // Some selected notes were deleted
+      chatStore.selectedNoteIds.forEach((id) => {
+        if (!currentNoteIds.includes(id)) {
+          chatStore.removeNoteFromContext(id);
+        }
+      });
+    }
+  }
+);
 </script>
 
 <template>
@@ -118,7 +146,11 @@ const isSaving = computed(() => {
         :is-loading="notesStore.isLoading"
         :load-error="loadErrorMessage"
         :current-note="currentNote"
+        :selection-mode="chatStore.selectionModeActive"
+        :selected-note-ids="chatStore.selectedNoteIds"
         @note-clicked="handleNoteClicked"
+        @note-selected="handleNoteSelected"
+        @note-deselected="handleNoteDeselected"
       />
       <button
         v-if="!isSidebarCollapsed"
