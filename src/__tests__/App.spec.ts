@@ -63,8 +63,10 @@ describe("App Integration", () => {
     await router.push("/");
     await wrapper.vm.$nextTick();
 
-    // Assert
-    expect(wrapper.find("h1").text()).toBe("Notary");
+    // Assert - HomeView should render (check for two-pane layout)
+    const main = wrapper.find("main");
+    expect(main.exists()).toBe(true);
+    expect(main.classes()).toContain("flex");
   });
 
   it("should contain NoteEditor and NoteList on main page", async () => {
@@ -96,14 +98,14 @@ describe("App Integration", () => {
     await router.push("/");
     await wrapper.vm.$nextTick();
 
-    // Assert
+    // Assert - should have two-pane layout
     const main = wrapper.find("main");
     expect(main.exists()).toBe(true);
-    expect(main.classes()).toContain("min-h-screen");
+    expect(main.classes()).toContain("h-screen");
     expect(main.classes()).toContain("bg-slate-100");
+    expect(main.classes()).toContain("flex");
 
-    const header = wrapper.find("header");
-    expect(header.exists()).toBe(true);
-    expect(header.find("h1").text()).toBe("Notary");
+    // Note: App.vue itself doesn't render a header (it only renders RouterView)
+    // Child components like NoteList can have their own headers, which is expected
   });
 });

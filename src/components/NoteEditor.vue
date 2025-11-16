@@ -7,7 +7,7 @@ import {
   ref,
   watch,
 } from "vue";
-import { NoteStoreError } from "../stores/notes.store";
+import { NoteStoreError, type Note } from "../stores/notes.store";
 
 type SaveNoteInput = {
   title: string;
@@ -16,9 +16,11 @@ type SaveNoteInput = {
 
 const props = withDefaults(
   defineProps<{
+    note?: Note | null;
     saveNote?: (input: SaveNoteInput) => Promise<unknown> | unknown;
   }>(),
   {
+    note: null,
     saveNote: async () => {},
   }
 );
@@ -38,7 +40,6 @@ const SAVE_SUCCESS_COPY = "Note saved";
 const SAVE_FAILED_COPY = "Could not save. Try again.";
 
 const isTitleEmpty = computed(() => title.value.trim().length === 0);
-const isSaveDisabled = computed(() => isSaving.value);
 
 const focusTitleInput = () => {
   titleInputRef.value?.focus();
@@ -56,11 +57,33 @@ const clearSuccessAfterDelay = () => {
 };
 
 const resetForm = async () => {
-  title.value = "";
-  body.value = "";
-  await nextTick();
-  focusTitleInput();
+  if (!props.note) {
+    title.value = "";
+    body.value = "";
+    await nextTick();
+    focusTitleInput();
+  }
 };
+
+// Populate fields from note prop
+const populateFromNote = () => {
+  if (props.note) {
+    title.value = props.note.title;
+    body.value = props.note.body;
+  } else {
+    title.value = "";
+    body.value = "";
+  }
+};
+
+// Watch note prop to update fields
+watch(
+  () => props.note,
+  () => {
+    populateFromNote();
+  },
+  { immediate: true }
+);
 
 const mapErrorToMessage = (error: unknown): string => {
   if (error instanceof NoteStoreError) {
@@ -105,7 +128,9 @@ const submit = async () => {
 
     successMessage.value = SAVE_SUCCESS_COPY;
     clearSuccessAfterDelay();
-    await resetForm();
+    if (!props.note) {
+      await resetForm();
+    }
   } catch (error) {
     errorMessage.value = mapErrorToMessage(error);
   } finally {
@@ -134,6 +159,7 @@ watch(body, () => {
 });
 
 onMounted(() => {
+  populateFromNote();
   focusTitleInput();
 });
 
@@ -142,66 +168,49 @@ onBeforeUnmount(() => {
     window.clearTimeout(successTimeoutId);
   }
 });
+
+// Expose submit method and isSaving state for parent component
+defineExpose({
+  submit,
+  isSaving,
+});
 </script>
 
 <template>
-  <section class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold text-slate-900">Create a note</h2>
-    <p class="mt-2 text-sm text-slate-600">
-      Capture your thoughts quickly. Add a title, jot down the details, and
-      save.
-    </p>
+  <form class="space-y-6" @submit.prevent="submit">
+    <div>
+      <input
+        id="note-title"
+        ref="titleInputRef"
+        v-model="title"
+        type="text"
+        class="w-full border-0 bg-transparent text-3xl font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none"
+        placeholder="Title"
+        :disabled="isSaving"
+      />
+      <p v-if="showTitleError" class="mt-1 text-sm text-red-600">
+        {{ TITLE_REQUIRED_COPY }}
+      </p>
+    </div>
 
-    <form class="mt-4 space-y-5" @submit.prevent="submit">
-      <div>
-        <label for="note-title" class="block text-sm font-medium text-slate-700"
-          >Title</label
-        >
-        <input
-          id="note-title"
-          ref="titleInputRef"
-          v-model="title"
-          type="text"
-          class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
-          placeholder="Title"
-          :disabled="isSaving"
-        />
-        <p v-if="showTitleError" class="mt-1 text-sm text-red-600">
-          {{ TITLE_REQUIRED_COPY }}
-        </p>
-      </div>
+    <div>
+      <textarea
+        id="note-body"
+        v-model="body"
+        class="w-full resize-none border-0 bg-transparent text-base text-slate-700 placeholder:text-slate-400 focus:outline-none"
+        placeholder="Write your note..."
+        rows="20"
+        :disabled="isSaving"
+      />
+    </div>
 
-      <div>
-        <label for="note-body" class="block text-sm font-medium text-slate-700"
-          >Body</label
-        >
-        <textarea
-          id="note-body"
-          v-model="body"
-          class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
-          placeholder="Write your note..."
-          rows="6"
-          :disabled="isSaving"
-        />
-      </div>
-
-      <div class="flex items-center gap-3">
-        <button
-          type="submit"
-          class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
-          :disabled="isSaveDisabled"
-        >
-          <span v-if="isSaving">Saving…</span>
-          <span v-else>Save</span>
-        </button>
-
-        <p v-if="successMessage" class="text-sm text-green-600">
-          {{ successMessage }}
-        </p>
-        <p v-else-if="errorMessage" class="text-sm text-red-600">
-          {{ errorMessage }}
-        </p>
-      </div>
-    </form>
-  </section>
+    <div class="flex items-center gap-3">
+      <p v-if="successMessage" class="text-sm text-green-600">
+        {{ successMessage }}
+      </p>
+      <p v-else-if="errorMessage" class="text-sm text-red-600">
+        {{ errorMessage }}
+      </p>
+    </div>
+  </form>
 </template>

@@ -15,10 +15,10 @@ describe("NoteEditor", () => {
     const wrapper = mount(NoteEditor);
 
     // Assert
-    expect(wrapper.find("h2").text()).toBe("Create a note");
     expect(wrapper.find('input[type="text"]').exists()).toBe(true);
     expect(wrapper.find("textarea").exists()).toBe(true);
-    expect(wrapper.find('button[type="submit"]').exists()).toBe(true);
+    // Save button should NOT be in the form (moved to header)
+    expect(wrapper.find('button[type="submit"]').exists()).toBe(false);
   });
 
   it("should have appropriate placeholders in fields", () => {
@@ -60,33 +60,27 @@ describe("NoteEditor", () => {
     expect(mockSaveNote).not.toHaveBeenCalled();
   });
 
-  it("should have Save button enabled when title is empty", async () => {
-    // Arrange
+  it("should expose submit method for external use", () => {
+    // Act
     const wrapper = mount(NoteEditor);
 
-    // Act
-    await wrapper.find('input[type="text"]').setValue("");
-
-    // Assert
-    expect(
-      wrapper.find('button[type="submit"]').attributes("disabled")
-    ).toBeUndefined();
+    // Assert - submit method should be exposed
+    const exposedSubmit = (wrapper.vm as any).submit;
+    expect(exposedSubmit).toBeDefined();
+    expect(typeof exposedSubmit).toBe("function");
   });
 
-  it("should enable Save button when title is filled", async () => {
-    // Arrange
+  it("should expose isSaving state for external use", () => {
+    // Act
     const wrapper = mount(NoteEditor);
 
-    // Act
-    await wrapper.find('input[type="text"]').setValue("Test Title");
-
-    // Assert
-    expect(
-      wrapper.find('button[type="submit"]').attributes("disabled")
-    ).toBeUndefined();
+    // Assert - isSaving should be exposed
+    const exposedIsSaving = (wrapper.vm as any).isSaving;
+    expect(exposedIsSaving).toBeDefined();
+    expect(typeof exposedIsSaving).toBe("boolean");
   });
 
-  it("should call saveNote with valid data", async () => {
+  it("should call saveNote with valid data when submit is called", async () => {
     // Arrange
     const wrapper = mount(NoteEditor, {
       props: {
@@ -97,7 +91,7 @@ describe("NoteEditor", () => {
     // Act
     await wrapper.find('input[type="text"]').setValue("Test Title");
     await wrapper.find("textarea").setValue("Test body content");
-    await wrapper.find("form").trigger("submit");
+    await (wrapper.vm as any).submit();
 
     // Assert
     expect(mockSaveNote).toHaveBeenCalledWith({
@@ -117,7 +111,7 @@ describe("NoteEditor", () => {
     // Act
     await wrapper.find('input[type="text"]').setValue("  Test Title  ");
     await wrapper.find("textarea").setValue("Test body");
-    await wrapper.find("form").trigger("submit");
+    await (wrapper.vm as any).submit();
 
     // Assert
     expect(mockSaveNote).toHaveBeenCalledWith({
@@ -126,7 +120,7 @@ describe("NoteEditor", () => {
     });
   });
 
-  it("should disable button during saving", async () => {
+  it("should set isSaving to true during save operation", async () => {
     // Arrange
     let resolvePromise: (value: any) => void;
     const promise = new Promise((resolve) => {
@@ -142,43 +136,40 @@ describe("NoteEditor", () => {
 
     // Act
     await wrapper.find('input[type="text"]').setValue("Test Title");
-    const submitPromise = wrapper.find("form").trigger("submit");
+    const submitPromise = (wrapper.vm as any).submit();
 
     // Wait for the async operation to start
     await wrapper.vm.$nextTick();
 
-    // Assert - should be disabled during save
-    expect(
-      wrapper.find('button[type="submit"]').attributes("disabled")
-    ).toBeDefined();
+    // Assert - isSaving should be true during save
+    expect((wrapper.vm as any).isSaving).toBe(true);
 
     // Complete the save
     resolvePromise!(undefined);
     await submitPromise;
     await wrapper.vm.$nextTick();
 
-    // Should be enabled again after save completes
-    const button = wrapper.find('button[type="submit"]');
-    const disabledAttr = button.attributes("disabled");
-    expect(disabledAttr === undefined || disabledAttr === "").toBe(true);
+    // Should be false again after save completes
+    expect((wrapper.vm as any).isSaving).toBe(false);
   });
 
-  it("should clear form after saving", async () => {
+  it("should clear form after saving when note is null", async () => {
     // Arrange
     mockSaveNote.mockResolvedValue(undefined);
     const wrapper = mount(NoteEditor, {
       props: {
         saveNote: mockSaveNote,
+        note: null,
       },
     });
 
     // Act
     await wrapper.find('input[type="text"]').setValue("Test Title");
     await wrapper.find("textarea").setValue("Test body");
-    await wrapper.find("form").trigger("submit");
+    await (wrapper.vm as any).submit();
     await wrapper.vm.$nextTick();
 
-    // Assert - form should be cleared
+    // Assert - form should be cleared when creating new note
     expect(
       (wrapper.find('input[type="text"]').element as HTMLInputElement).value
     ).toBe("");
@@ -202,7 +193,7 @@ describe("NoteEditor", () => {
 
     // Act
     await wrapper.find('input[type="text"]').setValue("Test Title");
-    await wrapper.find("form").trigger("submit");
+    await (wrapper.vm as any).submit();
 
     // Assert
     expect(wrapper.find(".text-red-600").text()).toBe(
@@ -222,7 +213,7 @@ describe("NoteEditor", () => {
 
     // Act
     await wrapper.find('input[type="text"]').setValue("Test Title");
-    await wrapper.find("form").trigger("submit");
+    await (wrapper.vm as any).submit();
 
     // Assert
     expect(wrapper.find(".text-red-600").text()).toBe("Title is required");
@@ -232,8 +223,8 @@ describe("NoteEditor", () => {
     // Arrange
     const wrapper = mount(NoteEditor);
 
-    // Act - trigger error first
-    await wrapper.find("form").trigger("submit");
+    // Act - trigger error first by calling submit with empty title
+    await (wrapper.vm as any).submit();
     expect(wrapper.find(".text-red-600").exists()).toBe(true);
 
     // Start typing in title
@@ -259,16 +250,16 @@ describe("NoteEditor", () => {
     expect(wrapper.vm.$refs.titleInputRef).toBeDefined();
   });
 
-  it("should have appropriate labels for accessibility", () => {
+  it("should have appropriate input attributes for accessibility", () => {
     // Act
     const wrapper = mount(NoteEditor);
 
-    // Assert
-    const titleLabel = wrapper.find('label[for="note-title"]');
-    const bodyLabel = wrapper.find('label[for="note-body"]');
+    // Assert - inputs should have id attributes for accessibility
+    const titleInput = wrapper.find('input[type="text"]');
+    const bodyTextarea = wrapper.find("textarea");
 
-    expect(titleLabel.text()).toBe("Title");
-    expect(bodyLabel.text()).toBe("Body");
+    expect(titleInput.attributes("id")).toBe("note-title");
+    expect(bodyTextarea.attributes("id")).toBe("note-body");
   });
 
   it("should have appropriate attributes for accessibility", () => {
@@ -281,5 +272,119 @@ describe("NoteEditor", () => {
 
     expect(titleInput.attributes("id")).toBe("note-title");
     expect(bodyTextarea.attributes("id")).toBe("note-body");
+  });
+
+  describe("edit mode", () => {
+    it("should accept optional note prop", () => {
+      // Arrange
+      const testNote = {
+        id: "test-id",
+        title: "Test Note",
+        body: "Test body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: testNote,
+        },
+      });
+
+      // Assert
+      expect(wrapper.props("note")).toStrictEqual(testNote);
+    });
+
+    it("should populate fields when note prop is provided", () => {
+      // Arrange
+      const testNote = {
+        id: "test-id",
+        title: "Test Note",
+        body: "Test body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: testNote,
+        },
+      });
+
+      // Assert
+      const titleInput = wrapper.find('input[type="text"]');
+      const bodyTextarea = wrapper.find("textarea");
+      expect((titleInput.element as HTMLInputElement).value).toBe("Test Note");
+      expect((bodyTextarea.element as HTMLTextAreaElement).value).toBe(
+        "Test body"
+      );
+    });
+
+    it("should show placeholders when note is null", () => {
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: null,
+        },
+      });
+
+      // Assert
+      const titleInput = wrapper.find('input[type="text"]');
+      const bodyTextarea = wrapper.find("textarea");
+      expect(titleInput.attributes("placeholder")).toBe("Title");
+      expect(bodyTextarea.attributes("placeholder")).toBe("Write your note...");
+      expect((titleInput.element as HTMLInputElement).value).toBe("");
+      expect((bodyTextarea.element as HTMLTextAreaElement).value).toBe("");
+    });
+
+    it("should update fields when note prop changes", async () => {
+      // Arrange
+      const testNote1 = {
+        id: "test-id-1",
+        title: "Note 1",
+        body: "Body 1",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+      const testNote2 = {
+        id: "test-id-2",
+        title: "Note 2",
+        body: "Body 2",
+        tags: [],
+        pinned: false,
+        createdAt: 2000,
+        updatedAt: 2000,
+      };
+
+      // Act
+      const wrapper = mount(NoteEditor, {
+        props: {
+          note: testNote1,
+        },
+      });
+
+      // Assert initial state
+      const titleInput = wrapper.find('input[type="text"]');
+      const bodyTextarea = wrapper.find("textarea");
+      expect((titleInput.element as HTMLInputElement).value).toBe("Note 1");
+
+      // Update prop
+      await wrapper.setProps({ note: testNote2 });
+      await wrapper.vm.$nextTick();
+
+      // Assert updated state
+      expect((titleInput.element as HTMLInputElement).value).toBe("Note 2");
+      expect((bodyTextarea.element as HTMLTextAreaElement).value).toBe(
+        "Body 2"
+      );
+    });
   });
 });

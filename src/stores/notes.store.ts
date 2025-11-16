@@ -8,6 +8,12 @@ export type CreateNoteInput = {
   body: string;
 };
 
+export type UpdateNoteInput = {
+  id: string;
+  title: string;
+  body: string;
+};
+
 export class NoteStoreError extends Error {
   code: "TITLE_REQUIRED" | "STORAGE_READ_FAILED" | "STORAGE_WRITE_FAILED";
 
@@ -116,6 +122,41 @@ export const useNotesStore = defineStore("notes", {
       }
 
       return newNote;
+    },
+    async updateNote(input: UpdateNoteInput) {
+      const noteIndex = this.notes.findIndex((n) => n.id === input.id);
+
+      if (noteIndex === -1) {
+        throw new NoteStoreError("STORAGE_WRITE_FAILED", "Note not found");
+      }
+
+      const existingNote = this.notes[noteIndex];
+      const now = Date.now();
+
+      const updatedNote: Note = {
+        ...existingNote,
+        title: input.title.trim(),
+        body: input.body,
+        updatedAt: now,
+      };
+
+      const previousNotes = [...this.notes];
+      this.notes[noteIndex] = updatedNote;
+      this.notes = sortNotesByUpdatedAtDesc(this.notes);
+
+      try {
+        await setNotes(this.notes);
+      } catch (error) {
+        this.notes = previousNotes;
+
+        if (error instanceof DbError) {
+          throw mapDbErrorToStoreError(error, "STORAGE_WRITE_FAILED");
+        }
+
+        throw error;
+      }
+
+      return updatedNote;
     },
   },
 });

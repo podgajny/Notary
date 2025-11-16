@@ -15,7 +15,7 @@ describe("NoteList", () => {
     ...overrides,
   });
 
-  it('should render section with title "Notes"', () => {
+  it("should render notes list without section wrapper", () => {
     // Act
     const wrapper = mount(NoteList, {
       props: {
@@ -23,9 +23,9 @@ describe("NoteList", () => {
       },
     });
 
-    // Assert
-    expect(wrapper.find("h2").text()).toBe("Notes");
-    expect(wrapper.find("section").exists()).toBe(true);
+    // Assert - should not have section wrapper or h2 heading
+    expect(wrapper.find("section").exists()).toBe(false);
+    expect(wrapper.find("h2").exists()).toBe(false);
   });
 
   it("should display loading state", () => {
@@ -91,8 +91,8 @@ describe("NoteList", () => {
     const listItems = wrapper.findAll("li");
     expect(listItems).toHaveLength(2);
 
-    expect(listItems[0].find(".text-base").text()).toBe("First Note");
-    expect(listItems[1].find(".text-base").text()).toBe("Second Note");
+    expect(listItems[0].find(".text-sm").text()).toBe("First Note");
+    expect(listItems[1].find(".text-sm").text()).toBe("Second Note");
   });
 
   it("should display note title and body", () => {
@@ -111,7 +111,7 @@ describe("NoteList", () => {
 
     // Assert
     const listItem = wrapper.find("li");
-    expect(listItem.find(".text-base").text()).toBe("My Test Note");
+    expect(listItem.find(".text-sm").text()).toBe("My Test Note");
     expect(listItem.find(".text-slate-600").text()).toBe(
       "This is the body content of the note"
     );
@@ -136,7 +136,7 @@ describe("NoteList", () => {
 
     // Assert - check if element has line-clamp class
     const bodyElement = wrapper.find(".text-slate-600");
-    expect(bodyElement.classes()).toContain("line-clamp-5");
+    expect(bodyElement.classes()).toContain("line-clamp-3");
     expect(bodyElement.classes()).toContain("break-words");
   });
 
@@ -159,7 +159,7 @@ describe("NoteList", () => {
 
     // Assert - even short notes should have both classes
     const bodyElement = wrapper.find(".text-slate-600");
-    expect(bodyElement.classes()).toContain("line-clamp-5");
+    expect(bodyElement.classes()).toContain("line-clamp-3");
     expect(bodyElement.classes()).toContain("break-words");
   });
 
@@ -182,7 +182,7 @@ describe("NoteList", () => {
     // Assert - break-words must be present to prevent horizontal overflow
     const bodyElement = wrapper.find(".text-slate-600");
     expect(bodyElement.classes()).toContain("break-words");
-    expect(bodyElement.classes()).toContain("line-clamp-5");
+    expect(bodyElement.classes()).toContain("line-clamp-3");
   });
 
   it("should display full content when it is short", () => {
@@ -278,11 +278,11 @@ describe("NoteList", () => {
 
     // Assert
     const listItems = wrapper.findAll("li");
-    expect(listItems[0].find(".text-base").text()).toBe("Older Note");
-    expect(listItems[1].find(".text-base").text()).toBe("Newer Note");
+    expect(listItems[0].find(".text-sm").text()).toBe("Older Note");
+    expect(listItems[1].find(".text-sm").text()).toBe("Newer Note");
   });
 
-  it("should have appropriate CSS classes for styling", () => {
+  it("should have appropriate CSS classes for sidebar styling", () => {
     // Arrange
     const note = createMockNote();
 
@@ -293,18 +293,13 @@ describe("NoteList", () => {
       },
     });
 
-    // Assert
-    const section = wrapper.find("section");
-    expect(section.classes()).toContain("rounded-lg");
-    expect(section.classes()).toContain("border");
-    expect(section.classes()).toContain("bg-white");
-    expect(section.classes()).toContain("p-6");
-    expect(section.classes()).toContain("shadow-sm");
+    // Assert - should not have section wrapper
+    expect(wrapper.find("section").exists()).toBe(false);
 
     const listItem = wrapper.find("li");
     expect(listItem.classes()).toContain("rounded-md");
     expect(listItem.classes()).toContain("border");
-    expect(listItem.classes()).toContain("p-4");
+    expect(listItem.classes()).toContain("p-3");
   });
 
   it("should handle default prop values", () => {
@@ -407,5 +402,162 @@ describe("NoteList", () => {
       listItem.classes().some((cls) => cls.includes("hover:")) ||
       listItem.attributes("class")?.includes("hover:");
     expect(hasHoverClass).toBe(true);
+  });
+
+  describe("header area", () => {
+    it("should render a header section at the top", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      expect(header.exists()).toBe(true);
+    });
+
+    it("should contain a dummy button in the header", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      const dummyButton = header.find("button");
+      expect(dummyButton.exists()).toBe(true);
+      expect(dummyButton.text()).toBe("Dummy");
+    });
+
+    it("should have dummy button taking approximately 1/4 of header width", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      const dummyButton = header.find("button");
+      // Check for w-1/4 class or similar width class
+      const hasQuarterWidth =
+        dummyButton.classes().includes("w-1/4") ||
+        dummyButton.attributes("class")?.includes("w-1/4");
+      expect(hasQuarterWidth).toBe(true);
+    });
+
+    it("should have header visible when component is rendered", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      const header = wrapper.find("header");
+      expect(header.exists()).toBe(true);
+      expect(header.isVisible()).toBe(true);
+    });
+  });
+
+  describe("sidebar styling", () => {
+    it("should not render section wrapper", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      expect(wrapper.find("section").exists()).toBe(false);
+    });
+
+    it("should not render 'Notes' heading", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+        },
+      });
+
+      // Assert
+      expect(wrapper.find("h2").exists()).toBe(false);
+    });
+
+    it("should accept optional currentNote prop", () => {
+      // Arrange
+      const note = createMockNote();
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note],
+          currentNote: note,
+        },
+      });
+
+      // Assert
+      expect(wrapper.props("currentNote")).toStrictEqual(note);
+    });
+
+    it("should highlight active note when currentNote matches", () => {
+      // Arrange
+      const note1 = createMockNote({ id: "note-1", title: "Note 1" });
+      const note2 = createMockNote({ id: "note-2", title: "Note 2" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note1, note2],
+          currentNote: note1,
+        },
+      });
+
+      // Assert
+      const listItems = wrapper.findAll("li");
+      // First note should have active highlighting (bg-slate-100 or border-l-4)
+      const firstNoteClasses = listItems[0].classes();
+      const hasActiveHighlight =
+        firstNoteClasses.includes("bg-slate-100") ||
+        firstNoteClasses.includes("border-l-4");
+      expect(hasActiveHighlight).toBe(true);
+
+      // Second note should not have active highlighting
+      const secondNoteClasses = listItems[1].classes();
+      const secondHasActiveHighlight =
+        secondNoteClasses.includes("bg-slate-100") ||
+        secondNoteClasses.includes("border-l-4");
+      expect(secondHasActiveHighlight).toBe(false);
+    });
+
+    it("should not highlight any note when currentNote is null", () => {
+      // Arrange
+      const note1 = createMockNote({ id: "note-1", title: "Note 1" });
+      const note2 = createMockNote({ id: "note-2", title: "Note 2" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note1, note2],
+          currentNote: null,
+        },
+      });
+
+      // Assert
+      const listItems = wrapper.findAll("li");
+      listItems.forEach((item) => {
+        const classes = item.classes();
+        const hasActiveHighlight =
+          classes.includes("bg-slate-100") || classes.includes("border-l-4");
+        expect(hasActiveHighlight).toBe(false);
+      });
+    });
   });
 });

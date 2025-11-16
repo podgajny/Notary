@@ -306,4 +306,186 @@ describe("notes.store.ts - Pinia store for notes", () => {
       expect(result1.id).not.toBe(result2.id);
     });
   });
+
+  describe("updateNote", () => {
+    it("should update note in store", async () => {
+      // Arrange
+      const existingNote = {
+        id: "test-id",
+        title: "Original Title",
+        body: "Original body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+      vi.mocked(setNotes).mockResolvedValue(undefined);
+
+      const store = useNotesStore();
+      store.notes = [existingNote];
+
+      // Act
+      const result = await store.updateNote({
+        id: "test-id",
+        title: "Updated Title",
+        body: "Updated body",
+      });
+
+      // Assert
+      expect(result.id).toBe("test-id");
+      expect(result.title).toBe("Updated Title");
+      expect(result.body).toBe("Updated body");
+      expect(result.createdAt).toBe(1000); // Should not change
+      expect(result.updatedAt).toBeGreaterThan(1000); // Should be updated
+      expect(store.notes[0].title).toBe("Updated Title");
+      expect(store.notes[0].body).toBe("Updated body");
+    });
+
+    it("should save updated note to IndexedDB", async () => {
+      // Arrange
+      const existingNote = {
+        id: "test-id",
+        title: "Original Title",
+        body: "Original body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+      vi.mocked(setNotes).mockResolvedValue(undefined);
+
+      const store = useNotesStore();
+      store.notes = [existingNote];
+
+      // Act
+      await store.updateNote({
+        id: "test-id",
+        title: "Updated Title",
+        body: "Updated body",
+      });
+
+      // Assert
+      expect(setNotes).toHaveBeenCalledOnce();
+      const callArgs = vi.mocked(setNotes).mock.calls[0][0];
+      expect(callArgs[0].title).toBe("Updated Title");
+      expect(callArgs[0].body).toBe("Updated body");
+    });
+
+    it("should update updatedAt timestamp", async () => {
+      // Arrange
+      const existingNote = {
+        id: "test-id",
+        title: "Original Title",
+        body: "Original body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+      vi.mocked(setNotes).mockResolvedValue(undefined);
+
+      const store = useNotesStore();
+      store.notes = [existingNote];
+
+      const beforeUpdate = Date.now();
+
+      // Act
+      await store.updateNote({
+        id: "test-id",
+        title: "Updated Title",
+        body: "Updated body",
+      });
+
+      const afterUpdate = Date.now();
+
+      // Assert
+      expect(store.notes[0].updatedAt).toBeGreaterThanOrEqual(beforeUpdate);
+      expect(store.notes[0].updatedAt).toBeLessThanOrEqual(afterUpdate);
+    });
+
+    it("should re-sort notes by updatedAt descending", async () => {
+      // Arrange
+      const note1 = {
+        id: "note-1",
+        title: "Note 1",
+        body: "Body 1",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+      const note2 = {
+        id: "note-2",
+        title: "Note 2",
+        body: "Body 2",
+        tags: [],
+        pinned: false,
+        createdAt: 2000,
+        updatedAt: 2000,
+      };
+      vi.mocked(setNotes).mockResolvedValue(undefined);
+
+      const store = useNotesStore();
+      store.notes = [note2, note1]; // note2 is first (newer)
+
+      // Act - update note1, making it newer
+      await store.updateNote({
+        id: "note-1",
+        title: "Updated Note 1",
+        body: "Updated Body 1",
+      });
+
+      // Assert - note1 should now be first (most recently updated)
+      expect(store.notes[0].id).toBe("note-1");
+      expect(store.notes[1].id).toBe("note-2");
+    });
+
+    it("should throw error when note does not exist", async () => {
+      // Arrange
+      vi.mocked(setNotes).mockResolvedValue(undefined);
+
+      const store = useNotesStore();
+      store.notes = [];
+
+      // Act & Assert
+      await expect(
+        store.updateNote({
+          id: "non-existent",
+          title: "Title",
+          body: "Body",
+        })
+      ).rejects.toThrow();
+    });
+
+    it("should revert changes in store when database write fails", async () => {
+      // Arrange
+      const existingNote = {
+        id: "test-id",
+        title: "Original Title",
+        body: "Original body",
+        tags: [],
+        pinned: false,
+        createdAt: 1000,
+        updatedAt: 1000,
+      };
+      const dbError = new DbError("DB_WRITE_FAILED", "Write failed");
+      vi.mocked(setNotes).mockRejectedValue(dbError);
+
+      const store = useNotesStore();
+      store.notes = [existingNote];
+
+      // Act & Assert
+      await expect(
+        store.updateNote({
+          id: "test-id",
+          title: "Updated Title",
+          body: "Updated body",
+        })
+      ).rejects.toThrow(NoteStoreError);
+
+      // Store should be reverted to original state
+      expect(store.notes[0].title).toBe("Original Title");
+      expect(store.notes[0].body).toBe("Original body");
+    });
+  });
 });
