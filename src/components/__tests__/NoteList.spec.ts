@@ -560,4 +560,131 @@ describe("NoteList", () => {
       });
     });
   });
+
+  describe("note selection", () => {
+    it("should accept selectionMode prop", () => {
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [],
+          selectionMode: true,
+        },
+      });
+
+      // Assert
+      expect(wrapper.props("selectionMode")).toBe(true);
+    });
+
+    it("should accept selectedNoteIds prop", () => {
+      // Arrange
+      const note = createMockNote({ id: "note-1" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note],
+          selectedNoteIds: ["note-1"],
+        },
+      });
+
+      // Assert
+      expect(wrapper.props("selectedNoteIds")).toEqual(["note-1"]);
+    });
+
+    it("should show checkbox above badge when selectionMode is true", () => {
+      // Arrange
+      const note = createMockNote({ id: "note-1" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note],
+          selectionMode: true,
+        },
+      });
+
+      // Assert
+      const checkbox = wrapper.find('input[type="checkbox"]');
+      expect(checkbox.exists()).toBe(true);
+    });
+
+    it("should show badge when note ID is in selectedNoteIds", () => {
+      // Arrange
+      const note = createMockNote({ id: "note-1" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note],
+          selectedNoteIds: ["note-1"],
+          selectionMode: false,
+        },
+      });
+
+      // Assert
+      const badge = wrapper.find('[data-testid="selection-badge"]');
+      expect(badge.exists()).toBe(true);
+    });
+
+    it("should emit 'note-selected' when checkbox checked", async () => {
+      // Arrange
+      const note = createMockNote({ id: "note-1" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note],
+          selectionMode: true,
+        },
+      });
+
+      const checkbox = wrapper.find('input[type="checkbox"]');
+      await checkbox.setValue(true);
+
+      // Assert
+      expect(wrapper.emitted("note-selected")).toBeTruthy();
+      expect(wrapper.emitted("note-selected")?.[0]).toEqual(["note-1"]);
+    });
+
+    it("should emit 'note-deselected' when checkbox unchecked", async () => {
+      // Arrange
+      const note = createMockNote({ id: "note-1" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note],
+          selectionMode: true,
+          selectedNoteIds: ["note-1"],
+        },
+      });
+
+      const checkbox = wrapper.find('input[type="checkbox"]');
+      await checkbox.setValue(false);
+
+      // Assert
+      expect(wrapper.emitted("note-deselected")).toBeTruthy();
+      expect(wrapper.emitted("note-deselected")?.[0]).toEqual(["note-1"]);
+    });
+
+    it("should allow note click when checkboxes visible", async () => {
+      // Arrange
+      const note = createMockNote({ id: "note-1", title: "Test Note" });
+
+      // Act
+      const wrapper = mount(NoteList, {
+        props: {
+          notes: [note],
+          selectionMode: true,
+        },
+      });
+
+      const listItem = wrapper.find("li");
+      await listItem.trigger("click");
+
+      // Assert
+      expect(wrapper.emitted("note-clicked")).toBeTruthy();
+      expect(wrapper.emitted("note-clicked")?.[0]).toEqual([note]);
+    });
+  });
 });

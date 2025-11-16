@@ -8,16 +8,22 @@ const props = withDefaults(
     isLoading?: boolean;
     loadError?: string;
     currentNote?: Note | null;
+    selectionMode?: boolean;
+    selectedNoteIds?: string[];
   }>(),
   {
     isLoading: false,
     loadError: "",
     currentNote: null,
+    selectionMode: false,
+    selectedNoteIds: () => [],
   }
 );
 
 const emit = defineEmits<{
   (e: "note-clicked", note: Note): void;
+  (e: "note-selected", noteId: string): void;
+  (e: "note-deselected", noteId: string): void;
 }>();
 
 const showEmptyState = computed(
@@ -39,6 +45,19 @@ const handleNoteClick = (note: Note) => {
 
 const isNoteActive = (note: Note) => {
   return props.currentNote?.id === note.id;
+};
+
+const isNoteSelected = (note: Note) => {
+  return props.selectedNoteIds?.includes(note.id) ?? false;
+};
+
+const handleCheckboxChange = (note: Note, event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.checked) {
+    emit("note-selected", note.id);
+  } else {
+    emit("note-deselected", note.id);
+  }
 };
 </script>
 
@@ -66,12 +85,20 @@ const isNoteActive = (note: Note) => {
         <li
           v-for="note in props.notes"
           :key="note.id"
-          class="cursor-pointer rounded-md border border-slate-200 p-3 transition hover:bg-slate-50"
+          class="relative cursor-pointer rounded-md border border-slate-200 p-3 transition hover:bg-slate-50"
           :class="{
             'border-l-4 border-l-slate-900 bg-slate-100': isNoteActive(note),
           }"
           @click="handleNoteClick(note)"
         >
+          <input
+            v-if="selectionMode"
+            type="checkbox"
+            :checked="isNoteSelected(note)"
+            class="mb-2 h-4 w-4 cursor-pointer"
+            @click.stop
+            @change="handleCheckboxChange(note, $event)"
+          />
           <header
             class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between"
           >
@@ -87,6 +114,11 @@ const isNoteActive = (note: Note) => {
             {{ note.body }}
           </p>
           <p v-else class="mt-2 text-xs text-slate-400">No body text yet.</p>
+          <div
+            v-if="!selectionMode && isNoteSelected(note)"
+            class="absolute bottom-2 right-2 h-2 w-2 rounded-full bg-slate-900"
+            data-testid="selection-badge"
+          />
         </li>
       </ul>
     </div>

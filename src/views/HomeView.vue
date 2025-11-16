@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import NoteEditor from "../components/NoteEditor.vue";
 import NoteList from "../components/NoteList.vue";
+import ToolSidebar from "../components/ToolSidebar.vue";
 import {
   NoteStoreError,
   useNotesStore,
   type Note,
 } from "../stores/notes.store";
+import { useChatStore } from "../stores/chat.store";
 
 const notesStore = useNotesStore();
+const chatStore = useChatStore();
 const loadErrorMessage = ref("");
 const currentNote = ref<Note | null>(null);
 const isSidebarCollapsed = ref(false);
+const isToolSidebarCollapsed = ref(false);
 const noteEditorRef = ref<InstanceType<typeof NoteEditor> | null>(null);
 
 // Load sidebar state from localStorage on mount
@@ -20,6 +24,10 @@ onMounted(() => {
   const savedState = localStorage.getItem("sidebarCollapsed");
   if (savedState !== null) {
     isSidebarCollapsed.value = savedState === "true";
+  }
+  const savedToolSidebarState = localStorage.getItem("toolSidebarCollapsed");
+  if (savedToolSidebarState !== null) {
+    isToolSidebarCollapsed.value = savedToolSidebarState === "true";
   }
 });
 
@@ -82,6 +90,14 @@ const toggleSidebar = () => {
   localStorage.setItem("sidebarCollapsed", isSidebarCollapsed.value.toString());
 };
 
+const toggleToolSidebar = () => {
+  isToolSidebarCollapsed.value = !isToolSidebarCollapsed.value;
+  localStorage.setItem(
+    "toolSidebarCollapsed",
+    isToolSidebarCollapsed.value.toString()
+  );
+};
+
 const handleSaveClick = async () => {
   if (noteEditorRef.value) {
     await noteEditorRef.value.submit();
@@ -91,6 +107,32 @@ const handleSaveClick = async () => {
 const isSaving = computed(() => {
   return noteEditorRef.value?.isSaving ?? false;
 });
+
+const handleNoteSelected = (noteId: string) => {
+  chatStore.addNoteToContext(noteId);
+};
+
+const handleNoteDeselected = (noteId: string) => {
+  chatStore.removeNoteFromContext(noteId);
+};
+
+// Watch for note deletions and auto-remove from context
+watch(
+  () => notesStore.notes.map((n) => n.id),
+  (currentNoteIds) => {
+    const selectedIds = chatStore.selectedNoteIds.filter((id) =>
+      currentNoteIds.includes(id)
+    );
+    if (selectedIds.length !== chatStore.selectedNoteIds.length) {
+      // Some selected notes were deleted
+      chatStore.selectedNoteIds.forEach((id) => {
+        if (!currentNoteIds.includes(id)) {
+          chatStore.removeNoteFromContext(id);
+        }
+      });
+    }
+  }
+);
 </script>
 
 <template>
@@ -104,7 +146,11 @@ const isSaving = computed(() => {
         :is-loading="notesStore.isLoading"
         :load-error="loadErrorMessage"
         :current-note="currentNote"
+        :selection-mode="chatStore.selectionModeActive"
+        :selected-note-ids="chatStore.selectedNoteIds"
         @note-clicked="handleNoteClicked"
+        @note-selected="handleNoteSelected"
+        @note-deselected="handleNoteDeselected"
       />
       <button
         v-if="!isSidebarCollapsed"
@@ -178,5 +224,55 @@ const isSaving = computed(() => {
         />
       </div>
     </section>
+    <aside
+      class="relative border-l border-slate-200 bg-white transition-all duration-300"
+      :class="isToolSidebarCollapsed ? 'w-0 overflow-hidden' : 'w-96'"
+    >
+      <ToolSidebar />
+      <button
+        v-if="!isToolSidebarCollapsed"
+        type="button"
+        class="absolute left-0 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-r-md border border-l-0 border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50"
+        aria-label="Collapse tool sidebar"
+        @click="toggleToolSidebar"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </aside>
+    <button
+      v-if="isToolSidebarCollapsed"
+      type="button"
+      class="absolute right-0 top-4 z-10 flex h-6 w-6 items-center justify-center rounded-l-md border border-r-0 border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50"
+      aria-label="Expand tool sidebar"
+      @click="toggleToolSidebar"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-3.5 w-3.5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        />
+      </svg>
+    </button>
   </main>
 </template>
